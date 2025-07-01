@@ -1,0 +1,941 @@
+1	|	all	|		|	synonym	|
+1	|	root	|		|	scientific name	|
+2157	|	archaea	|		|	blast name	|
+2157	|	Archaea	|		|	scientific name	|
+2157	|	"Archaea" Woese et al. 1990	|		|	authority	|
+2157	|	Archaea Woese et al. 2024	|		|	authority	|
+2157	|	"Archaebacteria" (sic) Woese and Fox 1977	|		|	authority	|
+2157	|	Archaebacteria	|		|	synonym	|
+2157	|	"Archaebiota" Luketa 2012	|		|	authority	|
+2157	|	Archaebiota	|		|	synonym	|
+2157	|	Mendosicutes	|		|	synonym	|
+2157	|	Metabacteria	|		|	synonym	|
+2157	|	Monera	|	Monera <archaea>	|	in-part	|
+2157	|	Procaryotae	|	Procaryotae <archaea>	|	in-part	|
+2157	|	Prokaryotae	|	Prokaryotae <archaea>	|	in-part	|
+2157	|	Prokaryota	|	Prokaryota <archaea>	|	in-part	|
+2157	|	prokaryote	|	prokaryote <archaea>	|	in-part	|
+2157	|	prokaryotes	|	prokaryotes <archaea>	|	in-part	|
+2759	|	Eucarya	|		|	synonym	|
+2759	|	Eucaryotae	|		|	synonym	|
+2759	|	eucaryotes	|		|	genbank common name	|
+2759	|	Eukarya	|		|	synonym	|
+2759	|	Eukaryotae	|		|	synonym	|
+2759	|	Eukaryota	|		|	scientific name	|
+2759	|	eukaryotes	|	eukaryotes <blast name>	|	blast name	|
+2759	|	eukaryotes	|	eukaryotes <common name>	|	common name	|
+2825	|	algae	|	algae <golden algae>	|	in-part	|
+2825	|	Chrysomonada	|		|	synonym	|
+2825	|	Chrysomonadida	|		|	synonym	|
+2825	|	chrysomonads	|		|	common name	|
+2825	|	Chrysophyceae	|		|	scientific name	|
+2825	|	Chrysophyta	|		|	synonym	|
+2825	|	chrysophytes	|		|	common name	|
+2825	|	golden algae	|	golden algae <blast name>	|	blast name	|
+2825	|	golden algae	|	golden algae <genbank common name>	|	genbank common name	|
+2836	|	algae	|	algae <diatoms>	|	in-part	|
+2836	|	Bacillariophyta	|		|	scientific name	|
+2836	|	bacillariophytes	|		|	common name	|
+2836	|	Diatomeae	|		|	synonym	|
+2836	|	Diatomea	|		|	synonym	|
+2836	|	Diatomophyceae	|		|	synonym	|
+2836	|	diatoms	|	diatoms <blast name>	|	blast name	|
+2836	|	diatoms	|	diatoms <genbank common name>	|	genbank common name	|
+2995	|	Hydrurus	|		|	scientific name	|
+2996	|	Conferva foetida	|		|	synonym	|
+2996	|	Conferva foetida Villars, 1789	|		|	authority	|
+2996	|	Hydrurus foetidus	|		|	scientific name	|
+2996	|	Hydrurus foetidus (Villars) Trevisan, 1848	|		|	authority	|
+3041	|	algae	|	algae <green algae>	|	in-part	|
+3041	|	Chlorophycota	|		|	synonym	|
+3041	|	Chlorophyta Pascher, 1914	|		|	authority	|
+3041	|	Chlorophyta	|		|	scientific name	|
+3041	|	Chlorophyta sensu Bremer 1985	|		|	synonym	|
+3041	|	green algae	|	green algae <blast name>	|	blast name	|
+3041	|	green algae	|	green algae <genbank common name>	|	genbank common name	|
+3041	|	Prasinophyceae	|		|	includes	|
+3041	|	prasinophyte clade VII	|		|	includes	|
+3041	|	prasinophytes	|	prasinophytes <green algae,Chlorophyta>	|	in-part	|
+3083	|	'Chlorella' mirabilis	|		|	synonym	|
+3083	|	Chlorella mirabilis	|		|	synonym	|
+3083	|	Chlorella mirabilis V.M.Andreyeva	|		|	authority	|
+3083	|	Edaphochlorella mirabilis (Andreyeva) Darienko & Proeschold, 2016	|		|	authority	|
+3083	|	Edaphochlorella mirabilis	|		|	scientific name	|
+3083	|	SAG 38.88	|	SAG 38.88 <epitype>	|	type material	|
+3083	|	Trebouxiophyceae sp. TP-2016a	|		|	includes	|
+5878	|	Ciliata	|	Ciliata <ciliates>	|	synonym	|
+5878	|	ciliates	|	ciliates <blast name>	|	blast name	|
+5878	|	ciliates	|	ciliates <genbank common name>	|	genbank common name	|
+5878	|	Ciliophora	|		|	scientific name	|
+5985	|	Isotrichidae Buetschli, 1887	|		|	authority	|
+5985	|	Isotrichidae	|		|	scientific name	|
+5986	|	Isotricha	|		|	scientific name	|
+5987	|	Isotricha prostoma	|		|	scientific name	|
+5988	|	Litostomatea	|		|	scientific name	|
+29646	|	Stichococcus Naegeli, 1849	|		|	authority	|
+29646	|	Stichococcus	|		|	scientific name	|
+29647	|	Stichococcus sp.	|		|	scientific name	|
+33090	|	Chlorobionta Jeffrey, 1982	|		|	authority	|
+33090	|	Chlorobionta	|		|	synonym	|
+33090	|	Chlorophyta/Embryophyta group	|		|	equivalent name	|
+33090	|	chlorophyte/embryophyte group	|		|	equivalent name	|
+33090	|	Chloroplastida Adl et al. 2005	|		|	authority	|
+33090	|	Chloroplastida	|		|	synonym	|
+33090	|	green plants	|	green plants <blast name>	|	blast name	|
+33090	|	green plants	|	green plants <common name>	|	common name	|
+33090	|	Viridiplantae Cavalier-Smith, 1981	|		|	authority	|
+33090	|	Viridiplantae	|		|	scientific name	|
+33091	|	Raphidonema Lagerheim, 1892	|		|	authority	|
+33091	|	Raphidonema	|		|	scientific name	|
+33092	|	Koliella longiseta	|		|	scientific name	|
+33092	|	Koliella longiseta (Vischer) Hindak, 1963	|		|	authority	|
+33092	|	Raphidonema longiseta	|		|	synonym	|
+33092	|	Raphidonema longiseta Vischer, 1933	|		|	authority	|
+33092	|	SAG 470-1	|	SAG 470-1 <culture from type material>	|	type material	|
+33092	|	SAG-470-1	|	SAG-470-1 <culture from type material>	|	type material	|
+33092	|	SAG:470-1	|	SAG:470-1 <culture from type material>	|	type material	|
+33092	|	SAG470-1	|	SAG470-1 <culture from type material>	|	type material	|
+33630	|	Alveolata	|		|	scientific name	|
+33630	|	alveolates	|		|	genbank common name	|
+33634	|	Chromophyta	|	Chromophyta <eukaryotes>	|	in-part	|
+33634	|	Heterokonta	|		|	synonym	|
+33634	|	heterokonts	|		|	genbank common name	|
+33634	|	Stramenopiles Patterson 1989, emend. Adl et al. 2005	|		|	authority	|
+33634	|	Stramenopiles	|		|	scientific name	|
+33634	|	Straminipila	|		|	synonym	|
+33833	|	Vestibulifera	|		|	synonym	|
+33833	|	Vestibuliferida	|		|	scientific name	|
+33836	|	centric diatoms	|		|	genbank common name	|
+33836	|	Coscinodiscophyceae Round & R.M.Crawford	|		|	authority	|
+33836	|	Coscinodiscophyceae	|		|	scientific name	|
+35111	|	Trimyemidae	|		|	scientific name	|
+35112	|	Trimyema	|		|	scientific name	|
+35113	|	Trimyema compressum	|		|	scientific name	|
+35114	|	Trimyema sp.	|		|	scientific name	|
+37433	|	Gloeotila cf. protogenita SAG 56.91	|		|	includes	|
+37433	|	Stichococcus bacillaris Naegeli	|		|	authority	|
+37433	|	Stichococcus bacillaris	|		|	scientific name	|
+40805	|	Dasytricha	|		|	scientific name	|
+40806	|	Dasytricha ruminantium	|		|	scientific name	|
+47897	|	Isotricha intestinalis	|		|	scientific name	|
+49241	|	Corethraceae	|		|	scientific name	|
+49242	|	Corethron	|		|	scientific name	|
+49243	|	Corethron criophilum Castracane, 1886	|		|	authority	|
+49243	|	Corethron criophilum	|		|	scientific name	|
+71583	|	Balantidiidae	|		|	scientific name	|
+71584	|	Balantidium Claparede & Lachmann, 1858	|		|	authority	|
+71584	|	Balantidium	|		|	scientific name	|
+71585	|	Balantidium coli	|		|	synonym	|
+71585	|	Balantioides coli (Malmstein 1857) Chistayakova et al. 2014	|		|	authority	|
+71585	|	Balantioides coli	|		|	scientific name	|
+71585	|	Neobalantidium coli	|		|	synonym	|
+71585	|	Paramecium coli Malmstein, 1857	|		|	authority	|
+71585	|	Paramecium coli	|		|	synonym	|
+75966	|	Trebouxiophyceae Friedl, 1995	|		|	authority	|
+75966	|	Trebouxiophyceae	|		|	scientific name	|
+98655	|	Hydruraceae	|		|	scientific name	|
+131567	|	biota	|		|	synonym	|
+131567	|	cellular organisms	|		|	scientific name	|
+133223	|	Trimyema minutum	|		|	scientific name	|
+133224	|	Trimyema minutum thermophilum	|		|	scientific name	|
+135250	|	Prasiolales Schaffner, 1922	|		|	authority	|
+135250	|	Prasiolales	|		|	scientific name	|
+135261	|	Prasiola Meneghini, 1838	|		|	authority	|
+135261	|	Prasiola	|		|	scientific name	|
+135262	|	Prasiola fluviatilis	|		|	scientific name	|
+135262	|	Prasiola fluviatilis (Sommerfelt) Areschoug ex Lagerstedt	|		|	authority	|
+135262	|	Ulva fluviatilis Sommerfelt, 1828	|		|	authority	|
+135262	|	Ulva fluviatilis	|		|	synonym	|
+135263	|	Prasiola meridionalis	|		|	scientific name	|
+135263	|	Prasiola meridionalis Setchell & N.L.Gardner	|		|	authority	|
+135264	|	Prasiola mexicana J.Agardh	|		|	authority	|
+135264	|	Prasiola mexicana	|		|	scientific name	|
+135265	|	Prasiola furfuracea (Mertens ex Hornemann) Kuetzing	|		|	authority	|
+135265	|	Prasiola furfuracea	|		|	scientific name	|
+135265	|	Ulva furfuracea Mertens ex Hornemann, 1813	|		|	authority	|
+135265	|	Ulva furfuracea	|		|	synonym	|
+135266	|	Prasiolaceae F.F.Blackman & A.G.Tansley, 1902	|		|	authority	|
+135266	|	Prasiolaceae	|		|	scientific name	|
+135267	|	Rosenvingiella P.C.Silva, 1957	|		|	authority	|
+135267	|	Rosenvingiella	|		|	scientific name	|
+135268	|	Gayella constricta Setchell & N.L.Gardner, 1917	|		|	authority	|
+135268	|	Gayella constricta	|		|	synonym	|
+135268	|	Rosenvingiella constricta (Setchell & N.L.Gardner) P.C.Silva	|		|	authority	|
+135268	|	Rosenvingiella constricta	|		|	synonym	|
+135268	|	Rosenvingiellopsis constricta	|		|	scientific name	|
+135268	|	Rosenvingiellopsis constricta (Setchell & N.L.Gardner) Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+135269	|	Prasiola linearis C.C.Jao	|		|	authority	|
+135269	|	Prasiola linearis	|		|	scientific name	|
+152768	|	Diplosphaera chodatii Bialosuknia	|		|	authority	|
+152768	|	Diplosphaera chodatii	|		|	scientific name	|
+152768	|	Stichococcus chodati (Bialosuknia) Heering	|		|	authority	|
+152768	|	Stichococcus chodati	|		|	synonym	|
+153504	|	Koliella antarctica C.Andreoli et al., 1998	|		|	authority	|
+153504	|	Koliella antarctica	|		|	scientific name	|
+153504	|	SAG 2030	|	SAG 2030 <type material>	|	type material	|
+153998	|	Koliella planctonica Hindak, 1963	|		|	authority	|
+153998	|	Koliella planctonica	|		|	synonym	|
+153998	|	Raphidonema planctonicum (Hindak) Hoham, 1973	|		|	authority	|
+153998	|	Raphidonema planctonicum	|		|	scientific name	|
+153998	|	Trebouxiophyceae sp. SAG 23.84	|		|	includes	|
+154508	|	CCCryo<DEU>:011a-09	|	CCCryo<DEU>:011a-09 <epitype>	|	type material	|
+154508	|	Koliella sempervirens (Chodat) Hindak, 1963	|		|	authority	|
+154508	|	Koliella sempervirens	|		|	synonym	|
+154508	|	Raphidonema sempervirens Chodat, 1913	|		|	authority	|
+154508	|	Raphidonema sempervirens	|		|	scientific name	|
+154508	|	Trebouxiophyceae sp. CCCryo 011a-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 012-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 013-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 037-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 062-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 069-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 107-99	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 321-07	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 324-07	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 359-10	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 471-16	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCryo 485-17	|		|	includes	|
+154508	|	Trebouxiophyceae sp. CCCyro 471-16	|		|	includes	|
+154508	|	Trebouxiophyceae sp. KMY-2018	|		|	includes	|
+154508	|	Trebouxiophyceae sp. QL FLG	|		|	includes	|
+154509	|	Koliella spiculiformis	|		|	scientific name	|
+154509	|	Koliella spiculiformis (Vischer) Hindak, 1963	|		|	authority	|
+154509	|	Raphidonema spiculiforme	|		|	synonym	|
+154509	|	Raphidonema spiculiforme Vischer, 1941	|		|	authority	|
+154978	|	Stichococcus mirabilis Lagerheim	|		|	authority	|
+154978	|	Stichococcus mirabilis	|		|	scientific name	|
+154979	|	Raphidonema pyrenoidifera Korshikov, 1953	|		|	authority	|
+154979	|	Raphidonema pyrenoidifera	|		|	scientific name	|
+155566	|	Prasiola sp. NZ	|		|	scientific name	|
+155715	|	CCCryo<DEU>:262-06	|	CCCryo<DEU>:262-06 <epitype>	|	type material	|
+155715	|	Raphidonema nivale Lagerheim, 1892	|		|	authority	|
+155715	|	Raphidonema nivale	|		|	scientific name	|
+155715	|	Trebouxiophyceae sp. CCAP 470/4	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 258-06	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 262-06	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 26206	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 264-06	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 274-06	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 290-06	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 375-11	|		|	includes	|
+155715	|	Trebouxiophyceae sp. CCCryo 381-11	|		|	includes	|
+155715	|	Trebouxiophyceae sp. SAG 470-1	|		|	includes	|
+155904	|	Koliella corcontica Hindak, 1963	|		|	authority	|
+155904	|	Koliella corcontica	|		|	scientific name	|
+163343	|	Trichostomatia	|		|	scientific name	|
+173492	|	Prasiola crispa (Lightfoot) Kuetzing	|		|	authority	|
+173492	|	Prasiola crispa	|		|	scientific name	|
+173492	|	Ulva crispa Lightfoot, 1777	|		|	authority	|
+173492	|	Ulva crispa	|		|	synonym	|
+173496	|	Pabia Friedl & O'Kelly, 2002	|		|	authority	|
+173496	|	Pabia	|		|	scientific name	|
+175241	|	Prasiolales incertae sedis	|		|	scientific name	|
+185964	|	Prasiola sp. MK1	|		|	scientific name	|
+185965	|	Prasiola formosana var. coreana Okada, 1939	|		|	authority	|
+185965	|	Prasiola formosana var. coreana	|		|	synonym	|
+185965	|	Prasiola japonica	|		|	scientific name	|
+185965	|	Prasiola japonica Yatabe	|		|	authority	|
+187457	|	Desmococcus F.Brand, 1925	|		|	authority	|
+187457	|	Desmococcus	|		|	scientific name	|
+187458	|	Desmococcus endolithicus Broady & M.Ingerfeld	|		|	authority	|
+187458	|	Desmococcus endolithicus	|		|	scientific name	|
+187458	|	SAG 25.92	|	SAG 25.92 <reference material>	|	type material	|
+187459	|	Desmococcus olivaceus (Pers. ex Ach.) J.R.Laundon	|		|	authority	|
+187459	|	Desmococcus olivaceus	|		|	scientific name	|
+187459	|	Desmococcus vulgaris F.Brand	|		|	authority	|
+187459	|	Desmococcus vulgaris	|		|	synonym	|
+187459	|	Lepraria olivacea Persoon ex Acharius, 1810	|		|	authority	|
+187459	|	Lepraria olivacea	|		|	synonym	|
+187459	|	SAG 1.92 [[Desmococcus vulgaris]]	|	SAG 1.92 [[Desmococcus vulgaris]] <culture from type material>	|	type material	|
+187459	|	SAG-1.92 [[Desmococcus vulgaris]]	|	SAG-1.92 [[Desmococcus vulgaris]] <culture from type material>	|	type material	|
+187459	|	SAG:1.92 [[Desmococcus vulgaris]]	|	SAG:1.92 [[Desmococcus vulgaris]] <culture from type material>	|	type material	|
+187459	|	SAG1.92 [[Desmococcus vulgaris]]	|	SAG1.92 [[Desmococcus vulgaris]] <culture from type material>	|	type material	|
+188048	|	Raphidonemopsis	|		|	scientific name	|
+188049	|	Raphidonemopsis sessilis Deason, 1969	|		|	authority	|
+188049	|	Raphidonemopsis sessilis	|		|	scientific name	|
+202781	|	Stichococcus sp. NB2VFF10	|		|	scientific name	|
+209406	|	Raphidonema brevirostre Scherffel, 1910	|		|	authority	|
+209406	|	Raphidonema brevirostre	|		|	scientific name	|
+216773	|	Corethron hystrix Hensen, 1887	|		|	authority	|
+216773	|	Corethron hystrix	|		|	scientific name	|
+216774	|	Corethron inerme Karsten, 1905	|		|	authority	|
+216774	|	Corethron inerme	|		|	scientific name	|
+218684	|	Actiniscus pennatus Grunow, 1882	|		|	authority	|
+218684	|	Actiniscus pennatus	|		|	synonym	|
+218684	|	Corethron pennatum (Grunow) Ostenfeld, 1909	|		|	authority	|
+218684	|	Corethron pennatum	|		|	scientific name	|
+223153	|	Isotricha sp. BBF-2003	|		|	scientific name	|
+240393	|	Stichococcus chlorelloides Grintzesco & Peterfi	|		|	authority	|
+240393	|	Stichococcus chlorelloides	|		|	scientific name	|
+242827	|	Koliella sp. MDL5-3	|		|	scientific name	|
+242837	|	Koliella Hindak, 1963	|		|	authority	|
+242837	|	Koliella	|		|	scientific name	|
+256022	|	Stichococcus sp. BCP-SRS2-14	|		|	scientific name	|
+284983	|	Stichococcus sp. MBIC10457	|		|	scientific name	|
+284984	|	Stichococcus sp. MBIC10465	|		|	scientific name	|
+306437	|	Prasiola stipitata	|		|	scientific name	|
+306437	|	Prasiola stipitata Suhr ex Jessen	|		|	authority	|
+306438	|	Bangia calophylla Carmichael ex Greville, 1826	|		|	authority	|
+306438	|	Bangia calophylla	|		|	synonym	|
+306438	|	Prasiola calophylla (Carmichael ex Greville) Kutzing, 1845	|		|	authority	|
+306438	|	Prasiola calophylla	|		|	scientific name	|
+306438	|	Prasiola sp. 1Hokkaido	|		|	includes	|
+306439	|	Prasiola sp. GALW014367	|		|	scientific name	|
+306440	|	Rosenvingiella radicans (Kuetzing) Rindi, L.McIvor & Guiry	|		|	authority	|
+306440	|	Rosenvingiella radicans	|		|	scientific name	|
+306440	|	Ulothrix radicans Kutzing, 1849	|		|	authority	|
+306440	|	Ulothrix radicans	|		|	synonym	|
+306441	|	Gayella polyrhiza Rosenvinge, 1893	|		|	authority	|
+306441	|	Gayella polyrhiza	|		|	synonym	|
+306441	|	Rosenvingiella polyrhiza (Rosenvinge) P.C.Silva	|		|	authority	|
+306441	|	Rosenvingiella polyrhiza	|		|	scientific name	|
+312848	|	Prasiolopsis	|		|	scientific name	|
+312848	|	Prasiolopsis Vischer, 1953	|		|	authority	|
+312849	|	Prasiolopsis ramosa	|		|	scientific name	|
+312849	|	Prasiolopsis ramosa Vischer	|		|	authority	|
+312849	|	SAG 26.83	|	SAG 26.83 <type material>	|	type material	|
+315742	|	uncultured plagiopylid ciliate	|		|	scientific name	|
+318188	|	environmental samples	|	environmental samples <ciliates,environmental bin,order Vestibuliferida>	|	scientific name	|
+342870	|	environmental samples	|	environmental samples <ciliates,environmental bin,genus Dasytricha>	|	scientific name	|
+342871	|	uncultured rumen Dasytricha	|		|	scientific name	|
+358140	|	CAUP J 1302	|	CAUP J 1302 <holotype>	|	type material	|
+358140	|	SAG 2138	|	SAG 2138 <type material>	|	type material	|
+358140	|	Stichococcus jenerensis Neustupa, Elias & Sejnohova, 2007	|		|	authority	|
+358140	|	Stichococcus jenerensis	|		|	synonym	|
+358140	|	Tetratostichococcus jenerensis (Neustupa, Elias & Sejnohova) Proschold & Darienko, 2020	|		|	authority	|
+358140	|	Tetratostichococcus jenerensis	|		|	scientific name	|
+381755	|	Diplosphaera Bialosuknia, 1909	|		|	authority	|
+381755	|	Diplosphaera	|	Diplosphaera <green algae>	|	scientific name	|
+381756	|	Diplosphaera mucosa Broady	|		|	authority	|
+381756	|	Diplosphaera mucosa	|		|	scientific name	|
+381756	|	SAG 48.86	|	SAG 48.86 <type material>	|	type material	|
+381763	|	Diplosphaera sp. SAG 49.86	|		|	scientific name	|
+409487	|	Trimyema sp. koreanum	|		|	scientific name	|
+413990	|	Stichococcus chloranthus Raths	|		|	authority	|
+413990	|	Stichococcus chloranthus	|		|	scientific name	|
+420268	|	Corethrophycidae	|		|	scientific name	|
+420269	|	Corethrales	|		|	scientific name	|
+420604	|	Hydrurales	|		|	scientific name	|
+420606	|	Chrysonebula	|		|	scientific name	|
+420607	|	Chrysonebula flava	|		|	scientific name	|
+420607	|	Chrysonebula flava Starmach, 1966	|		|	authority	|
+428603	|	Prasiola sp. GALW015488	|		|	scientific name	|
+428604	|	Rosenvingiella sp. GALW014367	|		|	scientific name	|
+428605	|	Prasiococcus	|		|	scientific name	|
+428605	|	Prasiococcus Vischer, 1953	|		|	authority	|
+428606	|	Pleurococcus calcarius J.B.Petersen, 1915	|		|	authority	|
+428606	|	Pleurococcus calcarius	|		|	synonym	|
+428606	|	Prasiococcus calcarius (J.B.Petersen) Vischer, 1953	|		|	authority	|
+428606	|	Prasiococcus calcarius	|		|	scientific name	|
+429238	|	Prasiola borealis M.Reed	|		|	authority	|
+429238	|	Prasiola borealis	|		|	scientific name	|
+429239	|	Prasiola cf. furfuracea GALW015416	|		|	scientific name	|
+429240	|	Prasiola delicata	|		|	scientific name	|
+429240	|	Prasiola delicata Setchell & N.L.Gardner	|		|	authority	|
+431838	|	Intramacronucleata Lynn, 1996	|		|	authority	|
+431838	|	Intramacronucleata	|		|	scientific name	|
+459634	|	Stichococcus sp. FACHB753	|		|	scientific name	|
+464288	|	Stichococcus sp. CU358a	|		|	scientific name	|
+464289	|	Stichococcus sp. Oates	|		|	scientific name	|
+464290	|	Stichococcus sp. Ruapehu	|		|	scientific name	|
+464291	|	Stichococcus sp. Heim	|		|	scientific name	|
+467018	|	Paraisotrichidae	|		|	scientific name	|
+467020	|	Paraisotricha	|		|	scientific name	|
+467021	|	Paraisotricha colpoidea	|		|	scientific name	|
+486890	|	Stichococcus sp. 594-GA18	|		|	scientific name	|
+517293	|	Balantidium entozoon (Ehrenberg, 1838)	|		|	authority	|
+517293	|	Balantidium entozoon	|		|	scientific name	|
+651137	|	Candidatus Aigarchaeota	|		|	includes	|
+651137	|	"Candidatus Aigarchaeota" Nunoura et al. 2011	|		|	authority	|
+651137	|	"Candidatus Thaumarchaeota" Brochier-Armanet et al. 2008	|		|	authority	|
+651137	|	Candidatus Thaumarchaeota	|		|	synonym	|
+651137	|	"Nitrososphaeraeota" Oren et al. 2015	|		|	authority	|
+651137	|	Nitrososphaeraeota	|		|	synonym	|
+651137	|	Nitrososphaerota corrig. Brochier-Armanet et al. 2021	|		|	authority	|
+651137	|	Nitrososphaerota	|		|	scientific name	|
+651137	|	"Nitrososphaerota" Whitman et al. 2018	|		|	authority	|
+651137	|	Thaumarchaeota	|		|	synonym	|
+732243	|	Prasiola sp. MAF-Lich 16290	|		|	scientific name	|
+732244	|	Prasiola sp. MAF-Lich 16295	|		|	scientific name	|
+871274	|	Stichococcus sp. CU336	|		|	scientific name	|
+873143	|	Stichococcus sp. Z07020	|		|	scientific name	|
+873144	|	Stichococcus sp. A07020	|		|	scientific name	|
+909204	|	Balantidium ctenopharyngodoni Chen, 1955	|		|	authority	|
+909204	|	Balantidium ctenopharyngodoni	|		|	scientific name	|
+932729	|	Prasiola sp. 1GWS	|		|	scientific name	|
+1073269	|	Balantidium cf. coli	|		|	equivalent name	|
+1073269	|	Balantioides cf. coli	|		|	scientific name	|
+1077155	|	Prasiola novaezelandiae	|		|	scientific name	|
+1077155	|	Prasiola novaezelandiae S.Heesch & W.A.Nelson, 2012	|		|	authority	|
+1077155	|	Prasiola sp. JEB-2011	|		|	includes	|
+1077155	|	WELT A023857	|	WELT A023857 <holotype>	|	type material	|
+1077155	|	WELT-A023857	|	WELT-A023857 <holotype>	|	type material	|
+1077155	|	WELT:A023857	|	WELT:A023857 <holotype>	|	type material	|
+1077155	|	WELTA023857	|	WELTA023857 <holotype>	|	type material	|
+1077156	|	Prasiola sp. WELT A024286	|		|	scientific name	|
+1077157	|	Rosenvingiella australis	|		|	scientific name	|
+1077157	|	Rosenvingiella australis S.Heesch & W.A.Nelson, 2012	|		|	authority	|
+1077157	|	Rosenvingiella sp. JEB-2011	|		|	includes	|
+1077157	|	WELT A027868	|	WELT A027868 <holotype>	|	type material	|
+1077157	|	WELT-A027868	|	WELT-A027868 <holotype>	|	type material	|
+1077157	|	WELT:A027868	|	WELT:A027868 <holotype>	|	type material	|
+1077157	|	WELTA027868	|	WELTA027868 <holotype>	|	type material	|
+1077731	|	Diplosphaera sp. AA53935	|		|	scientific name	|
+1077732	|	Diplosphaera sp. CG115	|		|	scientific name	|
+1077733	|	Diplosphaera sp. CG27	|		|	scientific name	|
+1077734	|	Diplosphaera sp. CG378	|		|	scientific name	|
+1077735	|	Diplosphaera sp. CG387	|		|	scientific name	|
+1077736	|	Diplosphaera sp. CG458	|		|	scientific name	|
+1077737	|	Diplosphaera sp. CG470	|		|	scientific name	|
+1077738	|	Diplosphaera sp. CG475	|		|	scientific name	|
+1077739	|	Diplosphaera sp. CG567	|		|	scientific name	|
+1077740	|	Diplosphaera sp. CG574	|		|	scientific name	|
+1077741	|	Diplosphaera sp. CG578	|		|	scientific name	|
+1077742	|	Diplosphaera sp. CG585	|		|	scientific name	|
+1077743	|	Diplosphaera sp. CG585a	|		|	scientific name	|
+1077744	|	Diplosphaera sp. CG586	|		|	scientific name	|
+1077745	|	Diplosphaera sp. CG601	|		|	scientific name	|
+1077746	|	Diplosphaera sp. CG608	|		|	scientific name	|
+1077747	|	Diplosphaera sp. CG616	|		|	scientific name	|
+1077748	|	Diplosphaera sp. CG671	|		|	scientific name	|
+1077749	|	Diplosphaera sp. CG679	|		|	scientific name	|
+1077750	|	Diplosphaera sp. CG831	|		|	scientific name	|
+1077751	|	Diplosphaera sp. CGsn	|		|	scientific name	|
+1077752	|	Diplosphaera sp. J4028B	|		|	scientific name	|
+1077753	|	Diplosphaera sp. L469	|		|	scientific name	|
+1077754	|	Diplosphaera sp. L514	|		|	scientific name	|
+1077755	|	Diplosphaera sp. L515	|		|	scientific name	|
+1077756	|	Diplosphaera sp. L530	|		|	scientific name	|
+1077757	|	Diplosphaera sp. L531	|		|	scientific name	|
+1077758	|	Diplosphaera sp. L532	|		|	scientific name	|
+1077759	|	Diplosphaera sp. L540	|		|	scientific name	|
+1077760	|	Diplosphaera sp. L594	|		|	scientific name	|
+1077761	|	Diplosphaera sp. L596	|		|	scientific name	|
+1077762	|	Diplosphaera sp. L616	|		|	scientific name	|
+1077763	|	Diplosphaera sp. L618	|		|	scientific name	|
+1077764	|	Diplosphaera sp. L619	|		|	scientific name	|
+1077765	|	Diplosphaera sp. L620	|		|	scientific name	|
+1077766	|	Diplosphaera sp. L623	|		|	scientific name	|
+1077767	|	Diplosphaera sp. L624	|		|	scientific name	|
+1077768	|	Diplosphaera sp. LIsn	|		|	scientific name	|
+1077769	|	Diplosphaera sp. MPN178	|		|	scientific name	|
+1077770	|	Diplosphaera sp. SH2017	|		|	scientific name	|
+1077771	|	Diplosphaera sp. W1103	|		|	scientific name	|
+1077772	|	Diplosphaera sp. W1112	|		|	scientific name	|
+1077773	|	Diplosphaera sp. W1118	|		|	scientific name	|
+1077774	|	Diplosphaera sp. W1196	|		|	scientific name	|
+1077775	|	Diplosphaera sp. W1268	|		|	scientific name	|
+1077778	|	Prasiola sp. SPO1617	|		|	scientific name	|
+1077779	|	Prasiola sp. SPO1618	|		|	scientific name	|
+1092839	|	unclassified Prasiolales	|		|	scientific name	|
+1092840	|	Prasiolales sp. EXPOSESPACE_OU27	|		|	scientific name	|
+1104705	|	Stichococcus sp. BCP-ZNP2-VF4	|		|	scientific name	|
+1110533	|	Dasytricha sp. LDK-2011	|		|	scientific name	|
+1110536	|	Isotricha sp. LDK-2011	|		|	scientific name	|
+1115877	|	Stichococcus minutus Grintzesco & Peterfi, 1932	|		|	authority	|
+1115877	|	Stichococcus minutus	|		|	scientific name	|
+1115877	|	Stichococcus sp. 863-3-P	|		|	includes	|
+1144345	|	Buxtonella Jameson, 1926	|		|	authority	|
+1144345	|	Buxtonella	|		|	scientific name	|
+1144346	|	Buxtonella sulcata Jameson, 1926	|		|	authority	|
+1144346	|	Buxtonella sulcata	|		|	scientific name	|
+1144347	|	unclassified Balantidium	|		|	scientific name	|
+1144356	|	Buxtonella-like sp. BC1	|		|	scientific name	|
+1144357	|	Buxtonella-like sp. BC110	|		|	scientific name	|
+1144358	|	Buxtonella-like sp. BC111	|		|	scientific name	|
+1144359	|	Buxtonella-like sp. BC112	|		|	scientific name	|
+1144360	|	Buxtonella-like sp. BC116	|		|	scientific name	|
+1144361	|	Buxtonella-like sp. BC118	|		|	scientific name	|
+1144362	|	Buxtonella-like sp. BC13	|		|	scientific name	|
+1144363	|	Buxtonella-like sp. BC132	|		|	scientific name	|
+1144364	|	Buxtonella-like sp. BC160	|		|	scientific name	|
+1144365	|	Buxtonella-like sp. BC162	|		|	scientific name	|
+1144366	|	Buxtonella-like sp. BC176	|		|	scientific name	|
+1144367	|	Buxtonella-like sp. BC184	|		|	scientific name	|
+1144368	|	Buxtonella-like sp. BC197	|		|	scientific name	|
+1144369	|	Buxtonella-like sp. BC2	|		|	scientific name	|
+1144370	|	Buxtonella-like sp. BC4	|		|	scientific name	|
+1144371	|	Buxtonella-like sp. BC5	|		|	scientific name	|
+1144372	|	Buxtonella-like sp. BC95	|		|	scientific name	|
+1148058	|	Rosenvingiella tasmanica Moniz, Rindi & Guiry	|		|	authority	|
+1148058	|	Rosenvingiella tasmanica	|		|	scientific name	|
+1194681	|	environmental samples	|	environmental samples <golden algae,order Hydrurales>	|	scientific name	|
+1194682	|	uncultured Hydrurus sp.	|		|	scientific name	|
+1194682	|	uncultured Hydrurus	|		|	synonym	|
+1219480	|	uncultured Koliella	|		|	scientific name	|
+1227645	|	Stichococcus sp. LINCER3	|		|	scientific name	|
+1227646	|	Stichococcus sp. LINCER4	|		|	scientific name	|
+1227647	|	Stichococcus sp. LINCER5	|		|	scientific name	|
+1244700	|	Stichococcus sp. KMMCC 313	|		|	scientific name	|
+1244749	|	Stichococcus sp. KMMCC 246	|		|	scientific name	|
+1244750	|	Stichococcus sp. KMMCC 255	|		|	scientific name	|
+1244751	|	Stichococcus sp. KMMCC 293	|		|	scientific name	|
+1244752	|	Stichococcus sp. KMMCC 364	|		|	scientific name	|
+1244753	|	Stichococcus sp. KMMCC 365	|		|	scientific name	|
+1244754	|	Stichococcus sp. KMMCC 873	|		|	scientific name	|
+1244755	|	Stichococcus sp. KMMCC 881	|		|	scientific name	|
+1262126	|	Stichococcus sp. LCR-NZSR	|		|	scientific name	|
+1265460	|	Prasiola antarctica Kuetzing	|		|	authority	|
+1265460	|	Prasiola antarctica Kutz., 1849	|		|	authority	|
+1265460	|	Prasiola antarctica	|		|	scientific name	|
+1265460	|	Prasiola crispa subsp. antarctica (Kutzing) Knebel, 1935	|		|	authority	|
+1265460	|	Prasiola crispa subsp. antarctica	|		|	synonym	|
+1265461	|	Prasiola yunnanica C.-C.Jao	|		|	authority	|
+1265461	|	Prasiola yunnanica	|		|	scientific name	|
+1265462	|	Prasiola sp. GALW015714	|		|	scientific name	|
+1265463	|	Prasiola sp. GALW015715	|		|	scientific name	|
+1275956	|	uncultured Trimyema	|		|	scientific name	|
+1280769	|	Pycnotrichidae Poche, 1913	|		|	authority	|
+1280769	|	Pycnotrichidae	|		|	scientific name	|
+1280922	|	unclassified Pycnotrichidae	|		|	scientific name	|
+1284384	|	environmental samples	|	environmental samples <green algae,family Prasiolaceae>	|	scientific name	|
+1284385	|	uncultured Pabia	|		|	scientific name	|
+1284386	|	uncultured Prasiococcus	|		|	scientific name	|
+1284387	|	uncultured Prasiola	|		|	scientific name	|
+1289355	|	Stichococcus sp. WJT24VFNP30	|		|	scientific name	|
+1289356	|	Stichococcus sp. WJT66VFNP61	|		|	scientific name	|
+1298949	|	Helicozoster Latteur, 1967	|		|	authority	|
+1298949	|	Helicozoster	|		|	scientific name	|
+1298951	|	Helicozoster indicus Latteur, 1967	|		|	authority	|
+1298951	|	Helicozoster indicus	|		|	scientific name	|
+1298952	|	Latteuria	|		|	scientific name	|
+1298952	|	Latteuria Timoshenko & Imai 1997	|		|	authority	|
+1298953	|	Latteuria polyfaria	|		|	scientific name	|
+1298953	|	Latteuria polyfaria Timoshenko & Imai 1997	|		|	authority	|
+1298954	|	Latteuria media	|		|	scientific name	|
+1298954	|	Latteuria media Timoshenko & Imai 1997	|		|	authority	|
+1298955	|	Paraisotricha minuta Hsiung, 1930	|		|	authority	|
+1298955	|	Paraisotricha minuta	|		|	scientific name	|
+1301312	|	cf. Desmococcus sp. SAG 63.90	|		|	includes	|
+1301312	|	Desmococcus antarctica Rybalka et al., 2013	|		|	authority	|
+1301312	|	Desmococcus antarctica	|		|	scientific name	|
+1301312	|	Heterococcus endolithicus Darling & Friedmann, 1987	|		|	authority	|
+1301312	|	Heterococcus endolithicus	|		|	synonym	|
+1301312	|	SAG 63.90	|	SAG 63.90 <culture from epitype>	|	type material	|
+1301313	|	cf. Desmococcus sp. EIF 434/A801-133	|		|	scientific name	|
+1301314	|	cf. Desmococcus sp. EIF 446/A812-63a	|		|	scientific name	|
+1301315	|	cf. Desmococcus sp. EIF 447/A834-545	|		|	scientific name	|
+1310050	|	cf. Stichococcus sp. FontaineG1	|		|	scientific name	|
+1335108	|	Corethron sp. 1 MPA-2013	|		|	scientific name	|
+1366344	|	Corethron sp. 1BOF	|		|	scientific name	|
+1400020	|	Deuterostichococcus cf. deasonii WB38	|		|	scientific name	|
+1400020	|	Stichococcus cf. deasonii WB38	|		|	equivalent name	|
+1412032	|	Stichococcus sp. D4-2A	|		|	scientific name	|
+1412033	|	Stichococcus sp. DB6-27	|		|	scientific name	|
+1412034	|	Stichococcus sp. WB47	|		|	scientific name	|
+1412035	|	Stichococcus sp. WB65	|		|	scientific name	|
+1412036	|	Stichococcus sp. WB68	|		|	scientific name	|
+1412037	|	Stichococcus sp. WB8	|		|	scientific name	|
+1431561	|	Stichococcus sp. cort02	|		|	scientific name	|
+1431562	|	Stichococcus sp. cort05	|		|	scientific name	|
+1431564	|	Stichococcus sp. cort07	|		|	scientific name	|
+1431569	|	Diplosphaera sp. cort12	|		|	scientific name	|
+1431570	|	Diplosphaera sp. cort13	|		|	scientific name	|
+1452442	|	Prasiolales sp. Tisnes 1	|		|	scientific name	|
+1452443	|	Prasiolales sp. Luecking 35836	|		|	scientific name	|
+1461491	|	Stichococcus sp. IOAC542S	|		|	scientific name	|
+1461492	|	Stichococcus sp. IOAC549S	|		|	scientific name	|
+1461493	|	Stichococcus sp. IOAC557S	|		|	scientific name	|
+1461494	|	Stichococcus sp. IOAC581S	|		|	scientific name	|
+1461495	|	Stichococcus sp. IOAC621S	|		|	scientific name	|
+1461496	|	Stichococcus sp. IOAC700S	|		|	scientific name	|
+1461497	|	Stichococcus sp. IOAC783S	|		|	scientific name	|
+1461498	|	Stichococcus sp. IOAC794S	|		|	scientific name	|
+1461499	|	Stichococcus sp. IOAC803S	|		|	scientific name	|
+1461500	|	Stichococcus sp. IOAC804S	|		|	scientific name	|
+1461501	|	Stichococcus sp. IOAC805S	|		|	scientific name	|
+1461502	|	Stichococcus sp. IOAC812S	|		|	scientific name	|
+1461503	|	Stichococcus sp. IOAC852S	|		|	scientific name	|
+1461504	|	Stichococcus sp. IOAC857S	|		|	scientific name	|
+1461505	|	Stichococcus sp. IOAC873S	|		|	scientific name	|
+1461506	|	Stichococcus sp. IOAC878s	|		|	scientific name	|
+1461547	|	Stichococcus sp. RCC1054	|		|	scientific name	|
+1486979	|	Stichococcus sp. Stsp437aC	|		|	scientific name	|
+1486985	|	Stichococcus sp. 'Staurothele fissa chlorobiont'	|		|	scientific name	|
+1486986	|	Diplosphaera sp. 'Dermatocarpon luridum chlorobiont'	|		|	scientific name	|
+1521746	|	Stichococcus sp. SAG 2464	|		|	scientific name	|
+1521747	|	Stichococcus sp. SAG 52.87	|		|	scientific name	|
+1542968	|	Balantidium duodeni	|		|	scientific name	|
+1542968	|	Balantidium duodeni Stein, 1867	|		|	authority	|
+1569946	|	Prasiola cf. delicata GALW015795	|		|	scientific name	|
+1577650	|	Balantidium polyvacuolum Li 1963	|		|	authority	|
+1577650	|	Balantidium polyvacuolum	|		|	scientific name	|
+1628383	|	Stichococcus sp. KP09AW1004	|		|	scientific name	|
+1628384	|	Stichococcus sp. LH08AW8025	|		|	scientific name	|
+1628385	|	Stichococcus sp. LH08AW8104	|		|	scientific name	|
+1631159	|	Corethron sp. HK241	|		|	scientific name	|
+1631160	|	Corethron sp. HK356	|		|	scientific name	|
+1640441	|	CBFS A-022	|	CBFS A-022 <holotype>	|	type material	|
+1640441	|	CBFS-A-022	|	CBFS-A-022 <holotype>	|	type material	|
+1640441	|	CBFS:A-022	|	CBFS:A-022 <holotype>	|	type material	|
+1640441	|	CBFSA-022	|	CBFSA-022 <holotype>	|	type material	|
+1640441	|	Ekerewekia churiensis Kastovsky, Fucikova, Stenclova & Brewer-Carias, 2016	|		|	authority	|
+1640441	|	Ekerewekia churiensis	|		|	scientific name	|
+1640441	|	Trebouxiophyceae sp. JK-2015	|		|	includes	|
+1677994	|	Trimyema sp. Lake6	|		|	scientific name	|
+1677995	|	Trimyema sp. OH3A	|		|	scientific name	|
+1677996	|	Trimyema sp. S11B	|		|	scientific name	|
+1677997	|	Trimyema sp. S13B	|		|	scientific name	|
+1677998	|	Trimyema sp. S15B	|		|	scientific name	|
+1677999	|	Trimyema sp. SD1A	|		|	scientific name	|
+1707326	|	GALW15829	|	GALW15829 <holotype>	|	type material	|
+1707326	|	Prasiolaceae sp. SH-2015a	|		|	includes	|
+1707326	|	Prasionema payeri Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+1707326	|	Prasionema payeri	|		|	scientific name	|
+1707327	|	GALW15826.	|	GALW15826. <holotype>	|	type material	|
+1707327	|	Prasiolaceae sp. SH-2015b	|		|	includes	|
+1707327	|	Prasionella wendyae Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+1707327	|	Prasionella wendyae	|		|	scientific name	|
+1720847	|	Stichococcus sp. EN2JG	|		|	scientific name	|
+1720848	|	Stichococcus sp. UV2BC	|		|	scientific name	|
+1720849	|	Diplosphaera sp. EN5JG	|		|	scientific name	|
+1764155	|	Stichococcus sp. RCC1055	|		|	scientific name	|
+1783275	|	"Crenarchaeida" Luketa 2012	|		|	authority	|
+1783275	|	Crenarchaeida	|		|	synonym	|
+1783275	|	TACK group	|		|	common name	|
+1783275	|	Thermoproteati Guy and Ettema 2024	|		|	authority	|
+1783275	|	Thermoproteati	|		|	scientific name	|
+1840166	|	Aviisotricha hoazini	|		|	scientific name	|
+1840166	|	Aviisotricha hoazini Van As, Basson & Van As, 1998	|		|	authority	|
+1840166	|	Ciliophora sp. DHL-2016a	|		|	includes	|
+1842851	|	Prasiola cf. meridionalis JASM201	|		|	scientific name	|
+1842852	|	Prasiola cf. meridionalis JASM202	|		|	scientific name	|
+1842853	|	Prasiola cf. calophylla JASM204	|		|	scientific name	|
+1842854	|	Prasiola cf. meridionalis JASM218	|		|	scientific name	|
+1848527	|	Rosenvingiella sp. KTA0004_Kam	|		|	scientific name	|
+1861715	|	Diplosphaera sp. KS120SM6L	|		|	scientific name	|
+1861716	|	Diplosphaera sp. KS135SM6L	|		|	scientific name	|
+1861717	|	Diplosphaera sp. LH08AG9089	|		|	scientific name	|
+1861718	|	Diplosphaera sp. LH08HW8075	|		|	scientific name	|
+1861719	|	Diplosphaera sp. SAG 2049	|		|	scientific name	|
+1861726	|	Stichococcus sp. DZ_K4g	|		|	scientific name	|
+1861727	|	Stichococcus sp. KP09HW3004	|		|	scientific name	|
+1861728	|	Stichococcus sp. KS090BU1T	|		|	scientific name	|
+1861729	|	Stichococcus sp. KS106CL6T	|		|	scientific name	|
+1861730	|	Stichococcus sp. KS108CL6T	|		|	scientific name	|
+1861731	|	Stichococcus sp. KS305SM6L	|		|	scientific name	|
+1861732	|	Stichococcus sp. LH08AW8002	|		|	scientific name	|
+1861733	|	Stichococcus sp. LH08SG1073	|		|	scientific name	|
+1861734	|	Stichococcus sp. LH08SG5057	|		|	scientific name	|
+1861735	|	Stichococcus sp. LH08SG5079	|		|	scientific name	|
+1861736	|	Stichococcus sp. LH08SG5090	|		|	scientific name	|
+1861737	|	Stichococcus sp. LH08SW1099	|		|	scientific name	|
+1861738	|	Stichococcus sp. LH10HG2063	|		|	scientific name	|
+1861739	|	Stichococcus sp. LH10HG7072	|		|	scientific name	|
+1861740	|	Stichococcus sp. LH10HG7073	|		|	scientific name	|
+1861743	|	Stichococcus sp. SAG 2408 WB8	|		|	scientific name	|
+1861744	|	Stichococcus sp. WB2	|		|	scientific name	|
+1861745	|	Stichococcus sp. WB66	|		|	scientific name	|
+1861764	|	Desmococcus spinocystis G.Gaertner & Ingolic, 2003	|		|	authority	|
+1861764	|	Desmococcus spinocystis	|		|	scientific name	|
+1861765	|	Stichococcus fragilis Gerneck, 1907	|		|	authority	|
+1861765	|	Stichococcus fragilis	|		|	scientific name	|
+1861766	|	Stichococcus sp. KS075SM6T	|		|	scientific name	|
+1866958	|	Diplosphaera sp. MM1	|		|	scientific name	|
+1909396	|	Prasiola sp. IGB-2016	|		|	scientific name	|
+1909397	|	Prasiola cf. delicata IGB-2016	|		|	scientific name	|
+1917196	|	Isotricha sp.	|		|	scientific name	|
+1936978	|	Prasionema Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+1936978	|	Prasionema	|		|	scientific name	|
+1936979	|	Prasionella Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+1936979	|	Prasionella	|		|	scientific name	|
+1936980	|	Rosenvingiellopsis Heesch, M.Pazoutova & Rindi, 2016	|		|	authority	|
+1936980	|	Rosenvingiellopsis	|		|	scientific name	|
+1940604	|	Edaphochlorella Darienko & Proeschold, 2016	|		|	authority	|
+1940604	|	Edaphochlorella	|		|	scientific name	|
+2024300	|	Trimyema finlayi	|		|	scientific name	|
+2024300	|	Trimyema finlayi Van As, Basson & Van As, 1998	|		|	authority	|
+2024300	|	Trimyema sp. WHL-2017a	|		|	includes	|
+2030936	|	Koliellaceae Hindak, 1996	|		|	authority	|
+2030936	|	Koliellaceae	|		|	scientific name	|
+2038102	|	Balantioides Alexeieff, 1931	|		|	authority	|
+2038102	|	Balantioides	|		|	scientific name	|
+2038102	|	Neobalantidium	|		|	synonym	|
+2053061	|	Aviisotricha Bardele, Schultheiss, Lynn, Wright, Dominguez-Bello & Obispo 2017	|		|	authority	|
+2053061	|	Aviisotricha	|		|	scientific name	|
+2064753	|	Stichococcus sp. ACSSI 084	|		|	scientific name	|
+2064754	|	Stichococcus sp. ACSSI 029	|		|	scientific name	|
+2064756	|	unclassified Stichococcus	|		|	scientific name	|
+2066085	|	unclassified Diplosphaera (in: green algae)	|		|	scientific name	|
+2066692	|	Balantidium sp.	|		|	scientific name	|
+2086445	|	Diplosphaera sp. YN	|		|	scientific name	|
+2170318	|	Hydrurus sp.	|		|	scientific name	|
+2220070	|	Prasionema heeschiae	|		|	scientific name	|
+2220070	|	Prasionema heeschiae W.A.Nelson & J.E.Sutherland, 2018	|		|	authority	|
+2220070	|	WELT A033555	|	WELT A033555 <holotype>	|	type material	|
+2231304	|	Balantidium grimii	|		|	synonym	|
+2231304	|	Balantidium grimi	|		|	scientific name	|
+2231304	|	Balantidium grimi Zhao et al. 2018	|		|	authority	|
+2269065	|	Prasiola cf. antarctica IGB-2018	|		|	scientific name	|
+2269066	|	Prasiola sp. I104b	|		|	scientific name	|
+2283346	|	Deuterostichococcus allas (Reisigl) Proschold & Darienko, 2020	|		|	authority	|
+2283346	|	Deuterostichococcus allas	|		|	scientific name	|
+2283346	|	Stichococcus allas Reisigl, 1964	|		|	authority	|
+2283346	|	Stichococcus allas	|		|	synonym	|
+2283347	|	collector:AB:15.001B5	|	collector:AB:15.001B5 <culture from holotype>	|	type material	|
+2283347	|	M 0019657	|	M 0019657 <holotype>	|	type material	|
+2283347	|	M-0019657	|	M-0019657 <holotype>	|	type material	|
+2283347	|	M:0019657	|	M:0019657 <holotype>	|	type material	|
+2283347	|	M0019657	|	M0019657 <holotype>	|	type material	|
+2283347	|	SAG:2588	|	SAG:2588 <culture from holotype>	|	type material	|
+2283347	|	Stichococcus antarcticus A.Beck & Bechteler, 2019	|		|	authority	|
+2283347	|	Stichococcus antarcticus	|		|	scientific name	|
+2283347	|	Stichococcus sp. JB-2018a	|		|	includes	|
+2291452	|	Diplosphaera sp. Ru-6-16	|		|	scientific name	|
+2316512	|	Corethron sp.	|		|	scientific name	|
+2501442	|	Prasiolales sp. S1MWC-09	|		|	scientific name	|
+2501443	|	Prasiolales sp. S2MWC-09	|		|	scientific name	|
+2501444	|	Prasiolales sp. S2MWC-12	|		|	scientific name	|
+2501445	|	Prasiolales sp. S2RM-26	|		|	scientific name	|
+2501448	|	Stichococcus sp. S2F4-03	|		|	scientific name	|
+2501449	|	Stichococcus sp. S2RA-21	|		|	scientific name	|
+2507881	|	Prasiolales sp. LSY1024	|		|	scientific name	|
+2507882	|	Prasiolales sp. LSY1025	|		|	scientific name	|
+2507883	|	Prasiolales sp. LSY1026	|		|	scientific name	|
+2507884	|	Prasiolales sp. LSY1027	|		|	scientific name	|
+2507885	|	Prasiolales sp. LSY1028	|		|	scientific name	|
+2507886	|	Prasiolales sp. LSY1029	|		|	scientific name	|
+2507887	|	Prasiolales sp. LSY1030	|		|	scientific name	|
+2507888	|	Prasiolales sp. LSY1031	|		|	scientific name	|
+2507889	|	Prasiolales sp. LSY1032	|		|	scientific name	|
+2507890	|	Prasiolales sp. LSY1033	|		|	scientific name	|
+2507891	|	Prasiolales sp. LSY1034	|		|	scientific name	|
+2507892	|	Prasiolales sp. LSY1035	|		|	scientific name	|
+2507893	|	Prasiolales sp. LSY1036	|		|	scientific name	|
+2507894	|	Prasiolales sp. LSY1037	|		|	scientific name	|
+2507895	|	Prasiolales sp. LSY1038	|		|	scientific name	|
+2507896	|	Prasiolales sp. LSY1039	|		|	scientific name	|
+2507897	|	Prasiolales sp. LSY1040	|		|	scientific name	|
+2508653	|	Diplosphaera sp. MCI 28	|		|	scientific name	|
+2528200	|	Buxtonella sp.	|		|	scientific name	|
+2580347	|	Rosenvingiella sp. GWS039307	|		|	scientific name	|
+2580349	|	unclassified Rosenvingiella	|		|	scientific name	|
+2598476	|	unclassified Prasiola	|		|	scientific name	|
+2618921	|	unclassified Dasytricha	|		|	scientific name	|
+2621648	|	unclassified Hydrurus	|		|	scientific name	|
+2622579	|	unclassified Trimyema	|		|	scientific name	|
+2631796	|	unclassified Corethron	|		|	scientific name	|
+2636363	|	unclassified Buxtonella	|		|	scientific name	|
+2649591	|	unclassified Isotricha	|		|	scientific name	|
+2650207	|	Hydrurus sp. X8	|		|	scientific name	|
+2654215	|	Diplosphaera sp. MPN177	|		|	scientific name	|
+2664906	|	Diplosphaera sp. MPN505	|		|	scientific name	|
+2675314	|	Pycnothrix	|		|	scientific name	|
+2675315	|	Pycnothrix monocystoides Schubotz, 1908	|		|	authority	|
+2675315	|	Pycnothrix monocystoides	|		|	scientific name	|
+2677504	|	unclassified Koliella	|		|	scientific name	|
+2681216	|	unclassified Raphidonema	|		|	scientific name	|
+2681217	|	Raphidonema sp. don	|		|	scientific name	|
+2681225	|	Raphidonema sp. nem	|		|	scientific name	|
+2692248	|	core chlorophytes	|		|	scientific name	|
+2696291	|	Ochrophyta Cavalier-Smith 1986	|		|	authority	|
+2696291	|	Ochrophyta	|		|	scientific name	|
+2698737	|	Sar Burki et al. 2008	|		|	authority	|
+2698737	|	Sar	|		|	scientific name	|
+2698737	|	SAR supergroup	|		|	synonym	|
+2710711	|	Stichococcus coniocybes Letellier, 1918	|		|	authority	|
+2710711	|	Stichococcus coniocybes	|		|	synonym	|
+2710711	|	Tritostichococcus coniocybes (Letellier) Proschold & Darienko, 2020	|		|	authority	|
+2710711	|	Tritostichococcus coniocybes	|		|	scientific name	|
+2710712	|	unclassified Prasiolaceae	|		|	scientific name	|
+2710713	|	Deuterostichococcus epilithicus Proschold & Darienko, 2020	|		|	authority	|
+2710713	|	Deuterostichococcus epilithicus	|		|	scientific name	|
+2710713	|	Prasiolaceae sp. TP-2020a	|		|	includes	|
+2710713	|	SAG:2060	|	SAG:2060 <holotype>	|	type material	|
+2710713	|	Stichococcus sp. SAG 2119	|		|	includes	|
+2710713	|	Stichococcus sp. SAG 2482	|		|	includes	|
+2710714	|	Deuterostichococcus lewinii Proschold & Darienko, 2020	|		|	authority	|
+2710714	|	Deuterostichococcus lewinii	|		|	scientific name	|
+2710714	|	Prasiolaceae sp. TP-2020b	|		|	includes	|
+2710714	|	SAG:107.80	|	SAG:107.80 <holotype>	|	type material	|
+2710714	|	Stichococcus sp. SAG 107.80	|		|	includes	|
+2710714	|	Stichococcus sp. SAG 108.80	|		|	includes	|
+2710715	|	Prasiolaceae sp. TP-2020c	|		|	includes	|
+2710715	|	Protostichococcus edaphicus Proschold & Darienko, 2020	|		|	authority	|
+2710715	|	Protostichococcus edaphicus	|		|	scientific name	|
+2710715	|	SAG:2481	|	SAG:2481 <holotype>	|	type material	|
+2710715	|	Stichococcus sp. SAG 2481	|		|	includes	|
+2710716	|	CCAP:ST-2	|	CCAP:ST-2 <holotype>	|	type material	|
+2710716	|	Prasiolaceae sp. TP-2020d	|		|	includes	|
+2710716	|	Tritostichococcus corticulus Proschold & Darienko, 2020	|		|	authority	|
+2710716	|	Tritostichococcus corticulus	|		|	scientific name	|
+2710717	|	Prasiolaceae sp. TP-2020e	|		|	includes	|
+2710717	|	SAG:2406	|	SAG:2406 <holotype>	|	type material	|
+2710717	|	Stichococcus sp. SAG 2406 WB47	|		|	includes	|
+2710717	|	Tritostichococcus solitus Proschold & Darienko, 2020	|		|	authority	|
+2710717	|	Tritostichococcus solitus	|		|	scientific name	|
+2710878	|	Diplosphaera sp. CBR01	|		|	scientific name	|
+2716349	|	Stichococcus sp. DHK-2018	|		|	scientific name	|
+2732398	|	Stichococcus sp. ACSSI 273	|		|	scientific name	|
+2735163	|	Deuterostichococcus Proschold & Darienko, 2020	|		|	authority	|
+2735163	|	Deuterostichococcus	|		|	scientific name	|
+2735164	|	Tritostichococcus Proschold & Darienko, 2020	|		|	authority	|
+2735164	|	Tritostichococcus	|		|	scientific name	|
+2735165	|	Tetratostichococcus Proschold & Darienko, 2020	|		|	authority	|
+2735165	|	Tetratostichococcus	|		|	scientific name	|
+2735166	|	Protostichococcus Proschold & Darienko, 2020	|		|	authority	|
+2735166	|	Protostichococcus	|		|	scientific name	|
+2737021	|	Stichococcus sp. M-011	|		|	scientific name	|
+2744149	|	Stichococcus sp. M11	|		|	scientific name	|
+2749887	|	Stichococcus sp. MOW7	|		|	scientific name	|
+2751454	|	Stichococcus sp. PA-3-5	|		|	scientific name	|
+2763254	|	Diplosphaera sp. Prim-8-8	|		|	scientific name	|
+2773780	|	unclassified Deuterostichococcus	|		|	scientific name	|
+2773781	|	Deuterostichococcus sp. SC-2020	|		|	scientific name	|
+2792939	|	Raphidonema sp. KZ-022	|		|	scientific name	|
+2792940	|	Raphidonema sp. KZ-023	|		|	scientific name	|
+2792941	|	Raphidonema sp. KZ-024	|		|	scientific name	|
+2812595	|	Prasiolales sp.	|		|	scientific name	|
+2812596	|	Rosenvingiella sp.	|		|	scientific name	|
+2815379	|	Stichococcus sp. LI0704	|		|	scientific name	|
+2815380	|	Stichococcus sp. LIBN04	|		|	scientific name	|
+2853270	|	Chodatia tetrallantoidea Kol, 1934	|		|	authority	|
+2853270	|	Chodatia tetrallantoidea	|		|	synonym	|
+2853270	|	Deuterostichococcus tetrallantoideus (Kol) Proschold & Darienko, 2020	|		|	authority	|
+2853270	|	Deuterostichococcus tetrallantoideus	|		|	scientific name	|
+2853271	|	Deuterostichococcus deasonii (Neustupa, Elias & Sejnohova) Proschold & Darienko, 2020	|		|	synonym	|
+2853271	|	Deuterostichococcus marinus (Deason) Proschold & Darienko, 2020	|		|	authority	|
+2853271	|	Deuterostichococcus marinus	|		|	scientific name	|
+2853271	|	Hormidium marinum Deason, 1969	|		|	authority	|
+2853271	|	Hormidium marinum	|		|	synonym	|
+2853272	|	Deuterostichococcus sp. ACSSI 273	|		|	scientific name	|
+2853273	|	Deuterostichococcus sp. ACSSI 84	|		|	scientific name	|
+2853274	|	unclassified Tritostichococcus	|		|	scientific name	|
+2853275	|	Tritostichococcus sp. ACOI-1477	|		|	scientific name	|
+2853278	|	Deuterostichococcus sp. IT-203	|		|	scientific name	|
+2866872	|	CCCryo<DEU>:017-99	|	CCCryo<DEU>:017-99 <holotype>	|	type material	|
+2866872	|	Raphidonema catena Leya & Yakimovich, 2021	|		|	authority	|
+2866872	|	Raphidonema catena	|		|	scientific name	|
+2866872	|	Trebouxiophyceae sp. CCCryo 017-99	|		|	includes	|
+2866872	|	Trebouxiophyceae sp. CCCryo 019-99	|		|	includes	|
+2866891	|	Prasiola sp. CCCryo 420-13	|		|	scientific name	|
+2866891	|	Trebouxiophyceae sp. CCCryo 420-13	|		|	equivalent name	|
+2866897	|	Raphidonema monicae	|		|	scientific name	|
+2866897	|	Raphidonema monicae Yakimovich, 2021	|		|	authority	|
+2866897	|	Trebouxiophyceae sp. CCALA 363	|		|	includes	|
+2866897	|	Trebouxiophyceae sp. CCALA 790	|		|	includes	|
+2866897	|	Trebouxiophyceae sp. SAG 2030	|		|	includes	|
+2873787	|	Raphidonema sp. CCAP470-3	|		|	scientific name	|
+2876992	|	Prasiola sp. PTM-1537	|		|	scientific name	|
+2876993	|	Prasiola sp. PTM-1538	|		|	scientific name	|
+2876995	|	Prasiola sp. SCL17329	|		|	scientific name	|
+2876996	|	Prasiola sp. SCL17330	|		|	scientific name	|
+2884317	|	unclassified Tetratostichococcus	|		|	scientific name	|
+2884318	|	Tetratostichococcus sp. P1	|		|	scientific name	|
+2886928	|	Deuterostichococcus sp. 1 SC-2021	|		|	scientific name	|
+2886929	|	Diplosphaera sp. 1 SC-2021	|		|	scientific name	|
+2893167	|	Isotricha sp. YL-2021a	|		|	scientific name	|
+2893167	|	Isotricha sp. YZhang-2021a	|		|	synonym	|
+2893168	|	Isotricha sp. YL-2021b	|		|	scientific name	|
+2893168	|	Isotricha sp. YZhang-2021b	|		|	synonym	|
+2910630	|	Stichococcaceae	|		|	scientific name	|
+2911680	|	Diplosphaera sp.	|	Diplosphaera sp. <green algae>	|	equivalent name	|
+2911680	|	Diplosphaera sp. (in: green algae)	|		|	scientific name	|
+2913209	|	Buxtonella-like sp.	|		|	scientific name	|
+2914965	|	Diplosphaera sp. MGA5	|		|	scientific name	|
+2916643	|	Diplosphaera sp. V46	|		|	scientific name	|
+2918891	|	Stichococcus sp. ARK-S05-19	|		|	scientific name	|
+2950988	|	Deuterostichococcus sp. ASYA7	|		|	scientific name	|
+2969134	|	QD LR2020062501-01	|	QD LR2020062501-01 <holotype>	|	type material	|
+2969134	|	QD-LR2020062501-01	|	QD-LR2020062501-01 <holotype>	|	type material	|
+2969134	|	QD:LR2020062501-01	|	QD:LR2020062501-01 <holotype>	|	type material	|
+2969134	|	QDLR2020062501-01	|	QDLR2020062501-01 <holotype>	|	type material	|
+2969134	|	Trimyema foissneri Li et al., 2023	|		|	authority	|
+2969134	|	Trimyema foissneri	|		|	scientific name	|
+2969134	|	Trimyema sp. FGao-2022a	|		|	includes	|
+2980488	|	Trimyema sp. strain FARO3	|		|	scientific name	|
+2980489	|	Trimyema sp. strain FRESH	|		|	scientific name	|
+2980490	|	Trimyema sp. strain JUD81	|		|	scientific name	|
+2991541	|	Diplosphaera sp. SNC1-A4	|		|	scientific name	|
+3019041	|	Tritostichococcus sp. WCY_AQ5_1	|		|	scientific name	|
+3019453	|	Trimyema claviformis Kahl, 1933	|		|	authority	|
+3019453	|	Trimyema claviformis	|		|	scientific name	|
+3030981	|	Koliella sp. GF19	|		|	scientific name	|
+3031090	|	unclassified Desmococcus	|		|	scientific name	|
+3036761	|	Infundibulorium Bozhenko, 1925	|		|	authority	|
+3036761	|	Infundibulorium	|		|	scientific name	|
+3036762	|	Buxtonella cameli (Bozhenko, 1925)	|		|	authority	|
+3036762	|	Buxtonella cameli	|		|	synonym	|
+3036762	|	Infundibulorium cameli Bozhenko, 1925	|		|	authority	|
+3036762	|	Infundibulorium cameli	|		|	scientific name	|
+3049301	|	environmental samples	|	environmental samples <green algae,family Stichococcaceae>	|	scientific name	|
+3049302	|	uncultured Deuterostichococcus	|		|	scientific name	|
+3049311	|	environmental samples	|	environmental samples <green algae,family Koliellaceae>	|	scientific name	|
+3049312	|	uncultured Raphidonema	|		|	scientific name	|
+3050119	|	Isotricha sp. SAG1	|		|	scientific name	|
+3081208	|	Stichococcus sp. DPCR006a	|		|	scientific name	|
+3081209	|	Stichococcus sp. DPCR006b	|		|	scientific name	|
+3081210	|	Stichococcus sp. DPCR006c	|		|	scientific name	|
+3098636	|	Hydrurus sp. RD-2023a	|		|	scientific name	|
+3101793	|	Tetratostichococcus sp. ACSSI 446	|		|	scientific name	|
+3101793	|	Tetratostichococcus sp. AT-2023a	|		|	synonym	|
+3111447	|	Isotricha jalaludinii Imai et al., 1995	|		|	authority	|
+3111447	|	Isotricha jalaludinii	|		|	scientific name	|
+3111447	|	NJM<JPN> IJ-1930 1	|	NJM<JPN> IJ-1930 1 <holotype>	|	type material	|
+3111447	|	NJM<JPN>-IJ-1930 1	|	NJM<JPN>-IJ-1930 1 <holotype>	|	type material	|
+3111447	|	NJM<JPN>:IJ-1930 1	|	NJM<JPN>:IJ-1930 1 <holotype>	|	type material	|
+3111447	|	NJM<JPN>IJ-1930 1	|	NJM<JPN>IJ-1930 1 <holotype>	|	type material	|
+3118629	|	Balantidium cf. grimi	|		|	scientific name	|
+3135960	|	Diplosphaera sp. WPWO2-11	|		|	includes	|
+3135960	|	Diplosphaera sp. WPWO2-8	|		|	includes	|
+3135960	|	Diplosphaera sundellii K.N. Thermozier, M.W. Fawley et K.P. Fawley, 2023	|		|	authority	|
+3135960	|	Diplosphaera sundellii	|		|	scientific name	|
+3138493	|	Stichococcus sp. CCAP 379/31	|		|	scientific name	|
+3159564	|	Muniziella	|		|	scientific name	|
+3159565	|	Muniziella cunhai Fonseca, 1939	|		|	authority	|
+3159565	|	Muniziella cunhai	|		|	scientific name	|
+3231931	|	Koliella sp. HS-2024a	|		|	scientific name	|
+3231941	|	Koliella sp.	|		|	scientific name	|
+3237803	|	Desmococcus sp.	|		|	scientific name	|
+3239232	|	Prasiolopsis sp. SAG 84-81	|		|	includes	|
+3239232	|	Prasiolopsis sp. SAG 84.81	|		|	includes	|
+3239232	|	Prasiolopsis sp. TP-2024a	|		|	includes	|
+3239232	|	Prasiolopsis wulf-kochii Darienko & Proschold, 2024	|		|	authority	|
+3239232	|	Prasiolopsis wulf-kochii	|		|	scientific name	|
+3239232	|	SAG 84.81	|	SAG 84.81 <holotype>	|	type material	|
+3239232	|	SAG-84.81	|	SAG-84.81 <holotype>	|	type material	|
+3239232	|	SAG:84.81	|	SAG:84.81 <holotype>	|	type material	|
+3239232	|	SAG84.81	|	SAG84.81 <holotype>	|	type material	|
+3387950	|	unclassified Hydrurales	|		|	scientific name	|
+3388146	|	Hydrurales sp.	|		|	scientific name	|
+3402236	|	Ekerewekia Kastovsky, Fucikova, Stenclova & Brewer-Carias, 2016	|		|	authority	|
+3402236	|	Ekerewekia	|		|	scientific name	|
+3402835	|	Candidatus Nitrosomirales	|		|	scientific name	|
+3402835	|	"Candidatus Nitrosomirales" Zheng et al. 2024	|		|	authority	|
+3402835	|	Nitrosomirales	|		|	equivalent name	|
+3402836	|	unclassified Candidatus Nitrosomirales	|		|	scientific name	|
+3402837	|	Candidatus Nitrosomirales archaeon	|		|	scientific name	|
+3422549	|	Prasibo Heesch, 2025	|		|	authority	|
+3422549	|	Prasibo	|		|	scientific name	|
+3422550	|	Prasiolotta Heesch, 2025	|		|	authority	|
+3422550	|	Prasiolotta	|		|	scientific name	|
+3422551	|	B 40 0046817	|	B 40 0046817 <holotype>	|	type material	|
+3422551	|	B-40 0046817	|	B-40 0046817 <holotype>	|	type material	|
+3422551	|	B:40 0046817	|	B:40 0046817 <holotype>	|	type material	|
+3422551	|	B40 0046817	|	B40 0046817 <holotype>	|	type material	|
+3422551	|	CCAP 6082/1	|	CCAP 6082/1 <culture from holotype>	|	type material	|
+3422551	|	CCAP-6082/1	|	CCAP-6082/1 <culture from holotype>	|	type material	|
+3422551	|	CCAP:6082/1	|	CCAP:6082/1 <culture from holotype>	|	type material	|
+3422551	|	CCAP6082/1	|	CCAP6082/1 <culture from holotype>	|	type material	|
+3422551	|	Prasibo cubiformis Heesch, 2025	|		|	authority	|
+3422551	|	Prasibo cubiformis	|		|	scientific name	|
+3422552	|	B 40 0046816	|	B 40 0046816 <holotype>	|	type material	|
+3422552	|	B-40 0046816	|	B-40 0046816 <holotype>	|	type material	|
+3422552	|	B:40 0046816	|	B:40 0046816 <holotype>	|	type material	|
+3422552	|	B40 0046816	|	B40 0046816 <holotype>	|	type material	|
+3422552	|	CCAP 6083/4	|	CCAP 6083/4 <culture from holotype>	|	type material	|
+3422552	|	CCAP-6083/4	|	CCAP-6083/4 <culture from holotype>	|	type material	|
+3422552	|	CCAP:6083/4	|	CCAP:6083/4 <culture from holotype>	|	type material	|
+3422552	|	CCAP6083/4	|	CCAP6083/4 <culture from holotype>	|	type material	|
+3422552	|	Prasiolotta hercynia Heesch, 2025	|		|	authority	|
+3422552	|	Prasiolotta hercynia	|		|	scientific name	|
+3422553	|	B 40 0046814	|	B 40 0046814 <holotype>	|	type material	|
+3422553	|	B-40 0046814	|	B-40 0046814 <holotype>	|	type material	|
+3422553	|	B:40 0046814	|	B:40 0046814 <holotype>	|	type material	|
+3422553	|	B40 0046814	|	B40 0046814 <holotype>	|	type material	|
+3422553	|	CCAP 6083/1	|	CCAP 6083/1 <culture from holotype>	|	type material	|
+3422553	|	CCAP-6083/1	|	CCAP-6083/1 <culture from holotype>	|	type material	|
+3422553	|	CCAP:6083/1	|	CCAP:6083/1 <culture from holotype>	|	type material	|
+3422553	|	CCAP6083/1	|	CCAP6083/1 <culture from holotype>	|	type material	|
+3422553	|	Prasiolotta rindii Heesch, 2025	|		|	authority	|
+3422553	|	Prasiolotta rindii	|		|	scientific name	|
