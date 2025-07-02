@@ -14,8 +14,15 @@ Description: More about what it does (maybe more than one line).
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Suggests: 
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: 
-    checkmate
+Imports:
+    checkmate,
+    devtools,
+    dplyr,
+    readr,
+    rlang,
+    stringr,
+    taxonomizr,
+    yaml

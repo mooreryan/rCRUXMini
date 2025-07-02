@@ -20,6 +20,8 @@ if (!(num_args %in% c(1, 2))) {
 }
 
 if (num_args == 2) {
+  # TODO: switch this out to not use devtools so we don't have to make users
+  # install it
   devtools::load_all(cli_args[[2]], quiet = TRUE)
 } else {
   library(rCRUXMini, quietly = TRUE)
