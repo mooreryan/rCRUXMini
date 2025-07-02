@@ -1,0 +1,9 @@
+# This is an example config file for the small test DB.
+# Be sure to change the values to something that makes sense.
+
+forward_primers: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC"
+reverse_primers: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
+output_directory_path: "rCRUXMini_output"
+blast_db_path: "./tests/testthat/data/small_test_db/generated_sequences"
+taxonomy_db_path: "./tests/testthat/data/small_test_db/taxonomy.db"
+random_seed: 243708

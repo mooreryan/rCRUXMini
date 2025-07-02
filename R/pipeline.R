@@ -159,7 +159,7 @@ find_plausible_amplicons <- function(
   checkmate::assert_int(maximum_mismatches, lower = 0)
 
   filtered_primer_blast_results <- primer_blast_results |>
-    filter(.data$mismatch <= maximum_mismatches)
+    dplyr::filter(.data$mismatch <= maximum_mismatches)
 
   # Separate forward and reverse hits
   forward_hits <- filtered_primer_blast_results |>
@@ -340,6 +340,13 @@ run <- function(
   taxonomy_db_path,
   random_seed
 ) {
+  print(forward_primers)
+  print(reverse_primers)
+  print(output_directory_path)
+  print(blast_db_path)
+  print(taxonomy_db_path)
+  print(random_seed)
+
   set.seed(random_seed)
 
   if (!dir.exists(output_directory_path)) {
@@ -386,10 +393,11 @@ run <- function(
     maximum_mismatches = 4
   )
 
+  # TODO: take these options from the config
   plausible_amplicons <- find_plausible_amplicons(
     primer_blast_results,
-    minimum_length = 10,
-    maximum_length = 100000,
+    minimum_length = 150,
+    maximum_length = 650,
     maximum_mismatches = 4
   )
 
@@ -418,4 +426,23 @@ run <- function(
   )
 
   saveRDS(result, file.path(output_directory_path, "pipeline_results.rds"))
+
+  readr::write_tsv(
+    x = primer_blast_results,
+    file = file.path(output_directory_path, "primer_blast_results.tsv")
+  )
+  readr::write_tsv(
+    x = plausible_amplicons_with_taxonomy,
+    file = file.path(
+      output_directory_path,
+      "plausible_amplicons_with_taxonomy.tsv"
+    )
+  )
+  readr::write_tsv(
+    x = plausible_amplicons_distinct_taxonomic_ranks,
+    file = file.path(
+      output_directory_path,
+      "plausible_amplicons_distinct_taxonomic_ranks.tsv"
+    )
+  )
 }
