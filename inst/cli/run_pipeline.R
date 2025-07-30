@@ -34,4 +34,4 @@ print(config)
 
 # Capture the result here.  This prevents prenting NULL to the console when
 # calling Rscript.
-result <- do.call(what = run, args = config)
+result <- do.call(what = get_seeds, args = config)

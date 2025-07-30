@@ -1,4 +1,7 @@
 .DS_Store
 ^.*\.Rproj$
+^.Rhistory$
 ^LICENSE\.md$
 ^\.Rproj\.user$
+^_
+^.zed$

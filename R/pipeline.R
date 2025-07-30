@@ -3,6 +3,8 @@
 # TODO: grepl to str_detect?
 # TODO: I think I will need a run ID to make it easier to hook parts into the
 #       multidb pipeline
+# TODO: Use drop = FALSE for all data frame slicing
+# TODO: Original get_seeds_local has an unfiltered output and a primers chosen
 
 to_fasta_string <- function(id, sequences) {
   id <- ifelse(id == "", "seq", id)
@@ -332,7 +334,10 @@ distinct_taxonomic_ranks <- function(df) {
   result
 }
 
-run <- function(
+# Search the primers against the given database to identify plausible amplicons.
+# These will be used later in the `blast_seeds` step, or will need to be
+# collated if the user wants to run the search in parallel across multiple DBs.
+get_seeds <- function(
   forward_primers,
   reverse_primers,
   output_directory_path,
@@ -416,8 +421,6 @@ run <- function(
   plausible_amplicons_distinct_taxonomic_ranks <- distinct_taxonomic_ranks(
     plausible_amplicons_with_taxonomy
   )
-
-  # TODO: count distinct ranks
 
   result <- list(
     primer_blast_results = primer_blast_results,

@@ -1,4 +1,5 @@
 library(testthat)
+library(checkmate)
 library(dplyr)
 library(readr)
 
@@ -1091,18 +1092,21 @@ test_that("distinct_taxonomic_ranks works with minimal required data", {
 })
 
 ##############################################################################
-# run ########################################################################
+# get_seeds ##################################################################
 ##############################################################################
 
-test_that("run", {
+test_that("get_seeds", {
   expect_snapshot <- expect_snapshot_file_factory(
     "aa03fc3b-585b-4bb5-8cc9-0fda30bfc3ba"
   )
 
   output_directory_path_top <- tempfile()
-  output_directory_path <- file.path(output_directory_path_top, "v2-run-out")
+  output_directory_path <- file.path(
+    output_directory_path_top,
+    "v2-get_seeds-out"
+  )
 
-  result <- run(
+  result <- get_seeds(
     forward_primers = c(
       "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
       "NN"
