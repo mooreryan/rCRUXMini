@@ -76,6 +76,7 @@ read_file <- function(file_name) {
   result
 }
 
+# Create standardized object/class for output rather than list???
 run_command <- function(command, args = character(), timeout = 0) {
   checkmate::assert_string(command)
   checkmate::assert(
