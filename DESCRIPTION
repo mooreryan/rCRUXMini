@@ -27,3 +27,5 @@ Imports:
     stringr,
     taxonomizr,
     yaml
+Depends: 
+    R (>= 3.5)

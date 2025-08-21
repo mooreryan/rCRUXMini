@@ -3,5 +3,5 @@
 ^.Rhistory$
 ^LICENSE\.md$
 ^\.Rproj\.user$
-^_
+^_.*
 ^.zed$

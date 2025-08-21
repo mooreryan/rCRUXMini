@@ -227,6 +227,7 @@ find_plausible_amplicons <- function(
     # shouldn't we select the best?
     dplyr::distinct(.data$accession, .keep_all = TRUE)
 
+  # TODO: switch to assert data frame
   checkmate::assert_names(
     names(amplicons),
     must.include = c(
@@ -339,18 +340,21 @@ distinct_taxonomic_ranks <- function(df) {
 # collated if the user wants to run the search in parallel across multiple DBs.
 # TODO: rename to something like "identify_plausible_amplicons" or something
 #       like that.
+# TODO: need to take the arguments for the primer blast
 get_seeds <- function(
   forward_primers,
   reverse_primers,
   output_directory_path,
-  blast_db_path,
+  blast_db_paths,
   taxonomy_db_path,
-  random_seed
+  random_seed,
+  ncbi_bin_directory = NULL
 ) {
+  # TODO: checkmate arguments
   print(forward_primers)
   print(reverse_primers)
   print(output_directory_path)
-  print(blast_db_path)
+  print(blast_db_paths)
   print(taxonomy_db_path)
   print(random_seed)
 
@@ -389,15 +393,16 @@ get_seeds <- function(
     append = TRUE
   )
 
-  # TODO: Should check this exit code
-  run_primer_blast(
+  # TODO: Should this can throw, so it should be run in a rlang::try_fetch
+  primer_blast_data <- run_primer_blast(
+    blastn_executable = sys_which("blastn", directory = ncbi_bin_directory),
     query_path = primers_fasta_path,
-    target_path = blast_db_path,
+    db_paths = blast_db_paths,
     output_path = primer_blast_output_path
   )
 
   primer_blast_results <- parse_primer_blast_results(
-    primer_blast_output_path,
+    primer_blast_data,
     maximum_mismatches = 4
   )
 
@@ -409,7 +414,9 @@ get_seeds <- function(
     maximum_mismatches = 4
   )
 
-  # TODO: handle if there are no plausible amplicons
+  # TODO: gracefully handle if there are no plausible amplicons.
+  #       This throws the assertion error, which isn't very nice for the user.
+  checkmate::assert_data_frame(plausible_amplicons, min.rows = 1)
 
   plausible_amplicons_with_taxonomy <- accession_to_taxonomy(
     plausible_amplicons,
@@ -451,6 +458,8 @@ get_seeds <- function(
       "plausible_amplicons_distinct_taxonomic_ranks.tsv"
     )
   )
+
+  # TODO: need to validate all these values
 }
 
 #################################
@@ -516,6 +525,7 @@ blast_seeds <- function(
   blast_db_path,
   taxonomy_db_path
 ) {
+  # TODO: switch to the assert data frame probably
   checkmate::assert_names(
     names(plausible_amplicons_with_taxonomy),
     must.include = c(
@@ -569,6 +579,7 @@ blast_seeds <- function(
 
   query_sequence_path <- "TODO"
 
+  # This is for constructing the query file
   makeblastdb_result <- run_command(
     command = "makeblastdb",
     args = c(
