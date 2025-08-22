@@ -274,10 +274,10 @@ test_that("parse_primer_blast_results given valid input maintains expected colum
 
 
 ##############################################################################
-# find_plausible_amplicons ###################################################
+# find_plausible_amplicon_coordinates ###################################################
 ##############################################################################
 
-test_that("find_plausible_amplicons validates input parameters correctly", {
+test_that("find_plausible_amplicon_coordinates validates input parameters correctly", {
   # Create minimal valid data frame
   valid_data <- data.frame(
     qseqid = c("forward_1", "reverse_1"),
@@ -291,7 +291,7 @@ test_that("find_plausible_amplicons validates input parameters correctly", {
 
   # Test invalid data frame structure
   expect_error(
-    find_plausible_amplicons(
+    find_plausible_amplicon_coordinates(
       data.frame(),
       minimum_length = 50,
       maximum_length = 500
@@ -301,7 +301,7 @@ test_that("find_plausible_amplicons validates input parameters correctly", {
 
   # Test missing required columns
   expect_error(
-    find_plausible_amplicons(
+    find_plausible_amplicon_coordinates(
       valid_data[, -1], # remove qseqid column
       minimum_length = 50,
       maximum_length = 500
@@ -311,7 +311,7 @@ test_that("find_plausible_amplicons validates input parameters correctly", {
 
   # # Test invalid length parameters
   expect_error(
-    find_plausible_amplicons(
+    find_plausible_amplicon_coordinates(
       valid_data,
       minimum_length = 0, # should be >= 1
       maximum_length = 500
@@ -320,7 +320,7 @@ test_that("find_plausible_amplicons validates input parameters correctly", {
   )
 
   expect_error(
-    find_plausible_amplicons(
+    find_plausible_amplicon_coordinates(
       valid_data,
       # min is > max
       minimum_length = 500,
@@ -330,7 +330,7 @@ test_that("find_plausible_amplicons validates input parameters correctly", {
   )
 })
 
-test_that("find_plausible_amplicons calculates product length correctly for standard orientation", {
+test_that("find_plausible_amplicon_coordinates calculates product length correctly for standard orientation", {
   # Arrange: Forward primer before reverse primer
   # F ---------->                        <------------ R   Primers
   # ====================================================== DNA Target
@@ -347,7 +347,7 @@ test_that("find_plausible_amplicons calculates product length correctly for stan
   expected_length <- 100
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -359,7 +359,7 @@ test_that("find_plausible_amplicons calculates product length correctly for stan
   expect_equal(result$accession, "ACC001")
 })
 
-test_that("find_plausible_amplicons calculates product length correctly for reverse orientation", {
+test_that("find_plausible_amplicon_coordinates calculates product length correctly for reverse orientation", {
   # Arrange: Reverse primer before forward primer
   # R ---------->                        <------------ F   Primers
   # ====================================================== DNA Target
@@ -376,7 +376,7 @@ test_that("find_plausible_amplicons calculates product length correctly for reve
   expected_length <- 100
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -387,7 +387,7 @@ test_that("find_plausible_amplicons calculates product length correctly for reve
   expect_equal(result$product_length, expected_length)
 })
 
-test_that("find_plausible_amplicons filters amplicons by length correctly", {
+test_that("find_plausible_amplicon_coordinates filters amplicons by length correctly", {
   # Arrange: Create amplicons of different lengths
   input_data <- data.frame(
     qseqid = c(
@@ -405,7 +405,7 @@ test_that("find_plausible_amplicons filters amplicons by length correctly", {
   )
 
   # Act: Set length filter to exclude the 300bp amplicon
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 299 # Should exclude ACC002
@@ -417,7 +417,7 @@ test_that("find_plausible_amplicons filters amplicons by length correctly", {
   expect_equal(result$product_length, 100)
 
   # Act: Set length filter to exclude the 100bp amplicon
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     # Should exclude ACC002
     minimum_length = 101,
@@ -430,7 +430,7 @@ test_that("find_plausible_amplicons filters amplicons by length correctly", {
   expect_equal(result$product_length, 300)
 })
 
-test_that("find_plausible_amplicons selects best primer combinations per accession", {
+test_that("find_plausible_amplicon_coordinates selects best primer combinations per accession", {
   # Arrange: Multiple forward and reverse hits for same accession
   input_data <- data.frame(
     qseqid = c(
@@ -451,7 +451,7 @@ test_that("find_plausible_amplicons selects best primer combinations per accessi
   )
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -463,7 +463,7 @@ test_that("find_plausible_amplicons selects best primer combinations per accessi
   expect_true(result$product_length == 150)
 })
 
-test_that("find_plausible_amplicons returns empty result when no valid amplicons found", {
+test_that("find_plausible_amplicon_coordinates returns empty result when no valid amplicons found", {
   # Arrange: Primers that don't meet length criteria
   input_data <- data.frame(
     qseqid = c("primer_forward", "primer_reverse"),
@@ -476,7 +476,7 @@ test_that("find_plausible_amplicons returns empty result when no valid amplicons
   )
 
   # Act: Set minimum length higher than possible amplicon
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -486,7 +486,7 @@ test_that("find_plausible_amplicons returns empty result when no valid amplicons
   expect_equal(nrow(result), 0)
 })
 
-test_that("find_plausible_amplicons overlapping primers in the correct orientation and size yield plausible amplicons", {
+test_that("find_plausible_amplicon_coordinates overlapping primers in the correct orientation and size yield plausible amplicons", {
   # Arrange
   input_data <- data.frame(
     qseqid = c("primer_forward", "primer_reverse"),
@@ -499,7 +499,7 @@ test_that("find_plausible_amplicons overlapping primers in the correct orientati
   )
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -509,7 +509,7 @@ test_that("find_plausible_amplicons overlapping primers in the correct orientati
   expect_equal(nrow(result), 1)
 })
 
-test_that("find_plausible_amplicons handles multiple accessions correctly", {
+test_that("find_plausible_amplicon_coordinates handles multiple accessions correctly", {
   # Arrange: Multiple accessions with valid amplicons and some with no amplicons
   input_data <- data.frame(
     qseqid = c(
@@ -533,7 +533,7 @@ test_that("find_plausible_amplicons handles multiple accessions correctly", {
   )
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -545,7 +545,7 @@ test_that("find_plausible_amplicons handles multiple accessions correctly", {
   expect_equal(result$product_length, c(100, 100))
 })
 
-test_that("find_plausible_amplicons has required columns in output", {
+test_that("find_plausible_amplicon_coordinates has required columns in output", {
   # Arrange
   input_data <- data.frame(
     qseqid = c("primer_forward", "primer_reverse"),
@@ -570,7 +570,7 @@ test_that("find_plausible_amplicons has required columns in output", {
   )
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -583,7 +583,7 @@ test_that("find_plausible_amplicons has required columns in output", {
   expect_equal(result$staxids, "12345")
 })
 
-test_that("find_plausible_amplicons handles missing forward or reverse primers", {
+test_that("find_plausible_amplicon_coordinates handles missing forward or reverse primers", {
   # Arrange: Only forward primers, no reverse
   input_data <- data.frame(
     qseqid = c("primer_forward", "primer_forward"),
@@ -596,7 +596,7 @@ test_that("find_plausible_amplicons handles missing forward or reverse primers",
   )
 
   # Act
-  result <- find_plausible_amplicons(
+  result <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500
@@ -607,7 +607,7 @@ test_that("find_plausible_amplicons handles missing forward or reverse primers",
   expect_equal(nrow(result), 0)
 })
 
-test_that("find_plausible_amplicons respects maximum_mismatches parameter", {
+test_that("find_plausible_amplicon_coordinates respects maximum_mismatches parameter", {
   # Arrange
   input_data <- data.frame(
     qseqid = c("primer_forward", "primer_reverse"),
@@ -620,14 +620,14 @@ test_that("find_plausible_amplicons respects maximum_mismatches parameter", {
   )
 
   # Act with different maximum_mismatches values
-  result_strict <- find_plausible_amplicons(
+  result_strict <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500,
     maximum_mismatches = 2 # Should exclude data
   )
 
-  result_permissive <- find_plausible_amplicons(
+  result_permissive <- find_plausible_amplicon_coordinates(
     input_data,
     minimum_length = 50,
     maximum_length = 500,

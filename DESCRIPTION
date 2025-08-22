@@ -27,5 +27,7 @@ Imports:
     stringr,
     taxonomizr,
     yaml
-Depends: 
+Remotes:
+    mooreryan/SnailBLAST
+Depends:
     R (>= 3.5)

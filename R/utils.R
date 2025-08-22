@@ -133,3 +133,16 @@ run_command <- function(command, args = character(), timeout = 0) {
 
   result
 }
+
+to_fasta_string <- function(id, sequences) {
+  id <- ifelse(id == "", "seq", id)
+
+  strings <- lapply(
+    seq_along(sequences),
+    function(i) {
+      stringr::str_glue(">{id}_{i}\n{sequences[[i]]}")
+    }
+  )
+
+  paste(strings, collapse = "\n")
+}
