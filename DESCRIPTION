@@ -21,9 +21,12 @@ Imports:
     checkmate,
     devtools,
     dplyr,
+    furrr,
     processx,
+    purrr,
     readr,
     rlang,
+    slider,
     stringr,
     taxonomizr,
     yaml

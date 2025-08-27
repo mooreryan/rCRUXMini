@@ -1,5 +1,6 @@
 linters: linters_with_defaults(
   object_length_linter = NULL,
-  line_length_linter = NULL
+  line_length_linter = NULL,
+  commented_code_linter = NULL
   )
 encoding: "UTF-8"
