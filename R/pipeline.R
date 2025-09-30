@@ -1,3 +1,13 @@
+#' Run the rCRUXMini pipeline
+#'
+#' @param forward_primers A character vector of forward primers.
+#' @param reverse_primers A character vector of reverse primers.
+#' @param output_directory_path A string representing the output directory path.
+#' @param blast_db_paths A character vector of BLAST database paths.
+#' @param taxonomy_db_path A string representing the taxonomy database path.
+#' @param query_chunk_count An integer representing the query chunk count.
+#' @param ncbi_bin_directory A string representing the NCBI binary directory path.
+#' @return A list containing the pipeline results.
 pipeline <- function(
   forward_primers,
   reverse_primers,
@@ -7,12 +17,13 @@ pipeline <- function(
   query_chunk_count = 1,
   ncbi_bin_directory = NULL
 ) {
-  # TODO: checkmate arguments
-  print(forward_primers)
-  print(reverse_primers)
-  print(output_directory_path)
-  print(blast_db_paths)
-  print(taxonomy_db_path)
+  checkmate::assert_character(forward_primers, min.len = 1, min.chars = 1)
+  checkmate::assert_character(reverse_primers, min.len = 1, min.chars = 1)
+  checkmate::assert_string(output_directory_path, min.chars = 1)
+  checkmate::assert_character(blast_db_paths, min.len = 1, min.chars = 1)
+  checkmate::assert_string(taxonomy_db_path, min.chars = 1)
+  checkmate::assert_count(query_chunk_count, positive = TRUE)
+  checkmate::assert_string(ncbi_bin_directory, min.chars = 1, null.ok = TRUE)
 
   if (!dir.exists(output_directory_path)) {
     dir.create(
