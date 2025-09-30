@@ -138,10 +138,20 @@ pipeline <- function(
   amplicon_data |> readr::write_tsv(file = amplicon_data_tsv_path)
 
   # TODO: create FASTA files from amplicon data
-  amplicon_query_fasta_paths <- .write_pieces_to_tempfiles(
+  # TODO: this is spitting out multiple TSV files....how tf are these working with the snailblast?
+  #
+
+  checkmate::assert_names(
+    names(amplicon_data),
+    # TODO: would be nice to always use accession version for everything
+    must.include = c("accession", "sequence")
+  )
+
+  amplicon_query_fasta_paths <- .write_pieces_to_tempfastas(
     amplicon_data,
     chunks = query_chunk_count,
-    delim = "\t"
+    id_column = "accession",
+    sequence_column = "sequence"
   )
 
   # TODO: would be nice to include the blast_db_path in the output here. That
@@ -149,6 +159,7 @@ pipeline <- function(
   amplicon_blast_result <- SnailBLAST::crawl(
     "blastn",
     blast_executable_directory = ncbi_bin_directory,
+    # TODO: make sure these are FASTA files
     query_paths = amplicon_query_fasta_paths,
     db_paths = blast_db_paths,
     # These are the outfmt specifiers from the original rCRUX
@@ -307,6 +318,7 @@ run_primer_blast <- function(
   SnailBLAST::crawl(
     "blastn",
     blast_executable_directory = ncbi_bin_directory,
+    # TODO: make sure these are fasta files
     query_paths = query_paths,
     db_paths = blast_db_paths,
     # These are the original rCRUX specifiers TODO i think this needs to be adjusted

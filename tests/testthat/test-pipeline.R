@@ -24,5 +24,8 @@ test_that("pipeline works", {
     wildcards = "NNNNNNNNNNNN"
   )
 
-  browser()
+  # This is for a human readable preview
+  expect_snapshot(result)
+  # And this is the full data structure
+  expect_snapshot_value(result, style = "serialize")
 })

@@ -148,6 +148,28 @@ to_fasta_string <- function(id, sequences) {
   paste(strings, collapse = "\n")
 }
 
+write_fasta <- function(
+  df,
+  to_filename,
+  id_column,
+  sequence_column
+) {
+  checkmate::assert_data_frame(df)
+  checkmate::assert_names(
+    names(df),
+    must.include = c(id_column, sequence_column)
+  )
+
+  fasta_lines <- df |>
+    dplyr::mutate(
+      header = paste0(">", .data[[id_column]]),
+      entry = paste(.data$header, .data[[sequence_column]], sep = "\n")
+    ) |>
+    dplyr::pull(.data$entry)
+
+  writeLines(fasta_lines, to_filename)
+}
+
 abort_rcrux_mini_error <- function(message, ...) {
   rlang::abort(message = message, class = "rcrux_mini_error", ...)
 }

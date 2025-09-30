@@ -88,6 +88,7 @@ pull_amplicons <- function(
     permutation.of = c(
       "index",
       "blast_ordinal_id",
+      # TODO: need to be more specific with this accession name (version? subject?)
       "accession",
       "sequence_hash_value",
       "sequence",
@@ -181,6 +182,25 @@ pull_amplicons <- function(
   filename
 }
 
+.write_to_tempfasta <- function(.df, id_column, sequence_column) {
+  checkmate::assert_data_frame(.df)
+  checkmate::assert_names(
+    names(.df),
+    must.include = c(id_column, sequence_column)
+  )
+
+  filename <- tempfile()
+
+  .df |>
+    write_fasta(
+      to_filename = filename,
+      id_column = id_column,
+      sequence_column = sequence_column
+    )
+
+  filename
+}
+
 .write_pieces_to_tempfiles <- function(.data_frame, chunks, delim) {
   print(".data_frame")
   print(.data_frame)
@@ -194,6 +214,33 @@ pull_amplicons <- function(
     .f = function(df_chunk) {
       # If any of these fail, then the whole map will fail
       .write_to_tempfile(data_frame = df_chunk, delim = delim)
+    }
+  )
+}
+
+.write_pieces_to_tempfastas <- function(
+  .df,
+  chunks,
+  id_column,
+  sequence_column
+) {
+  checkmate::assert_data_frame(.df, min.rows = 1)
+  checkmate::assert_count(chunks, positive = TRUE)
+  checkmate::assert_data_frame(.df)
+  checkmate::assert_names(
+    names(.df),
+    must.include = c(id_column, sequence_column)
+  )
+
+  purrr::map_chr(
+    .x = .chunk_data_frame(.df, chunks),
+    .f = function(df_chunk) {
+      # If any of these fail, then the whole map will fail
+      .write_to_tempfasta(
+        .df = df_chunk,
+        id_column = id_column,
+        sequence_column = sequence_column
+      )
     }
   )
 }
