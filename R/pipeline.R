@@ -5,8 +5,7 @@ pipeline <- function(
   blast_db_paths,
   taxonomy_db_path,
   query_chunk_count = 1,
-  ncbi_bin_directory = NULL,
-  wildcards = "TODO"
+  ncbi_bin_directory = NULL
 ) {
   # TODO: checkmate arguments
   print(forward_primers)

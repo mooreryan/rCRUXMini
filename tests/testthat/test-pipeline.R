@@ -19,9 +19,7 @@ test_that("pipeline works", {
       "taxonomy.db"
     ),
     query_chunk_count = 1,
-    ncbi_bin_directory = NULL,
-    # TODO: this needs to change to the run length (see find_amplicons)
-    wildcards = "NNNNNNNNNNNN"
+    ncbi_bin_directory = NULL
   )
 
   # This is for a human readable preview
