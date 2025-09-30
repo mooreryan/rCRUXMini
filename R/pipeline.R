@@ -42,20 +42,16 @@ pipeline <- function(
     "primers.fasta"
   )
 
+  # TODO: unused
   primer_blast_output_path <- file.path(
     output_directory_path,
     "primer_blast.tsv"
   )
 
-  write(
-    x = to_fasta_string("forward", enumerated_forward_primers),
-    file = primers_fasta_path,
-    append = FALSE
-  )
-  write(
-    x = to_fasta_string("reverse", enumerated_reverse_primers),
-    file = primers_fasta_path,
-    append = TRUE
+  .write_primers(
+    forward = enumerated_forward_primers,
+    reverse = enumerated_reverse_primers,
+    to_file = primers_fasta_path
   )
 
   primer_blast_data <- run_primer_blast(
@@ -1078,4 +1074,18 @@ write_plausible_amplicon_sequences2 <- function(
 #' If `path` refers to a directory this will fail.
 test_file_non_empty <- function(path) {
   checkmate::test_file_exists(path) && file.size(path) > 0
+}
+
+
+.write_primers <- function(forward, reverse, to_file) {
+  write(
+    x = to_fasta_string("forward", forward),
+    file = to_file,
+    append = FALSE
+  )
+  write(
+    x = to_fasta_string("reverse", reverse),
+    file = to_file,
+    append = TRUE
+  )
 }
