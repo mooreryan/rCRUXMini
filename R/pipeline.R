@@ -14,6 +14,7 @@ pipeline <- function(
   output_directory_path,
   blast_db_paths,
   taxonomy_db_path,
+  primer_blast_params,
   query_chunk_count = 1,
   ncbi_bin_directory = NULL
 ) {
@@ -24,6 +25,10 @@ pipeline <- function(
   checkmate::assert_string(taxonomy_db_path, min.chars = 1)
   checkmate::assert_count(query_chunk_count, positive = TRUE)
   checkmate::assert_string(ncbi_bin_directory, min.chars = 1, null.ok = TRUE)
+
+  # From here on, we assume that the primer_blast_params was created properly
+  # and has the required keys/names.
+  checkmate::assert_class(primer_blast_params, "primer_blast_params")
 
   if (!dir.exists(output_directory_path)) {
     dir.create(
@@ -54,31 +59,68 @@ pipeline <- function(
     to_file = primers_fasta_path
   )
 
-  primer_blast_data <- run_primer_blast(
-    ncbi_bin_directory = ncbi_bin_directory,
+  extra_blast_arguments <- primer_blast_params |>
+    primer_blast_params_to_cli_args()
+
+  primer_blast_data <- SnailBLAST::crawl(
+    "blastn",
+    blast_executable_directory = ncbi_bin_directory,
+    # TODO: make sure these are fasta files
     query_paths = primers_fasta_path,
-    blast_db_paths = blast_db_paths,
-    extra_blast_arguments = c(
-      "-task",
-      "blastn-short",
-      "-num_threads",
-      "1",
-      "-word_size",
-      "7",
-      "-evalue",
-      "3e7",
-      "-num_alignments",
-      "10000000",
-      "-qcov_hsp_perc",
-      "90",
-      "-perc_identity",
-      "50",
-      "-reward",
-      "2"
-    )
+    db_paths = blast_db_paths,
+    # These are the original rCRUX specifiers TODO i think this needs to be adjusted
+    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
+    extra_blast_arguments = extra_blast_arguments,
+    job_failed_callback = function(
+      query_path,
+      db_path,
+      exit_status,
+      command,
+      args,
+      stderr
+    ) {
+      message(paste(
+        "Job failed for query",
+        query_path,
+        "and database",
+        db_path,
+        "with exit status",
+        exit_status,
+        "and command",
+        command,
+        "and arguments",
+        args,
+        "and stderr",
+        stderr
+      ))
+    },
+    parse_failed_callback = function(
+      query_path,
+      db_path,
+      error_condition,
+      command,
+      args,
+      stderr
+    ) {
+      message(paste(
+        "Parsing output for query",
+        query_path,
+        "and database",
+        db_path,
+        "with error condition",
+        error_condition,
+        "and command",
+        command,
+        "and arguments",
+        args,
+        "and stderr",
+        stderr
+      ))
+    }
   )
 
-  if (nrow(primer_blast_data) == 0) {
+  # TODO: shutdown gracefully
+  if (nrow(primer_blast_data |> print()) == 0) {
     abort_rcrux_mini_error("there were no hits in the primer blast data TODO")
   }
 
@@ -296,43 +338,6 @@ pipeline <- function(
 
   result
 }
-
-run_primer_blast <- function(
-  ncbi_bin_directory,
-  query_paths,
-  blast_db_paths,
-  # TODO: nicer handling of these args
-  extra_blast_arguments = c(
-    "-task",
-    "blastn-short",
-    "-num_threads",
-    "1",
-    "-word_size",
-    "7",
-    "-evalue",
-    "3e7",
-    "-num_alignments",
-    "10000000",
-    "-qcov_hsp_perc",
-    "90",
-    "-perc_identity",
-    "50",
-    "-reward",
-    "2"
-  )
-) {
-  SnailBLAST::crawl(
-    "blastn",
-    blast_executable_directory = ncbi_bin_directory,
-    # TODO: make sure these are fasta files
-    query_paths = query_paths,
-    db_paths = blast_db_paths,
-    # These are the original rCRUX specifiers TODO i think this needs to be adjusted
-    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
-    extra_blast_arguments = extra_blast_arguments
-  )
-}
-
 
 # NOTE: You may have duplicate accessions in this output, IF they have different
 # coordinates.

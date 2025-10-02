@@ -1,4 +1,3 @@
-
 # rCRUXMini
 
 <!-- badges: start -->
@@ -10,7 +9,7 @@ The goal of rCRUXMini is to ...
 
 You can install the development version of rCRUXMini from [GitHub](https://github.com/) with:
 
-``` r
+```r
 # install.packages("pak")
 pak::pak("mooreryan/rCRUXMini")
 ```
@@ -19,7 +18,7 @@ pak::pak("mooreryan/rCRUXMini")
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```r
 library(rCRUXMini)
 ## basic example code
 ```
@@ -36,4 +35,8 @@ I need to separate out the functions as well so users can run them seperately if
 
 ### Assertion Errors
 
-Keep in mind that pretty much all functions may throw a `checkmateError` which signals that an assertion has failed. Ideally these should never be caught, so if you want to be super thorough, you could include a clause specifically for that error in you `try_fetch`/`tryCatch` calls, and rethrow those specific conditions.  The reason is because `checkmateError` itself is a sublcass of `error`, which regretably means that catching the `error` condition will also catch assertion errors, and this is almost certainly _not_ what you inteded to do.
+Keep in mind that pretty much all functions may throw a `checkmateError` which signals that an assertion has failed. Ideally these should never be caught, so if you want to be super thorough, you could include a clause specifically for that error in you `try_fetch`/`tryCatch` calls, and rethrow those specific conditions. The reason is because `checkmateError` itself is a sublcass of `error`, which regretably means that catching the `error` condition will also catch assertion errors, and this is almost certainly _not_ what you inteded to do.
+
+---
+
+We need to manually exclude non-R files because lintr in Zed will try to lint non-R files.
