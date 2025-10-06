@@ -63,8 +63,13 @@ pipeline <- function(
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
     outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
-    extra_blast_arguments = primer_blast_params_to_cli_args(primer_blast_params)
+    extra_blast_arguments = primer_blast_params_to_cli_args(
+      primer_blast_params
+    ),
+    use_long_names_in_parsed_result = FALSE
   )
+
+  # TODO: checkmate the names of the output
 
   primer_blast_data |>
     readr::write_tsv(file.path(
@@ -150,22 +155,16 @@ pipeline <- function(
     sequence_column = "sequence"
   )
 
-  # TODO: would be nice to include the blast_db_path in the output here. That
-  # way we can report it in the outputs.
-  amplicon_blast_result <- SnailBLAST::crawl(
-    "blastn",
+  amplicon_blast_result <- .run_blastn(
     blast_executable_directory = ncbi_bin_directory,
-    # TODO: make sure these are FASTA files
     query_paths = amplicon_query_fasta_paths,
     db_paths = blast_db_paths,
     # These are the outfmt specifiers from the original rCRUX
     #
     # TODO: why these? why not the usual + taxids?
     outfmt_specifiers = "qacc saccver pident length evalue slen sstart send sseq staxids",
-    use_long_names_in_parsed_result = TRUE,
-    # TODO: config!
-    extra_blast_arguments = c("-num_threads", "1")
-    # TODO: callbacks, blast args, etc
+    extra_blast_arguments = c("-num_threads", "1"),
+    use_long_names_in_parsed_result = TRUE
   )
 
   # TODO: include the blast ordinal ID in the blast results, it will make it
@@ -1046,7 +1045,8 @@ test_file_non_empty <- function(path) {
 
 
 # TODO: actual logging for failures and such
-
+# TODO: would be nice to include the blast_db_path in the output here.
+#
 #' Wrapper for \code{SnailBLAST::crawl} to run \code{blastn} that specifies
 #' standard rCRUX error handlers.
 #'
@@ -1055,7 +1055,8 @@ test_file_non_empty <- function(path) {
   query_paths,
   db_paths,
   outfmt_specifiers,
-  extra_blast_arguments
+  extra_blast_arguments,
+  use_long_names_in_parsed_result
 ) {
   SnailBLAST::crawl(
     "blastn",
@@ -1065,6 +1066,7 @@ test_file_non_empty <- function(path) {
     # These are the original rCRUX specifiers TODO i think this needs to be adjusted
     outfmt_specifiers = outfmt_specifiers,
     extra_blast_arguments = extra_blast_arguments,
+    use_long_names_in_parsed_result = use_long_names_in_parsed_result,
     job_failed_callback = function(
       query_path,
       db_path,
