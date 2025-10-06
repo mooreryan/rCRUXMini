@@ -47,12 +47,6 @@ pipeline <- function(
     "primers.fasta"
   )
 
-  # TODO: unused
-  primer_blast_output_path <- file.path(
-    output_directory_path,
-    "primer_blast.tsv"
-  )
-
   .write_primers(
     forward = enumerated_forward_primers,
     reverse = enumerated_reverse_primers,
@@ -118,6 +112,12 @@ pipeline <- function(
       ))
     }
   )
+
+  primer_blast_data |>
+    readr::write_tsv(file.path(
+      output_directory_path,
+      "primer_blast.tsv"
+    ))
 
   # TODO: shutdown gracefully
   if (nrow(primer_blast_data |> print()) == 0) {

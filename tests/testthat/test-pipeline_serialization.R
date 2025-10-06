@@ -1,3 +1,8 @@
+# This is essentially the same as test-pipeline, except that it writes the fully
+# serialized value. The reason it is not in the regular test, is that the
+# serialized output makes the snapshot diffing too tedious. So do _not_ change
+# this test very often!
+
 test_that("pipeline works", {
   tmpdir_top <- tempdir()
 
@@ -23,8 +28,6 @@ test_that("pipeline works", {
     primer_blast_params = new_primer_blast_params()
   )
 
-  system2("ls", output_directory_path, stdout = TRUE) |>
-    expect_snapshot()
-
-  expect_snapshot(result)
+  # And this is the full data structure
+  expect_snapshot_value(result, style = "serialize")
 })
