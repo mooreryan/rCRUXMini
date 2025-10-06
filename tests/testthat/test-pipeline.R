@@ -26,5 +26,28 @@ test_that("pipeline works", {
   system2("ls", output_directory_path, stdout = TRUE) |>
     expect_snapshot()
 
+  output_files <- stringr::str_glue("{output_directory_path}/*") |>
+    Sys.glob() |>
+    purrr::discard(function(file) {
+      stringr::str_ends(file, pattern = ".rds")
+    })
+
+  output_files_basenames <- output_files |> purrr::map(basename)
+
+  output_data_files <- output_files |>
+    purrr::set_names(output_files_basenames) |>
+    purrr::map(function(file) {
+      file |>
+        readr::read_lines(n_max = 10) |>
+        purrr::map(function(line) {
+          preview <- line |> stringr::str_sub(start = 1, end = 70)
+          stringr::str_glue(
+            "{preview}..."
+          )
+        })
+    })
+
+  expect_snapshot(output_data_files)
+
   expect_snapshot(result)
 })

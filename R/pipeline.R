@@ -1,3 +1,6 @@
+# TODO: the names of the output files need fixing
+# TODO: I don't think I actually need all the output files anymore
+
 #' Run the rCRUXMini pipeline
 #'
 #' @param forward_primers A character vector of forward primers.
@@ -59,7 +62,6 @@ pipeline <- function(
   primer_blast_data <- SnailBLAST::crawl(
     "blastn",
     blast_executable_directory = ncbi_bin_directory,
-    # TODO: make sure these are fasta files
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
     # These are the original rCRUX specifiers TODO i think this needs to be adjusted
@@ -124,7 +126,6 @@ pipeline <- function(
     abort_rcrux_mini_error("there were no hits in the primer blast data TODO")
   }
 
-  # TODO: this should be parsed_primer_blast_data or something like that
   primer_blast_results <- parse_primer_blast_results(
     primer_blast_data,
     maximum_mismatches = 4
