@@ -188,16 +188,13 @@ pipeline <- function(
   )
 
   if (nrow(amplicon_blast_result) == 0) {
-    # Found no hits
-    abort_rcrux_mini_error("TODO")
+    abort_rcrux_mini_error("No hits found in the amplicon blast result")
   }
 
   # TODO take these from the config
-  minimum_length <- 1
-  maximum_length <- 500
   parsed_amplicon_blast_result <- parse_amplicon_blast_results(
     amplicon_blast_result = amplicon_blast_result,
-    # TODO: take this from config
+    # TODO: pretty sure this isn't used anymore
     ambiguous_run_limit = 5,
     blastdbcmd = blastdbcmd,
     blast_db_paths = blast_db_paths,
@@ -212,12 +209,14 @@ pipeline <- function(
       problem_long_ambiguous_runs = .check_for_long_ambiguous_runs(
         aligned_sequences = .data$degapped_subject_aligned_sequence,
         # TODO take this from config
+        # TODO: this is also used in parse result file?
         ambiguous_run_limit = 5
       ),
       problem_bad_degapped_alignment_length = purrr::map_lgl(
         .x = .data$degapped_alignment_length,
         .f = function(len) {
-          len < minimum_length || len > maximum_length
+          len < plausible_amplicons_params$minimum_length ||
+            len > plausible_amplicons_params$maximum_length
         }
       ),
       has_any_problem = .data$problem_missing_taxonomy |
