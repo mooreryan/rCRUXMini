@@ -264,9 +264,7 @@ pipeline <- function(
       sequence_column = "degapped_subject_aligned_sequence"
     )
 
-  # TODO: take the summary.csv data, and pick just the taxonomy info, write that to a taxonomy file
-  #
-  # TODO: Count distinct taxonomic ranks again on the taxonomy info (rank counts
+  #  Count distinct taxonomic ranks again on the taxonomy info (rank counts
   # -- this is also done in the primer blasting step) (Need to ask Seanie about
   # this one: Since subjects can be present multiple times, their taxonomy lines
   # appear multiple times, so I probably want to count the distinct taxanomic
@@ -274,7 +272,6 @@ pipeline <- function(
   # needs to be in the identity calculation is that the same subject ID could
   # theoretically be present in multiple different DBs, and those DBs could have
   # a different taxonomy for each of them.)
-
   parsed_amplicon_blast_result_distinct_taxonomic_ranks <- distinct_taxonomic_ranks2(
     parsed_amplicon_blast_result,
     id_column = "subject_accession_version"
@@ -334,9 +331,6 @@ pipeline <- function(
       output_directory_path,
       "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"
     ))
-
-  # TODO: need to validate all these values
-  #
 
   result
 }
