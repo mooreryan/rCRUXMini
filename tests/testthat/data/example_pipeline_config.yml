@@ -1,4 +1,4 @@
-primer_blast_params:
+primer_blast:
   evalue: 3e7
   num_alignments: 10000000
   num_threads: 1
@@ -7,3 +7,8 @@ primer_blast_params:
   reward: 2
   task: "blastn-short"
   word_size: 7
+
+plausible_amplicons:
+  minimum_length: 150
+  maximum_length: 650
+  maximum_mismatches: 4

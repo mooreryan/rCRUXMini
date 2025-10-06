@@ -170,6 +170,8 @@ write_fasta <- function(
   writeLines(fasta_lines, to_filename)
 }
 
+# TODO: I want to wrap all the checkmate errors in an rcrux_mini_assertion_error
+# or something like that so it is easier for the user to catch the errors.
 abort_rcrux_mini_error <- function(message, ...) {
   rlang::abort(message = message, class = "rcrux_mini_error", ...)
 }

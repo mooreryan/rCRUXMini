@@ -12,3 +12,6 @@ install: check
 
 review_snaps:
     Rscript --vanilla -e 'testthat::snapshot_review()'
+
+accept_snaps:
+    Rscript --vanilla -e 'testthat::snapshot_accept()'

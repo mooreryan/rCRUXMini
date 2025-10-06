@@ -7,6 +7,9 @@ read_config_file <- function(config_file) {
 #'
 process_config <- function(config) {
   # Validate primer blast parameters if they are provided and set defaults
-  config$primer_blast_params <-
-    config$primer_blast_params |> new_primer_blast_params()
+  config$primer_blast <- new_primer_blast_params(config$primer_blast)
+
+  config$plausible_amplicons <- new_plausible_amplicons_params(
+    config$plausible_amplicons
+  )
 }

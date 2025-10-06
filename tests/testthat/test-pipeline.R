@@ -20,7 +20,8 @@ test_that("pipeline works", {
     ),
     query_chunk_count = 1,
     ncbi_bin_directory = NULL,
-    primer_blast_params = new_primer_blast_params()
+    primer_blast_params = new_primer_blast_params(),
+    plausible_amplicons_params = new_plausible_amplicons_params()
   )
 
   system2("ls", output_directory_path, stdout = TRUE) |>

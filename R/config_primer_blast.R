@@ -5,6 +5,10 @@ new_primer_blast_params <- function(params = NULL) {
     structure(class = "primer_blast_params")
 }
 
+assert_primer_blast_params <- function(object) {
+  checkmate::assert_class(object, "primer_blast_params")
+}
+
 # This assumes that the names are the same that the BLAST program CLI expects.
 primer_blast_params_to_cli_args <- function(primer_blast_params) {
   assert_primer_blast_params(primer_blast_params)
@@ -27,10 +31,6 @@ primer_blast_params_to_cli_args <- function(primer_blast_params) {
     purrr::list_c()
 }
 
-assert_primer_blast_params <- function(object) {
-  checkmate::assert_class(object, "primer_blast_params")
-}
-
 .validate_primer_blast_params <- function(params = NULL) {
   checkmate::assert_list(
     params,
@@ -45,6 +45,7 @@ assert_primer_blast_params <- function(object) {
 
   checkmate::assert_names(
     names(params),
+    # The user doesn't have to include all of these, or any of them
     subset.of = c(
       "evalue",
       "num_alignments",

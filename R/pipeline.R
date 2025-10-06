@@ -18,6 +18,7 @@ pipeline <- function(
   blast_db_paths,
   taxonomy_db_path,
   primer_blast_params,
+  plausible_amplicons_params,
   query_chunk_count = 1,
   ncbi_bin_directory = NULL
 ) {
@@ -29,9 +30,10 @@ pipeline <- function(
   checkmate::assert_count(query_chunk_count, positive = TRUE)
   checkmate::assert_string(ncbi_bin_directory, min.chars = 1, null.ok = TRUE)
 
-  # From here on, we assume that the primer_blast_params was created properly
+  # From here on, we assume that the params was created properly
   # and has the required keys/names.
-  checkmate::assert_class(primer_blast_params, "primer_blast_params")
+  assert_primer_blast_params(primer_blast_params)
+  assert_plausible_amplicons_params(plausible_amplicons_params)
 
   if (!dir.exists(output_directory_path)) {
     dir.create(
@@ -56,63 +58,12 @@ pipeline <- function(
     to_file = primers_fasta_path
   )
 
-  extra_blast_arguments <- primer_blast_params |>
-    primer_blast_params_to_cli_args()
-
-  primer_blast_data <- SnailBLAST::crawl(
-    "blastn",
+  primer_blast_data <- .run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
-    # These are the original rCRUX specifiers TODO i think this needs to be adjusted
     outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
-    extra_blast_arguments = extra_blast_arguments,
-    job_failed_callback = function(
-      query_path,
-      db_path,
-      exit_status,
-      command,
-      args,
-      stderr
-    ) {
-      message(paste(
-        "Job failed for query",
-        query_path,
-        "and database",
-        db_path,
-        "with exit status",
-        exit_status,
-        "and command",
-        command,
-        "and arguments",
-        args,
-        "and stderr",
-        stderr
-      ))
-    },
-    parse_failed_callback = function(
-      query_path,
-      db_path,
-      error_condition,
-      command,
-      args,
-      stderr
-    ) {
-      message(paste(
-        "Parsing output for query",
-        query_path,
-        "and database",
-        db_path,
-        "with error condition",
-        error_condition,
-        "and command",
-        command,
-        "and arguments",
-        args,
-        "and stderr",
-        stderr
-      ))
-    }
+    extra_blast_arguments = primer_blast_params_to_cli_args(primer_blast_params)
   )
 
   primer_blast_data |>
@@ -123,7 +74,7 @@ pipeline <- function(
 
   # TODO: shutdown gracefully
   if (nrow(primer_blast_data |> print()) == 0) {
-    abort_rcrux_mini_error("there were no hits in the primer blast data TODO")
+    abort_rcrux_mini_error("No hits found in the primer blast data")
   }
 
   primer_blast_results <- parse_primer_blast_results(
@@ -131,18 +82,19 @@ pipeline <- function(
     maximum_mismatches = 4
   )
 
-  # TODO: take these options from the config
   plausible_amplicons_coordinates <- find_plausible_amplicon_coordinates(
     primer_blast_results,
-    # TODO: these options need to be passed in to the function
-    minimum_length = 150,
-    maximum_length = 650,
-    maximum_mismatches = 4
+    minimum_length = plausible_amplicons_params$minimum_length,
+    maximum_length = plausible_amplicons_params$maximum_length,
+    maximum_mismatches = plausible_amplicons_params$maximum_mismatches
   )
 
   # TODO: gracefully handle if there are no plausible amplicons.
   #       This throws the assertion error, which isn't very nice for the user.
-  checkmate::assert_data_frame(plausible_amplicons_coordinates, min.rows = 1)
+  checkmate::assert_data_frame(plausible_amplicons_coordinates)
+  if (nrow(plausible_amplicons_coordinates) == 0) {
+    abort_rcrux_mini_error("No plausible amplicons found")
+  }
 
   # TODO: this data frame has a completely different naming scheme than all the ones that I made later in time. These are a lot of the old rCRUX names and they no longer match up with the other stuff
   plausible_amplicons_coordinates_with_taxonomy <- accession_to_taxonomy(
@@ -179,16 +131,11 @@ pipeline <- function(
     )
   }
 
-  # TODO: write amplicon data to TSV
   amplicon_data_tsv_path <- file.path(
     output_directory_path,
     "amplicon_data.tsv"
   )
   amplicon_data |> readr::write_tsv(file = amplicon_data_tsv_path)
-
-  # TODO: create FASTA files from amplicon data
-  # TODO: this is spitting out multiple TSV files....how tf are these working with the snailblast?
-  #
 
   checkmate::assert_names(
     names(amplicon_data),
@@ -216,6 +163,7 @@ pipeline <- function(
     # TODO: why these? why not the usual + taxids?
     outfmt_specifiers = "qacc saccver pident length evalue slen sstart send sseq staxids",
     use_long_names_in_parsed_result = TRUE,
+    # TODO: config!
     extra_blast_arguments = c("-num_threads", "1")
     # TODO: callbacks, blast args, etc
   )
@@ -1093,5 +1041,75 @@ test_file_non_empty <- function(path) {
     x = to_fasta_string("reverse", reverse),
     file = to_file,
     append = TRUE
+  )
+}
+
+
+# TODO: actual logging for failures and such
+
+#' Wrapper for \code{SnailBLAST::crawl} to run \code{blastn} that specifies
+#' standard rCRUX error handlers.
+#'
+.run_blastn <- function(
+  blast_executable_directory,
+  query_paths,
+  db_paths,
+  outfmt_specifiers,
+  extra_blast_arguments
+) {
+  SnailBLAST::crawl(
+    "blastn",
+    blast_executable_directory = blast_executable_directory,
+    query_paths = query_paths,
+    db_paths = db_paths,
+    # These are the original rCRUX specifiers TODO i think this needs to be adjusted
+    outfmt_specifiers = outfmt_specifiers,
+    extra_blast_arguments = extra_blast_arguments,
+    job_failed_callback = function(
+      query_path,
+      db_path,
+      exit_status,
+      command,
+      args,
+      stderr
+    ) {
+      message(paste(
+        "Job failed for query",
+        query_path,
+        "and database",
+        db_path,
+        "with exit status",
+        exit_status,
+        "and command",
+        command,
+        "and arguments",
+        args,
+        "and stderr",
+        stderr
+      ))
+    },
+    parse_failed_callback = function(
+      query_path,
+      db_path,
+      error_condition,
+      command,
+      args,
+      stderr
+    ) {
+      message(paste(
+        "Parsing output for query",
+        query_path,
+        "and database",
+        db_path,
+        "with error condition",
+        error_condition,
+        "and command",
+        command,
+        "and arguments",
+        args,
+        "and stderr",
+        stderr
+      ))
+    }
   )
 }
