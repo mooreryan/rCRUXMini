@@ -64,21 +64,6 @@ parse_amplicon_blast_results <- function(
   # - add diagnostic info to all of these: maybe a problems column? or maybe a function that detects problems?
   #
 
-  # tmp <- .split_by_ambiguous_sequences(
-  #   amplicon_blast_result,
-  #   ambiguous_run_limit = ambiguous_run_limit
-  # )
-  # if (nrow(tmp$ok) == 0) {
-  #   abort_rcrux_mini_error(
-  #     "There were no sequences remaining after filtering for ambiguous bases"
-  #   )
-  # }
-
-  # amplicon_blast_result <- tmp$ok
-
-  # # TODO: need to write these to a file or something
-  # hits_with_too_many_ambiguous_bases <- tmp$ambiguous
-
   # NOTE: either of these may have 0 rows, which is not an error
   tmp <- .split_by_multiple_unique_subject_taxonomy_ids(amplicon_blast_result)
   hits_with_single_taxonomy_id <- tmp$single
