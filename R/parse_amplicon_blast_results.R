@@ -10,7 +10,6 @@
 #' behavior that matches the original rCRUX.
 parse_amplicon_blast_results <- function(
   amplicon_blast_result,
-  ambiguous_run_limit,
   # We need this to "expand" the multi tax ID hits
   blastdbcmd,
   blast_db_paths,

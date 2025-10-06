@@ -194,8 +194,6 @@ pipeline <- function(
   # TODO take these from the config
   parsed_amplicon_blast_result <- parse_amplicon_blast_results(
     amplicon_blast_result = amplicon_blast_result,
-    # TODO: pretty sure this isn't used anymore
-    ambiguous_run_limit = 5,
     blastdbcmd = blastdbcmd,
     blast_db_paths = blast_db_paths,
     taxonomy_db_path = taxonomy_db_path
