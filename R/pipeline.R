@@ -208,7 +208,7 @@ pipeline <- function(
         aligned_sequences = .data$degapped_subject_aligned_sequence,
         # TODO take this from config
         # TODO: this is also used in parse result file?
-        ambiguous_run_limit = 5
+        ambiguous_run_limit = plausible_amplicons_params$ambiguous_run_limit
       ),
       problem_bad_degapped_alignment_length = purrr::map_lgl(
         .x = .data$degapped_alignment_length,

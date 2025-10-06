@@ -12,3 +12,4 @@ plausible_amplicons:
   minimum_length: 150
   maximum_length: 650
   maximum_mismatches: 4
+  ambiguous_run_limit: 5

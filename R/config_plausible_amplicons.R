@@ -27,7 +27,8 @@ assert_plausible_amplicons_params <- function(object) {
     subset.of = c(
       "minimum_length",
       "maximum_length",
-      "maximum_mismatches"
+      "maximum_mismatches",
+      "ambiguous_run_limit"
     )
   )
 
@@ -53,6 +54,11 @@ assert_plausible_amplicons_params <- function(object) {
       checkmate::assert_count(positive = TRUE)
   }
 
+  if ("ambiguous_run_limit" %in% params_names) {
+    params$ambiguous_run_limit |>
+      checkmate::assert_count()
+  }
+
   # Cross-parameter validation: ensure minimum_length < maximum_length
   if (all(c("minimum_length", "maximum_length") %in% params_names)) {
     if (params$minimum_length >= params$maximum_length) {
@@ -76,7 +82,8 @@ assert_plausible_amplicons_params <- function(object) {
   defaults <- list(
     minimum_length = 150,
     maximum_length = 650,
-    maximum_mismatches = 4
+    maximum_mismatches = 4,
+    ambiguous_run_limit = 5
   )
 
   if (is.null(params)) {
