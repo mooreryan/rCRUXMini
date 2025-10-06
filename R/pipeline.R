@@ -78,7 +78,7 @@ pipeline <- function(
     ))
 
   # TODO: shutdown gracefully
-  if (nrow(primer_blast_data |> print()) == 0) {
+  if (nrow(primer_blast_data) == 0) {
     abort_rcrux_mini_error("No hits found in the primer blast data")
   }
 
@@ -317,8 +317,6 @@ parse_primer_blast_results <- function(
   )
 
   # TODO: column names assert
-
-  print(primer_blast_data)
 
   result <- primer_blast_data |>
     # TODO: pretty sure the original code was confused about whether it should
@@ -848,7 +846,6 @@ write_plausible_amplicon_sequences <- function(
   # provided it. so as long as the forward is to the left of the reverse its
   # probably fine?
 
-  print("ARSTOIEN")
   plausible_amplicons_coordinates_with_taxonomy |>
     # # Take only the columns that we need to construct the entry_batch file
     # dplyr::select("accession", "forward_start", "reverse_stop") |>
@@ -866,7 +863,6 @@ write_plausible_amplicon_sequences <- function(
         .data$reverse_stop
       )
     ) |>
-    print() |>
     dplyr::select("accession", "far_left_coordinate", "far_right_coordinate") |>
     # Original code uses forward_stop and reverse_stop, which I think is a bug.
     # Since that would exclude the forward primer and include the reverse. This
@@ -881,7 +877,6 @@ write_plausible_amplicon_sequences <- function(
     # This should already be all the columns that are left, but just to be
     # sure....
     dplyr::select("accession", "range") |>
-    print() |>
     readr::write_delim(
       file = blastdbcmd_entry_batch_path,
       delim = " ",
