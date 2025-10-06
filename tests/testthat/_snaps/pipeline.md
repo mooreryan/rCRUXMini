@@ -3,13 +3,17 @@
     Code
       system2("ls", output_directory_path, stdout = TRUE)
     Output
-      [1] "amplicon_data.tsv"                                           
-      [2] "pipeline_results.rds"                                        
-      [3] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
-      [4] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
-      [5] "primer_blast.tsv"                                            
-      [6] "primer_blast_results.tsv"                                    
-      [7] "primers.fasta"                                               
+       [1] "amplicon_data.tsv"                                           
+       [2] "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"   
+       [3] "parsed_amplicon_blast_result_taxonomy.tsv"                   
+       [4] "parsed_amplicon_blast_results.fasta"                         
+       [5] "parsed_amplicon_blast_results.tsv"                           
+       [6] "pipeline_results.rds"                                        
+       [7] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
+       [8] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
+       [9] "primer_blast.tsv"                                            
+      [10] "primer_blast_results.tsv"                                    
+      [11] "primers.fasta"                                               
 
 ---
 
@@ -46,6 +50,110 @@
       
       $amplicon_data.tsv[[10]]
       1	9	28	sequence_28	0X5E814903	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
+      
+      
+      $parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv
+      $parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv[[1]]
+      subject_accession_version	superkingdom	phylum	class	order	family	genus...
+      
+      $parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv[[2]]
+      61	1	4	4	4	10	21	52...
+      
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv
+      $parsed_amplicon_blast_result_taxonomy.tsv[[1]]
+      subject_accession_version	superkingdom	phylum	class	order	family	genus...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[2]]
+      sequence_10	NA	Ciliophora	Litostomatea	Vestibuliferida	Pycnotrichidae	...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[3]]
+      sequence_100	NA	NA	NA	NA	NA	NA	NA...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[4]]
+      sequence_11	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Stichococcacea...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[5]]
+      sequence_15	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Stichococcacea...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[6]]
+      sequence_16	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Stichococcacea...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[7]]
+      sequence_17	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Stichococcacea...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[8]]
+      sequence_18	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Prasiolaceae	P...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[9]]
+      sequence_19	NA	Ciliophora	Litostomatea	Vestibuliferida	Trimyemidae	Tri...
+      
+      $parsed_amplicon_blast_result_taxonomy.tsv[[10]]
+      sequence_2	NA	Chlorophyta	Trebouxiophyceae	Prasiolales	Stichococcaceae...
+      
+      
+      $parsed_amplicon_blast_results.fasta
+      $parsed_amplicon_blast_results.fasta[[1]]
+      >sequence_10...
+      
+      $parsed_amplicon_blast_results.fasta[[2]]
+      CGCAGTCCGCGCGTTGTGACGTTCCTATCCCAACACCAAGAGCTAGGAGTAATCGTCTTACAATCTTCCC...
+      
+      $parsed_amplicon_blast_results.fasta[[3]]
+      >sequence_100...
+      
+      $parsed_amplicon_blast_results.fasta[[4]]
+      TCGTACGGAGTCCTCTGCAGCCTCGCTGAGGTTCATGAACCTTTTTATTGTAGCTCGCTGGGTAAATACG...
+      
+      $parsed_amplicon_blast_results.fasta[[5]]
+      >sequence_11...
+      
+      $parsed_amplicon_blast_results.fasta[[6]]
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCTACGTTTAACCTACGCCATTGTT...
+      
+      $parsed_amplicon_blast_results.fasta[[7]]
+      >sequence_15...
+      
+      $parsed_amplicon_blast_results.fasta[[8]]
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCTCTAGACCTCAAGGTAGCGTTT...
+      
+      $parsed_amplicon_blast_results.fasta[[9]]
+      >sequence_16...
+      
+      $parsed_amplicon_blast_results.fasta[[10]]
+      TCTAGACCTCAAGGTAGCGTTTCAGTGGTGGGAAGACTCTTCGGATGGAGAATAAAATACCCTTTAGTGC...
+      
+      
+      $parsed_amplicon_blast_results.tsv
+      $parsed_amplicon_blast_results.tsv[[1]]
+      query_accession	subject_accession_version	percent_identical_matches	al...
+      
+      $parsed_amplicon_blast_results.tsv[[2]]
+      sequence_9	sequence_10	98.135	429	0	2690	2217	2645	CGCAGTCCGCGCGTTGTGA...
+      
+      $parsed_amplicon_blast_results.tsv[[3]]
+      sequence_99	sequence_100	98.343	362	0	4008	2380	2741	TCGTACGGAGTCCTCTG...
+      
+      $parsed_amplicon_blast_results.tsv[[4]]
+      sequence_11	sequence_11	100	320	8.059999999999999e-171	7763	5724	6043	...
+      
+      $parsed_amplicon_blast_results.tsv[[5]]
+      sequence_15	sequence_15	100	640	0	7334	6665	7304	AAAAAAAAAAAAAAAAAAAAA...
+      
+      $parsed_amplicon_blast_results.tsv[[6]]
+      sequence_15	sequence_16	98.718	546	0	7240	6666	7211	TCTAGACCTCAAGGTAGC...
+      
+      $parsed_amplicon_blast_results.tsv[[7]]
+      sequence_17	sequence_17	100	523	0	988	156	678	AAAAAAAAAAAAAAAAAAAAAAAA...
+      
+      $parsed_amplicon_blast_results.tsv[[8]]
+      sequence_18	sequence_18	100	507	0	2607	14	520	AAAAAAAAAAAAAAAAAAAAAAAA...
+      
+      $parsed_amplicon_blast_results.tsv[[9]]
+      sequence_18	sequence_19	97.816	412	0	2513	13	424	CCTTTCTATGTTATCAGGACG...
+      
+      $parsed_amplicon_blast_results.tsv[[10]]
+      sequence_2	sequence_2	100	319	2.89e-170	777	48	366	AAAAAAAAAAAAAAAAAAA...
       
       
       $plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv
@@ -257,5 +365,28 @@
       #   unique_subject_taxonomy_ids <chr>, degapped_subject_aligned_sequence <chr>,
       #   degapped_alignment_length <int>, taxonomy_id <int>, species <chr>,
       #   superkingdom <chr>, kingdom <chr>, phylum <chr>, subphylum <chr>, ...
+      
+      $parsed_amplicon_blast_result_distinct_taxonomic_ranks
+      # A tibble: 1 x 8
+        subject_accession_version superkingdom phylum class order family genus species
+                            <int>        <int>  <int> <int> <int>  <int> <int>   <int>
+      1                        61            1      4     4     4     10    21      52
+      
+      $parsed_amplicon_blast_result_taxonomy
+      # A tibble: 61 x 8
+         subject_accession_vers~1 superkingdom phylum class order family genus species
+         <chr>                    <chr>        <chr>  <chr> <chr> <chr>  <chr> <chr>  
+       1 sequence_10              <NA>         Cilio~ Lito~ Vest~ Pycno~ Muni~ Munizi~
+       2 sequence_100             <NA>         <NA>   <NA>  <NA>  <NA>   <NA>  <NA>   
+       3 sequence_11              <NA>         Chlor~ Treb~ Pras~ Stich~ Dipl~ Diplos~
+       4 sequence_15              <NA>         Chlor~ Treb~ Pras~ Stich~ Deut~ Deuter~
+       5 sequence_16              <NA>         Chlor~ Treb~ Pras~ Stich~ Dipl~ Diplos~
+       6 sequence_17              <NA>         Chlor~ Treb~ Pras~ Stich~ Dipl~ Diplos~
+       7 sequence_18              <NA>         Chlor~ Treb~ Pras~ Prasi~ Pras~ Prasio~
+       8 sequence_19              <NA>         Cilio~ Lito~ Vest~ Trimy~ Trim~ Trimye~
+       9 sequence_2               <NA>         Chlor~ Treb~ Pras~ Stich~ Prot~ <NA>   
+      10 sequence_21              <NA>         Cilio~ Lito~ Vest~ Trimy~ Trim~ Trimye~
+      # i 51 more rows
+      # i abbreviated name: 1: subject_accession_version
       
 

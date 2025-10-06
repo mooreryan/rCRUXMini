@@ -201,15 +201,14 @@ pipeline <- function(
     checkmate::assert_data_frame()
 
   parsed_amplicon_blast_result <- parsed_amplicon_blast_result |>
-    # TODO: should I pull this out into it's own function for testing? Should this be part of the parsing function?
+    # TODO: these should probably be set in the parse function above
     dplyr::mutate(
       problem_missing_taxonomy = .check_for_missing_taxonomy(.data$taxonomy_id),
       problem_long_ambiguous_runs = .check_for_long_ambiguous_runs(
         aligned_sequences = .data$degapped_subject_aligned_sequence,
-        # TODO take this from config
-        # TODO: this is also used in parse result file?
         ambiguous_run_limit = plausible_amplicons_params$ambiguous_run_limit
       ),
+      # TODO: this should probably be its own function
       problem_bad_degapped_alignment_length = purrr::map_lgl(
         .x = .data$degapped_alignment_length,
         .f = function(len) {
@@ -217,44 +216,96 @@ pipeline <- function(
             len > plausible_amplicons_params$maximum_length
         }
       ),
+      # Same with this one...
       has_any_problem = .data$problem_missing_taxonomy |
         .data$problem_long_ambiguous_runs |
         .data$problem_bad_degapped_alignment_length
     )
 
+  if (nrow(parsed_amplicon_blast_result) == 0) {
+    # TODO: informative error message
+    abort_rcrux_mini_error(
+      "No hits remained after parsing the amplicon blast"
+    )
+  }
+
   # TODO: it would be nice to have the amplicon location on the original query as well
   # TODO: need the DB path in this data as well
 
-  # TODO: now we need to actually deal with the problems
-
-  # if (nrow(parsed_amplicon_blast_result$hits_with_taxonomy) == 0) {
-  #   abort_rcrux_mini_error(
-  #     "We found absolutely ZERO hits in the amplicon BLAST that also had taxonomy information. Weird!"
-  #   )
-  # }
-
   # NOTE: At this point you can have duplicate query accessions, duplicate
   # target accessions, etc. This is because we are allowing searches against
-  # multiple databases, and those DBs may have overlaps. Not to mention the
-  # natural ability of amplicons to hit multiple targets, and targets to be hit
-  # by multiple amplicons. This is okay!
+  # multiple databases, and those DBs may have overlaps, which means that a
+  # subject sequence may be present in multiple DBs. Additionally, there is a
+  # natural ability of queries to hit multiple targets, and targets to be hit by
+  # multiple queries. Also tricky is that the subject sequences can have hits in
+  # multiple locations along the subject sequence. This is okay! However, it
+  # will make the counts different from the original rCRUX.
+  #
+  #
 
-  # TODO: write this TSV to summary.csv (START HERE!)
-  #
-  # TODO: write a FASTA file with the degapped sequences
-  #
+  # This is sort of like the old summary.csv file combined with some of the
+  # other diagnostic files that reported sequences/amplicons that had any
+  # problems.
+  parsed_amplicon_blast_result |>
+    readr::write_tsv(file.path(
+      output_directory_path,
+      "parsed_amplicon_blast_results.tsv"
+    ))
+
+  parsed_amplicon_blast_result |>
+    write_fasta(
+      to_filename = file.path(
+        output_directory_path,
+        "parsed_amplicon_blast_results.fasta"
+      ),
+      # Note that the _subject_ sequence represents the amplicon here, not the
+      # query
+      id_column = "subject_accession_version",
+      sequence_column = "degapped_subject_aligned_sequence"
+    )
+
   # TODO: take the summary.csv data, and pick just the taxonomy info, write that to a taxonomy file
   #
-  # TODO: Count distinct taxonomic ranks again on the taxonomy info (rank counts -- this is also done in the primer blasting step)
-  #
+  # TODO: Count distinct taxonomic ranks again on the taxonomy info (rank counts
+  # -- this is also done in the primer blasting step) (Need to ask Seanie about
+  # this one: Since subjects can be present multiple times, their taxonomy lines
+  # appear multiple times, so I probably want to count the distinct taxanomic
+  # groups after taking unique subject+taxonomy pairs. The reason the taxonomy
+  # needs to be in the identity calculation is that the same subject ID could
+  # theoretically be present in multiple different DBs, and those DBs could have
+  # a different taxonomy for each of them.)
 
-  # TODO: Do i even really want this?
+  parsed_amplicon_blast_result_distinct_taxonomic_ranks <- distinct_taxonomic_ranks2(
+    parsed_amplicon_blast_result,
+    id_column = "subject_accession_version"
+  )
+
+  parsed_amplicon_blast_result_taxonomy <- parsed_amplicon_blast_result |>
+    dplyr::select(c(
+      "subject_accession_version",
+      "superkingdom",
+      "phylum",
+      "class",
+      "order",
+      "family",
+      "genus",
+      "species"
+    )) |>
+    # See the previous notes for why we do distinct here...(multi DB...)
+    dplyr::distinct() |>
+    readr::write_tsv(file.path(
+      output_directory_path,
+      "parsed_amplicon_blast_result_taxonomy.tsv"
+    ))
+
   result <- list(
     primer_blast_results = primer_blast_results,
     plausible_amplicons_coordinates_with_taxonomy = plausible_amplicons_coordinates_with_taxonomy,
     plausible_amplicons_coordinates_distinct_taxonomic_ranks = plausible_amplicons_coordinates_distinct_taxonomic_ranks,
     amplicon_blast_result = amplicon_blast_result,
-    parsed_amplicon_blast_result = parsed_amplicon_blast_result
+    parsed_amplicon_blast_result = parsed_amplicon_blast_result,
+    parsed_amplicon_blast_result_distinct_taxonomic_ranks = parsed_amplicon_blast_result_distinct_taxonomic_ranks,
+    parsed_amplicon_blast_result_taxonomy = parsed_amplicon_blast_result_taxonomy
   )
 
   saveRDS(result, file.path(output_directory_path, "pipeline_results.rds"))
@@ -277,6 +328,12 @@ pipeline <- function(
       "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
     )
   )
+
+  parsed_amplicon_blast_result_distinct_taxonomic_ranks |>
+    readr::write_tsv(file.path(
+      output_directory_path,
+      "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"
+    ))
 
   # TODO: need to validate all these values
   #
@@ -803,6 +860,35 @@ distinct_taxonomic_ranks <- function(df) {
 
   result
 }
+
+distinct_taxonomic_ranks2 <- function(df, id_column) {
+  taxonomy_levels <- c(
+    "superkingdom",
+    "phylum",
+    "class",
+    "order",
+    "family",
+    "genus",
+    "species"
+  )
+
+  identity_columns <- c(id_column, taxonomy_levels)
+
+  checkmate::assert_data_frame(df, min.rows = 1)
+  checkmate::assert_names(names(df), must.include = identity_columns)
+
+  # TODO: This is not how the LCA script treats taxonomic ranks
+  result <- df |>
+    dplyr::summarise(dplyr::across(
+      dplyr::all_of(identity_columns),
+      .fns = dplyr::n_distinct
+    ))
+
+  checkmate::assert_names(names(result), must.include = identity_columns)
+
+  result
+}
+
 
 # TODO: not used....
 # NOTE: It is *possible* that you have duplicate accession-range pairs, if the
