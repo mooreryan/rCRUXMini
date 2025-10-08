@@ -2,6 +2,7 @@ new_primer_blast_params <- function(params = NULL) {
   params |>
     .validate_primer_blast_params() |>
     .apply_primer_blast_param_defaults() |>
+    # TODO: prefix class name with rcrux
     structure(class = "primer_blast_params")
 }
 
@@ -65,32 +66,48 @@ primer_blast_params_to_cli_args <- function(primer_blast_params) {
 
   params_names <- names(params)
 
+  # NOTE: the parsing is done _again_ because the yaml reader treats certain
+  # forms of scientific notation as characters, e.g., 3e7 will parse to "3e7"
+  # string.
+
   if ("evalue" %in% params_names) {
+    params$evalue <- .parse_numeric(params$evalue)
+
     params$evalue |>
       checkmate::assert_number(finite = TRUE)
   }
 
   if ("num_alignments" %in% params_names) {
+    params$num_alignments <- .parse_integer(params$num_alignments)
+
     params$num_alignments |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("num_threads" %in% params_names) {
+    params$num_threads <- .parse_integer(params$num_threads)
+
     params$num_threads |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("perc_identity" %in% params_names) {
+    params$perc_identity <- .parse_integer(params$perc_identity)
+
     params$perc_identity |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("qcov_hsp_perc" %in% params_names) {
+    params$perc_identity <- .parse_integer(params$perc_identity)
+
     params$qcov_hsp_perc |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("reward" %in% params_names) {
+    params$perc_identity <- .parse_integer(params$perc_identity)
+
     params$reward |>
       checkmate::assert_count(positive = TRUE)
   }
@@ -110,6 +127,8 @@ primer_blast_params_to_cli_args <- function(primer_blast_params) {
   }
 
   if ("word_size" %in% params_names) {
+    params$word_size <- .parse_integer(params$word_size)
+
     params$word_size |>
       checkmate::assert_count(positive = TRUE)
   }

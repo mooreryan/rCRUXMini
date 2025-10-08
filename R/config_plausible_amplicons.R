@@ -2,6 +2,7 @@ new_plausible_amplicons_params <- function(params = NULL) {
   params |>
     .validate_plausible_amplicons_params() |>
     .apply_plausible_amplicons_param_defaults() |>
+    # TODO: prefix class name with rcrux
     structure(class = "plausible_amplicons_params")
 }
 
@@ -39,22 +40,34 @@ assert_plausible_amplicons_params <- function(object) {
 
   params_names <- names(params)
 
+  # NOTE: the parsing is done _again_ because the yaml reader treats certain
+  # forms of scientific notation as characters, e.g., 3e7 will parse to "3e7"
+  # string.
+
   if ("minimum_length" %in% params_names) {
+    params$minimum_length <- .parse_integer(params$minimum_length)
+
     params$minimum_length |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("maximum_length" %in% params_names) {
+    params$maximum_length <- .parse_integer(params$maximum_length)
+
     params$maximum_length |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("maximum_mismatches" %in% params_names) {
+    params$maximum_mismatches <- .parse_integer(params$maximum_mismatches)
+
     params$maximum_mismatches |>
       checkmate::assert_count(positive = TRUE)
   }
 
   if ("ambiguous_run_limit" %in% params_names) {
+    params$ambiguous_run_limit <- .parse_integer(params$ambiguous_run_limit)
+
     params$ambiguous_run_limit |>
       checkmate::assert_count()
   }
