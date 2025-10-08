@@ -32,9 +32,8 @@ pipeline <- function(
   # From here on, we assume that the params was created properly
   # and has the required keys/names.
   assert_config_class(config)
-  # TODO: rename
-  primer_blast_params <- config$primer_blast
-  plausible_amplicons_params <- config$plausible_amplicons
+  primer_blast_config <- config$primer_blast
+  plausible_amplicons_config <- config$plausible_amplicons
 
   if (!dir.exists(output_directory_path)) {
     dir.create(
@@ -64,8 +63,8 @@ pipeline <- function(
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
     outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
-    extra_blast_arguments = primer_blast_params_to_cli_args(
-      primer_blast_params
+    extra_blast_arguments = primer_blast_config_to_cli_args(
+      primer_blast_config
     ),
     use_long_names_in_parsed_result = FALSE
   )
@@ -90,9 +89,9 @@ pipeline <- function(
 
   plausible_amplicons_coordinates <- find_plausible_amplicon_coordinates(
     primer_blast_results,
-    minimum_length = plausible_amplicons_params$minimum_length,
-    maximum_length = plausible_amplicons_params$maximum_length,
-    maximum_mismatches = plausible_amplicons_params$maximum_mismatches
+    minimum_length = plausible_amplicons_config$minimum_length,
+    maximum_length = plausible_amplicons_config$maximum_length,
+    maximum_mismatches = plausible_amplicons_config$maximum_mismatches
   )
 
   # TODO: gracefully handle if there are no plausible amplicons.
@@ -207,14 +206,14 @@ pipeline <- function(
       problem_missing_taxonomy = .check_for_missing_taxonomy(.data$taxonomy_id),
       problem_long_ambiguous_runs = .check_for_long_ambiguous_runs(
         aligned_sequences = .data$degapped_subject_aligned_sequence,
-        ambiguous_run_limit = plausible_amplicons_params$ambiguous_run_limit
+        ambiguous_run_limit = plausible_amplicons_config$ambiguous_run_limit
       ),
       # TODO: this should probably be its own function
       problem_bad_degapped_alignment_length = purrr::map_lgl(
         .x = .data$degapped_alignment_length,
         .f = function(len) {
-          len < plausible_amplicons_params$minimum_length ||
-            len > plausible_amplicons_params$maximum_length
+          len < plausible_amplicons_config$minimum_length ||
+            len > plausible_amplicons_config$maximum_length
         }
       ),
       # Same with this one...

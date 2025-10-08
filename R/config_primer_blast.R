@@ -46,12 +46,12 @@ assert_primer_blast_params <- function(object) {
 }
 
 # This assumes that the names are the same that the BLAST program CLI expects.
-primer_blast_params_to_cli_args <- function(primer_blast_params) {
-  assert_primer_blast_params(primer_blast_params)
+primer_blast_config_to_cli_args <- function(primer_blast_config) {
+  assert_primer_blast_params(primer_blast_config)
 
-  param_names <- names(primer_blast_params)
+  param_names <- names(primer_blast_config)
 
-  seq_along(primer_blast_params) |>
+  seq_along(primer_blast_config) |>
     purrr::map(function(i) {
       # Formats the name the way the blast CLI arg should be
       param_name <- stringr::str_glue("-{name}", name = param_names[[i]])
@@ -61,7 +61,7 @@ primer_blast_params_to_cli_args <- function(primer_blast_params) {
       # [1] "1e+07"
       # > format(10000000, scientific=FALSE)
       # [1] "10000000"
-      param_value <- format(primer_blast_params[[i]], scientific = FALSE)
+      param_value <- format(primer_blast_config[[i]], scientific = FALSE)
       c(param_name, param_value)
     }) |>
     purrr::list_c()
