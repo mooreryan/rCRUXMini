@@ -11,7 +11,7 @@ test_that("pipeline works", {
 
   config <- new_config(test_path(
     "data",
-    "default_pipeline_config.yml"
+    "example_pipeline_config.yml"
   ))
 
   result <- pipeline(

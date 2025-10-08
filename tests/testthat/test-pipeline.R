@@ -1,7 +1,7 @@
 describe("the pipeline", {
-  default_config_file <- test_path(
+  config_file <- test_path(
     "data",
-    "default_pipeline_config.yml"
+    "example_pipeline_config.yml"
   )
 
   it("works", {
@@ -10,7 +10,7 @@ describe("the pipeline", {
     output_directory_path <- file.path(tmpdir_top, "rcrux_output")
     on.exit(unlink(output_directory_path, recursive = TRUE), add = TRUE)
 
-    config <- new_config(default_config_file)
+    config <- new_config(config_file)
 
     result <- pipeline(
       forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",

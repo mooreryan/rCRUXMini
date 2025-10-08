@@ -1,5 +1,7 @@
 # TODO: the names of the output files need fixing
 # TODO: I don't think I actually need all the output files anymore
+#
+# START HERE: take the rest of the params from the config
 
 #' Run the rCRUXMini pipeline
 #'

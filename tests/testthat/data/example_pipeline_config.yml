@@ -1,0 +1,23 @@
+forward_primers: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC"
+reverse_primers: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
+output_directoy: "/path/to/rcrux_output"
+blast_db_paths: "/path/to/blast_db"
+taxonomy_db_path: "/path/to/taxonomy.db"
+query_chunk_count: 1
+ncbi_bin_directory: "/path/to/ncbi_bin"
+
+primer_blast:
+  evalue: 3e7
+  num_alignments: 10000000
+  num_threads: 1
+  perc_identity: 50
+  qcov_hsp_perc: 90
+  reward: 2
+  task: "blastn-short"
+  word_size: 7
+
+plausible_amplicons:
+  minimum_length: 150
+  maximum_length: 650
+  maximum_mismatches: 4
+  ambiguous_run_limit: 5

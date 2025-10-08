@@ -6,9 +6,9 @@ describe("creating a new config object from a YAML file", {
     tmp
   }
 
-  default_pipeline_config_file <- test_path(
+  example_pipeline_config_file <- test_path(
     "data",
-    "default_pipeline_config.yml"
+    "example_pipeline_config.yml"
   )
 
   expect_default_params <- function(config) {
@@ -30,7 +30,7 @@ describe("creating a new config object from a YAML file", {
   }
 
   it("reads and parses a valid config file", {
-    config <- new_config(default_pipeline_config_file)
+    config <- new_config(example_pipeline_config_file)
 
     expect_s3_class(config, "rcrux_config")
     expect_s3_class(config$primer_blast, "rcrux_primer_blast_config")
@@ -44,7 +44,7 @@ describe("creating a new config object from a YAML file", {
   })
 
   it("correctly parses parameters", {
-    config <- new_config(default_pipeline_config_file)
+    config <- new_config(example_pipeline_config_file)
     expect_default_params(config)
   })
 
