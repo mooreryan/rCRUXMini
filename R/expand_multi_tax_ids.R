@@ -53,10 +53,9 @@ expand_multi_tax_ids <- function(
         ),
         # TODO: need to check for the rcrux_error instead
         error = function(condition) {
-          rlang::warn("something bad happend in .pull_sequences_from_blast_db")
-          print(condition)
           # TODO: log this error
           #
+          rlang::warn("something bad happend in .pull_sequences_from_blast_db")
 
           empty_tibble_from_col_spec(.todo_column_specification) |>
             tibble::rowid_to_column("index")
@@ -174,10 +173,7 @@ expand_multi_tax_ids <- function(
     # If something was "skipped" or not found it will be something like
     # `Error: [blastdbcmd] Skipped ACCESSION`.
     no_true_errors <- stringr::str_split_1(result$stderr, pattern = "\r?\n") |>
-      print() |>
       purrr::map(.f = function(stderr_line) {
-        print("stderr_line")
-        print(stderr_line)
         # If the line is empty or it matches the "skipped" then it's okay
         stderr_line == "" ||
           stringr::str_detect(
@@ -188,7 +184,6 @@ expand_multi_tax_ids <- function(
             )
           )
       }) |>
-      print() |>
       all()
 
     if (!no_true_errors) {

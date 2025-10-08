@@ -231,9 +231,8 @@ run_command <- function(command, args, ...) {
       )
     },
     system_command_status_error = function(condition) {
-      # TODO
-      print("condition")
-      print(condition)
+      # TODO: need to log errors
+
       abort_rcrux_mini_error(
         message = stringr::str_glue("Command '{command}' failed'"),
         parent = condition

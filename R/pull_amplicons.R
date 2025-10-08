@@ -25,12 +25,7 @@ pull_amplicons <- function(
   blast_db_paths,
   ncbi_bin_directory = NULL
 ) {
-  print("amplicon_coordinates")
-  print(amplicon_coordinates)
   entry_batch_data <- .prepare_blastdbcmd_entry_batch_data(amplicon_coordinates)
-
-  print("entry_batch_data")
-  print(entry_batch_data)
 
   entry_batch_paths <- .write_pieces_to_tempfiles(
     entry_batch_data,
@@ -59,7 +54,7 @@ pull_amplicons <- function(
         # TODO: need to check for the rcrux_error instead
         error = function(condition) {
           rlang::warn("something bad happend in .pull_sequences_from_blast_db")
-          print(condition)
+
           # TODO: log this error
 
           # TODO: this type is connected to the read_delim call in
@@ -202,9 +197,6 @@ pull_amplicons <- function(
 }
 
 .write_pieces_to_tempfiles <- function(.data_frame, chunks, delim) {
-  print(".data_frame")
-  print(.data_frame)
-  print(dim(.data_frame))
   checkmate::assert_data_frame(.data_frame, min.rows = 1)
   checkmate::assert_count(chunks, positive = TRUE)
   checkmate::assert_string(delim, min.chars = 1)
@@ -313,11 +305,10 @@ pull_amplicons <- function(
     # errors. You need to check if there were actually critical errors or not.
     # If something was "skipped" or not found it will be something like
     # `Error: [blastdbcmd] Skipped ACCESSION`.
+    #
+    # TODO: this no_true_errors thing needs to be pulled out and tested
     no_true_errors <- stringr::str_split_1(result$stderr, pattern = "\r?\n") |>
-      print() |>
       purrr::map_lgl(.f = function(stderr_line) {
-        print("stderr_line")
-        print(stderr_line)
         # If the line is empty or it matches the "skipped" then it's okay
         a <- stderr_line == ""
         b <- stringr::str_detect(
@@ -330,7 +321,6 @@ pull_amplicons <- function(
         # TODO: inline these again
         a || b
       }) |>
-      print() |>
       all()
 
     if (!no_true_errors) {
