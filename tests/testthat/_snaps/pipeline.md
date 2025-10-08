@@ -1,4 +1,4 @@
-# pipeline works
+# the pipeline: works
 
     Code
       system2("ls", output_directory_path, stdout = TRUE)
