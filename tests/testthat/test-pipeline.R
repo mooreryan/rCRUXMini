@@ -1,9 +1,16 @@
 describe("the pipeline", {
+  default_config_file <- test_path(
+    "data",
+    "default_pipeline_config.yml"
+  )
+
   it("works", {
     tmpdir_top <- tempdir()
 
     output_directory_path <- file.path(tmpdir_top, "rcrux_output")
     on.exit(unlink(output_directory_path, recursive = TRUE), add = TRUE)
+
+    config <- new_config(default_config_file)
 
     result <- pipeline(
       forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
@@ -21,8 +28,7 @@ describe("the pipeline", {
       ),
       query_chunk_count = 1,
       ncbi_bin_directory = NULL,
-      primer_blast_params = new_primer_blast_params(),
-      plausible_amplicons_params = new_plausible_amplicons_params()
+      config = config
     )
 
     system2("ls", output_directory_path, stdout = TRUE) |>

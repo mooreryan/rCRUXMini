@@ -32,7 +32,12 @@ describe("creating a new config object from a YAML file", {
   it("reads and parses a valid config file", {
     config <- new_config(default_pipeline_config_file)
 
-    expect_s3_class(config, "rcrux_pipeline_config")
+    expect_s3_class(config, "rcrux_config")
+    expect_s3_class(config$primer_blast, "rcrux_primer_blast_config")
+    expect_s3_class(
+      config$plausible_amplicons,
+      "rcrux_plausible_amplicons_config"
+    )
     expect_type(config, "list")
     expect_true("primer_blast" %in% names(config))
     expect_true("plausible_amplicons" %in% names(config))

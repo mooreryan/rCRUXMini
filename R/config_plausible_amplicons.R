@@ -1,13 +1,45 @@
-new_plausible_amplicons_params <- function(params = NULL) {
+#' Create a new plausible amplicons configuration object
+#'
+#' Constructs a validated configuration object for plausible amplicon filtering.
+#' User-provided parameters are validated and merged with sensible defaults.
+#'
+#' @param params A named list of plausible amplicon parameters, or NULL. Valid parameter
+#'   names include:
+#'   \describe{
+#'     \item{minimum_length}{Minimum amplicon length in base pairs (positive integer). Default: 150}
+#'     \item{maximum_length}{Maximum amplicon length in base pairs (positive integer). Default: 650}
+#'     \item{maximum_mismatches}{Maximum number of mismatches allowed (positive integer). Default: 4}
+#'     \item{ambiguous_run_limit}{Maximum consecutive ambiguous bases allowed (non-negative integer). Default: 5}
+#'   }
+#'   Note: minimum_length must be less than maximum_length.
+#'
+#' @return An object of class "rcrux_plausible_amplicons_config" containing the
+#'   validated and complete set of plausible amplicon parameters.
+#'
+#' @examples
+#' # Use all defaults
+#' config <- new_plausible_amplicons_config()
+#'
+#' # Override specific parameters
+#' config <- new_plausible_amplicons_config(params = list(
+#'   minimum_length = 200,
+#'   maximum_length = 500,
+#'   maximum_mismatches = 2
+#' ))
+#'
+new_plausible_amplicons_config <- function(params = NULL) {
   params |>
     .validate_plausible_amplicons_params() |>
     .apply_plausible_amplicons_param_defaults() |>
-    # TODO: prefix class name with rcrux
-    structure(class = "plausible_amplicons_params")
+    structure(class = .plausible_amplicon_config_class_name())
 }
 
 assert_plausible_amplicons_params <- function(object) {
-  checkmate::assert_class(object, "plausible_amplicons_params")
+  checkmate::assert_class(object, .plausible_amplicon_config_class_name())
+}
+
+.plausible_amplicon_config_class_name <- function() {
+  "rcrux_plausible_amplicons_config"
 }
 
 .validate_plausible_amplicons_params <- function(params = NULL) {

@@ -2,7 +2,11 @@ new_config <- function(config_file) {
   config_file |>
     .read_config_file() |>
     .validate_config_and_apply_default_params() |>
-    structure(class = "rcrux_pipeline_config")
+    structure(class = "rcrux_config")
+}
+
+assert_config_class <- function(config) {
+  checkmate::assert_class(config, "rcrux_config")
 }
 
 .read_config_file <- function(config_file) {
@@ -18,9 +22,9 @@ new_config <- function(config_file) {
 #'
 .validate_config_and_apply_default_params <- function(config) {
   # Validate primer blast parameters if they are provided and set defaults
-  config$primer_blast <- new_primer_blast_params(config$primer_blast)
+  config$primer_blast <- new_primer_blast_config(config$primer_blast)
 
-  config$plausible_amplicons <- new_plausible_amplicons_params(
+  config$plausible_amplicons <- new_plausible_amplicons_config(
     config$plausible_amplicons
   )
 

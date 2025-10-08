@@ -17,8 +17,7 @@ pipeline <- function(
   output_directory_path,
   blast_db_paths,
   taxonomy_db_path,
-  primer_blast_params,
-  plausible_amplicons_params,
+  config,
   query_chunk_count = 1,
   ncbi_bin_directory = NULL
 ) {
@@ -32,8 +31,10 @@ pipeline <- function(
 
   # From here on, we assume that the params was created properly
   # and has the required keys/names.
-  assert_primer_blast_params(primer_blast_params)
-  assert_plausible_amplicons_params(plausible_amplicons_params)
+  assert_config_class(config)
+  # TODO: rename
+  primer_blast_params <- config$primer_blast
+  plausible_amplicons_params <- config$plausible_amplicons
 
   if (!dir.exists(output_directory_path)) {
     dir.create(

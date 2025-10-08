@@ -9,6 +9,11 @@ test_that("pipeline works", {
   output_directory_path <- file.path(tmpdir_top, "rcrux_output")
   on.exit(unlink(output_directory_path, recursive = TRUE), add = TRUE)
 
+  config <- new_config(test_path(
+    "data",
+    "default_pipeline_config.yml"
+  ))
+
   result <- pipeline(
     forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
     reverse_primers = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT",
@@ -25,8 +30,7 @@ test_that("pipeline works", {
     ),
     query_chunk_count = 1,
     ncbi_bin_directory = NULL,
-    primer_blast_params = new_primer_blast_params(),
-    plausible_amplicons_params = new_plausible_amplicons_params()
+    config = config
   )
 
   # And this is the full data structure
