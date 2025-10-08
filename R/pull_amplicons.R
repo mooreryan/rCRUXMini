@@ -292,8 +292,8 @@ pull_amplicons <- function(
       # wouldn't likely have the same exact stuff in it.
       "%o ~~~ %a ~~~ %h ~~~ %s"
     ),
-    # TODO remove this
-    echo_cmd = TRUE,
+    # TODO log the command
+    echo_cmd = FALSE,
     error_on_status = FALSE
   )
 

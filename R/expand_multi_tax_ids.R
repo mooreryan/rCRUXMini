@@ -146,6 +146,7 @@ expand_multi_tax_ids <- function(
   entry_batch_path,
   blast_db_path
 ) {
+  # TODO: log the command that was run
   result <- processx::run(
     command = blastdbcmd,
     args = c(
@@ -159,8 +160,8 @@ expand_multi_tax_ids <- function(
       # This is blast ordinal ID (OID), accession, sequence hash value, taxid
       "%o ~~~ %a ~~~ %h ~~~ %T"
     ),
-    # TODO remove this
-    echo_cmd = TRUE,
+    # TODO: log the command
+    echo_cmd = FALSE,
     error_on_status = FALSE
   )
 
