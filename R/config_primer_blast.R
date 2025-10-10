@@ -75,6 +75,11 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
     null.ok = TRUE
   )
 
+  # `null.ok = TRUE` is nice, but I want to ensure the user doesn't do something
+  # like `evalue: NULL` in the yaml file. In other words, if the key/name is
+  # present, then NULL is _not_ okay, but none of the keys/names are required to
+  # be present.
+
   if (is.null(params)) {
     return(params)
   }
@@ -93,11 +98,6 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
       "word_size"
     )
   )
-
-  # `null.ok = TRUE` is nice, but I want to ensure the user doesn't do something
-  # like `evalue: NULL` in the yaml file. In other words, if the key/name is
-  # present, then NULL is _not_ okay, but none of the keys/names are required to
-  # be present.
 
   params_names <- names(params)
 

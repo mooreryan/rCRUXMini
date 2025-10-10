@@ -1,4 +1,5 @@
 describe("the pipeline", {
+  # TODO: create a config file on the fly
   config_file <- test_path(
     "data",
     "example_pipeline_config.yml"

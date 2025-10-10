@@ -1,10 +1,12 @@
+# Each of these can be a list
 forward_primers: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC"
 reverse_primers: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
 
-output_directory: "/path/to/rcrux_output"
-blast_db_paths: "/path/to/blast_db"
-taxonomy_db_path: "/path/to/taxonomy.db"
-ncbi_bin_directory: "/path/to/ncbi_bin"
+output_directory: "/Users/ryan/Projects/uw/rCRUX_world/rCRUXMini/tests/testthat/data/__tmp_output__"
+taxonomy_db_path: "/Users/ryan/Projects/uw/rCRUX_world/rCRUXMini/tests/testthat/data/example_pipeline_config.yml"
+ncbi_bin_directory: "/usr/local/ncbi/blast/bin"
+# This can also be a list
+blast_db_paths: "/Users/ryan/Projects/uw/rCRUX_world/rCRUXMini/tests/testthat/data/small_test_db/generated_sequences"
 
 query_chunk_count: 1
 

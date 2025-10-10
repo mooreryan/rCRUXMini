@@ -50,6 +50,13 @@ assert_plausible_amplicons_params <- function(object) {
     null.ok = TRUE
   )
 
+  # TODO: I need a test for this because I'm not sure if it is correct anymore
+  #
+  # `null.ok = TRUE` is nice, but I want to ensure the user doesn't do something
+  # like `minimum_length: NULL` in the yaml file. In other words, if the key/name is
+  # present, then NULL is _not_ okay, but none of the keys/names are required to
+  # be present.
+
   if (is.null(params)) {
     return(params)
   }
@@ -64,11 +71,6 @@ assert_plausible_amplicons_params <- function(object) {
       "ambiguous_run_limit"
     )
   )
-
-  # `null.ok = TRUE` is nice, but I want to ensure the user doesn't do something
-  # like `minimum_length: NULL` in the yaml file. In other words, if the key/name is
-  # present, then NULL is _not_ okay, but none of the keys/names are required to
-  # be present.
 
   params_names <- names(params)
 

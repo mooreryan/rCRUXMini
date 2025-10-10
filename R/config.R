@@ -21,6 +21,9 @@ assert_config_class <- function(config) {
 #' for any option that the user doesn't specify.
 #'
 .validate_config_and_apply_default_params <- function(config) {
+  # Validate and set defaults for general parameters
+  config <- new_general_config(config)
+
   # Validate primer blast parameters if they are provided and set defaults
   config$primer_blast <- new_primer_blast_config(config$primer_blast)
 
