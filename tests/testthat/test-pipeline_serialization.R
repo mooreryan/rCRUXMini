@@ -4,34 +4,11 @@
 # this test very often!
 
 test_that("pipeline works", {
-  tmpdir_top <- tempdir()
+  config_data <- create_config_for_test()
+  on.exit(config_data$on_exit(), add = TRUE)
 
-  output_directory_path <- file.path(tmpdir_top, "rcrux_output")
-  on.exit(unlink(output_directory_path, recursive = TRUE), add = TRUE)
-
-  config <- new_config(test_path(
-    "data",
-    "example_pipeline_config.yml"
-  ))
-
-  result <- pipeline(
-    forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
-    reverse_primers = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT",
-    output_directory_path = output_directory_path,
-    blast_db_paths = test_path(
-      "data",
-      "small_test_db",
-      "generated_sequences"
-    ),
-    taxonomy_db_path = test_path(
-      "data",
-      "small_test_db",
-      "taxonomy.db"
-    ),
-    query_chunk_count = 1,
-    ncbi_bin_directory = NULL,
-    config = config
-  )
+  config <- new_config(config_data$config_file)
+  result <- pipeline(config = config)
 
   # And this is the full data structure
   expect_snapshot_value(result, style = "serialize")

@@ -1,41 +1,19 @@
+# TODO: rather than use the example pipeline config, write a config file specific for the test (START HERE)
+
 describe("the pipeline", {
-  # TODO: create a config file on the fly
-  config_file <- test_path(
-    "data",
-    "example_pipeline_config.yml"
-  )
+  # TODO: this is duplicated from test-config
 
   it("works", {
-    tmpdir_top <- tempdir()
+    config_data <- create_config_for_test()
+    on.exit(config_data$on_exit(), add = TRUE)
 
-    output_directory_path <- file.path(tmpdir_top, "rcrux_output")
-    on.exit(unlink(output_directory_path, recursive = TRUE), add = TRUE)
+    config <- new_config(config_data$config_file)
+    result <- pipeline(config = config)
 
-    config <- new_config(config_file)
-
-    result <- pipeline(
-      forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
-      reverse_primers = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT",
-      output_directory_path = output_directory_path,
-      blast_db_paths = test_path(
-        "data",
-        "small_test_db",
-        "generated_sequences"
-      ),
-      taxonomy_db_path = test_path(
-        "data",
-        "small_test_db",
-        "taxonomy.db"
-      ),
-      query_chunk_count = 1,
-      ncbi_bin_directory = NULL,
-      config = config
-    )
-
-    system2("ls", output_directory_path, stdout = TRUE) |>
+    system2("ls", config_data$output_directory, stdout = TRUE) |>
       expect_snapshot()
 
-    output_files <- stringr::str_glue("{output_directory_path}/*") |>
+    output_files <- stringr::str_glue("{config_data$output_directory}/*") |>
       Sys.glob() |>
       purrr::discard(function(file) {
         stringr::str_ends(file, pattern = ".rds")
@@ -57,7 +35,6 @@ describe("the pipeline", {
       })
 
     expect_snapshot(output_data_files)
-
     expect_snapshot(result)
   })
 })

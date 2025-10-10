@@ -1,11 +1,4 @@
 describe("creating a new config object from a YAML file", {
-  # Setup helper to create temporary config file
-  create_temp_config <- function(content) {
-    tmp <- tempfile(fileext = ".yaml")
-    writeLines(content, tmp)
-    tmp
-  }
-
   example_pipeline_config_file <- test_path(
     "data",
     "example_pipeline_config.yml"

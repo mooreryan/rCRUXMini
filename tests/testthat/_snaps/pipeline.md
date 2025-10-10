@@ -1,7 +1,7 @@
 # the pipeline: works
 
     Code
-      system2("ls", output_directory_path, stdout = TRUE)
+      system2("ls", config_data$output_directory, stdout = TRUE)
     Output
        [1] "amplicon_data.tsv"                                           
        [2] "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"   

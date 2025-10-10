@@ -3,6 +3,8 @@
 #
 # START HERE: take the rest of the params from the config
 
+# TODO: update the docs for params...and make sure to document them in the config section
+
 #' Run the rCRUXMini pipeline
 #'
 #' @param forward_primers A character vector of forward primers.
@@ -13,16 +15,24 @@
 #' @param query_chunk_count An integer representing the query chunk count.
 #' @param ncbi_bin_directory A string representing the NCBI binary directory path.
 #' @return A list containing the pipeline results.
-pipeline <- function(
-  forward_primers,
-  reverse_primers,
-  output_directory_path,
-  blast_db_paths,
-  taxonomy_db_path,
-  config,
-  query_chunk_count = 1,
-  ncbi_bin_directory = NULL
-) {
+pipeline <- function(config) {
+  # Pull params from config for easier access in the pipeline (TODO use config directly)
+  forward_primers <- config$forward_primers
+  reverse_primers <- config$reverse_primers
+  output_directory_path <- config$output_directory
+  taxonomy_db_path <- config$taxonomy_db_path
+  ncbi_bin_directory <- config$ncbi_bin_directory
+  blast_db_paths <- config$blast_db_paths
+  query_chunk_count <- config$query_chunk_count
+
+  # TODO: would be nicer if the config itself handled this
+  if (ncbi_bin_directory == "") {
+    ncbi_bin_directory <- NULL
+  }
+
+  # TODO: should remove these now as it's handled in the config creation
+  # functions? Thought, a naughty user could circumvent that creation should
+  # they so choose.
   checkmate::assert_character(forward_primers, min.len = 1, min.chars = 1)
   checkmate::assert_character(reverse_primers, min.len = 1, min.chars = 1)
   checkmate::assert_string(output_directory_path, min.chars = 1)
