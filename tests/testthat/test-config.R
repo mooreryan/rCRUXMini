@@ -1,9 +1,4 @@
 describe("creating a new config object from a YAML file", {
-  example_pipeline_config_file <- test_path(
-    "data",
-    "example_pipeline_config.yml"
-  )
-
   # Helper to create a minimal valid config with required files/dirs
   create_minimal_valid_config <- function(extra_content = "") {
     # Create temporary files and directories that need to exist
