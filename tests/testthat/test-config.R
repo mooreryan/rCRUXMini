@@ -15,8 +15,8 @@ describe("creating a new config object from a YAML file", {
       "forward_primers: 'ACGT'
 reverse_primers: 'TGCA'
 output_directory: '%s'
-taxonomy_db_path: '%s'
-blast_db_paths: '%s'
+taxonomy_database: '%s'
+blast_databases: '%s'
 %s",
       output_directory,
       taxonomy_db,
@@ -92,8 +92,8 @@ ncbi_bin_directory: '/usr/local/ncbi/blast/bin'"
     expect_equal(config$forward_primers, "ACGT")
     expect_equal(config$reverse_primers, "TGCA")
     expect_equal(config$output_directory, temp_files$output_directory)
-    expect_equal(config$taxonomy_db_path, temp_files$taxonomy_db)
-    expect_equal(config$blast_db_paths, temp_files$blast_db)
+    expect_equal(config$taxonomy_database, temp_files$taxonomy_db)
+    expect_equal(config$blast_databases, temp_files$blast_db)
     expect_equal(config$query_chunk_count, 4)
     expect_equal(config$ncbi_bin_directory, "/usr/local/ncbi/blast/bin")
   })

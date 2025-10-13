@@ -21,9 +21,9 @@ pipeline <- function(config) {
   forward_primers <- config$forward_primers
   reverse_primers <- config$reverse_primers
   output_directory_path <- config$output_directory
-  taxonomy_db_path <- config$taxonomy_db_path
+  taxonomy_db_path <- config$taxonomy_database
   ncbi_bin_directory <- config$ncbi_bin_directory
-  blast_db_paths <- config$blast_db_paths
+  blast_db_paths <- config$blast_databases
   query_chunk_count <- config$query_chunk_count
 
   # TODO: would be nicer if the config itself handled this

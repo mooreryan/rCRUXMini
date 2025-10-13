@@ -1,34 +1,3 @@
-#' Create a new general configuration object
-#'
-#' Constructs a validated configuration object for general pipeline parameters.
-#' User-provided parameters are validated and merged with sensible defaults.
-#'
-#' @param params A named list of general parameters, or NULL. Valid parameter
-#'   names include:
-#'   \describe{
-#'     \item{forward_primers}{Forward primer sequence(s) (character vector, required). Non-empty string(s).}
-#'     \item{reverse_primers}{Reverse primer sequence(s) (character vector, required). Non-empty string(s).}
-#'     \item{output_directory}{Path to output directory (character, required). Must not already exist.}
-#'     \item{taxonomy_db_path}{Path to taxonomy database (character, required). Must exist.}
-#'     \item{ncbi_bin_directory}{Path to NCBI bin directory (character, optional). Must exist if provided. Default: NULL}
-#'     \item{blast_db_paths}{Path(s) to BLAST database(s) (character vector, required). Must refer to a valid BLAST db.}
-#'     \item{query_chunk_count}{Number of query chunks for parallel processing (positive integer, optional). Default: 1}
-#'   }
-#'
-#' @return An object of class "rcrux_general_config" containing the
-#'   validated and complete set of general parameters.
-#'
-#' @examples
-#' # With required parameters and some optional ones
-#' config <- new_general_config(params = list(
-#'   forward_primers = "ACGTACGT",
-#'   reverse_primers = "TGCATGCA",
-#'   output_directory = "/path/to/output",
-#'   taxonomy_db_path = "/path/to/taxonomy.db",
-#'   blast_db_paths = "/path/to/blast_db",
-#'   query_chunk_count = 4
-#' ))
-#'
 new_general_config <- function(params = NULL) {
   params |>
     .apply_general_param_defaults() |>
@@ -51,8 +20,8 @@ new_general_config <- function(params = NULL) {
     "forward_primers",
     "reverse_primers",
     "output_directory",
-    "taxonomy_db_path",
-    "blast_db_paths"
+    "taxonomy_database",
+    "blast_databases"
   )
 
   optional_top_level_params <- c(
@@ -116,16 +85,16 @@ new_general_config <- function(params = NULL) {
     }
   }
 
-  # Validate taxonomy_db_path (must exist)
-  if ("taxonomy_db_path" %in% params_names) {
-    params$taxonomy_db_path |>
+  # Validate taxonomy_database (must exist)
+  if ("taxonomy_database" %in% params_names) {
+    params$taxonomy_database |>
       checkmate::assert_string(min.chars = 1)
 
-    if (!file.exists(params$taxonomy_db_path)) {
+    if (!file.exists(params$taxonomy_database)) {
       abort_rcrux_mini_error(
         stringr::str_glue(
           "Taxonomy database path does not exist: {path}",
-          path = params$taxonomy_db_path
+          path = params$taxonomy_database
         )
       )
     }
@@ -153,8 +122,8 @@ new_general_config <- function(params = NULL) {
   }
 
   # Validate blast_db_paths (must exist)
-  if ("blast_db_paths" %in% params_names) {
-    params$blast_db_paths |>
+  if ("blast_databases" %in% params_names) {
+    params$blast_databases |>
       checkmate::assert_character(
         min.len = 1,
         any.missing = FALSE,

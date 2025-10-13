@@ -26,8 +26,8 @@ create_config_for_test <- function() {
     "forward_primers: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
 reverse_primers: 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
 output_directory: '%s'
-taxonomy_db_path: '%s'
-blast_db_paths: '%s'
+taxonomy_database: '%s'
+blast_databases: '%s'
 ",
     output_directory,
     taxonomy_db,

@@ -2,13 +2,11 @@
 forward_primers: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC"
 reverse_primers: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
 
-# TODO: not everything that is a path ends in 'path'
-
 output_directory: "./rCRUXMini/tests/testthat/data/__tmp_output__"
-taxonomy_db_path: "./rCRUXMini/tests/testthat/data/example_pipeline_config.yml"
+taxonomy_database: "./rCRUXMini/tests/testthat/data/example_pipeline_config.yml"
 ncbi_bin_directory: "/usr/local/ncbi/blast/bin"
 # This can also be a list
-blast_db_paths: "./rCRUXMini/tests/testthat/data/small_test_db/generated_sequences"
+blast_databases: "./rCRUXMini/tests/testthat/data/small_test_db/generated_sequences"
 
 query_chunk_count: 1
 
