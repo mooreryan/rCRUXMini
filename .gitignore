@@ -5,3 +5,5 @@
 .Ruserdata
 /_*
 /.zed
+
+/R/unused_functions.R

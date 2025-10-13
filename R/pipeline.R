@@ -1,22 +1,23 @@
 # TODO: the names of the output files need fixing
 # TODO: I don't think I actually need all the output files anymore
-#
-# START HERE: take the rest of the params from the config
+# TODO: set up a real logger
 
 # TODO: update the docs for params...and make sure to document them in the config section
 
 #' Run the rCRUXMini pipeline
 #'
-#' @param forward_primers A character vector of forward primers.
-#' @param reverse_primers A character vector of reverse primers.
-#' @param output_directory_path A string representing the output directory path.
-#' @param blast_db_paths A character vector of BLAST database paths.
-#' @param taxonomy_db_path A string representing the taxonomy database path.
-#' @param query_chunk_count An integer representing the query chunk count.
-#' @param ncbi_bin_directory A string representing the NCBI binary directory path.
+#' Note that the parameters in the config are _not_ validated by this function.
+#' We assume you use the `new_config` creation function to create the config
+#' object, which handles that.
+#'
 #' @return A list containing the pipeline results.
+#'
 pipeline <- function(config) {
-  # Pull params from config for easier access in the pipeline (TODO use config directly)
+  # From here on, we assume that the params was created properly
+  # and has the required keys/names.
+  assert_config_class(config)
+
+  # Pull params from config for easier access in the pipeline
   forward_primers <- config$forward_primers
   reverse_primers <- config$reverse_primers
   output_directory_path <- config$output_directory
@@ -29,21 +30,6 @@ pipeline <- function(config) {
   if (ncbi_bin_directory == "") {
     ncbi_bin_directory <- NULL
   }
-
-  # TODO: should remove these now as it's handled in the config creation
-  # functions? Thought, a naughty user could circumvent that creation should
-  # they so choose.
-  checkmate::assert_character(forward_primers, min.len = 1, min.chars = 1)
-  checkmate::assert_character(reverse_primers, min.len = 1, min.chars = 1)
-  checkmate::assert_string(output_directory_path, min.chars = 1)
-  checkmate::assert_character(blast_db_paths, min.len = 1, min.chars = 1)
-  checkmate::assert_string(taxonomy_db_path, min.chars = 1)
-  checkmate::assert_count(query_chunk_count, positive = TRUE)
-  checkmate::assert_string(ncbi_bin_directory, min.chars = 1, null.ok = TRUE)
-
-  # From here on, we assume that the params was created properly
-  # and has the required keys/names.
-  assert_config_class(config)
 
   if (!dir.exists(output_directory_path)) {
     dir.create(
@@ -282,7 +268,7 @@ pipeline <- function(config) {
   # needs to be in the identity calculation is that the same subject ID could
   # theoretically be present in multiple different DBs, and those DBs could have
   # a different taxonomy for each of them.)
-  parsed_amplicon_blast_result_distinct_taxonomic_ranks <- distinct_taxonomic_ranks2(
+  parsed_amplicon_blast_result_distinct_taxonomic_ranks <- distinct_taxonomic_ranks(
     parsed_amplicon_blast_result,
     id_column = "subject_accession_version"
   )
@@ -840,7 +826,25 @@ accession_to_taxonomy3 <- function(
   result
 }
 
-distinct_taxonomic_ranks <- function(df) {
+
+#' Count Distinct Values at Each Taxonomic Rank
+#'
+#' Calculates the number of distinct (unique) values present at each taxonomic
+#' rank level in a dataframe. Optionally includes an additional identifier
+#' column in the distinctness calculation.
+#'
+#' @param df A data frame containing taxonomic classification data. Must contain
+#'   at minimum the standard taxonomic rank columns: "superkingdom", "phylum",
+#'   "class", "order", "family", "genus", and "species".
+#' @param id_column Character string specifying an optional additional column name
+#'   to include in the distinctness calculation (e.g., a sequence or sample ID).
+#'   Default is `NULL`.
+#'
+#' @return A single-row data frame containing the count of distinct values for
+#'   each taxonomic rank column (and the optional ID column if specified). Column
+#'   names match the input taxonomy levels.
+#'
+distinct_taxonomic_ranks <- function(df, id_column = NULL) {
   taxonomy_levels <- c(
     "superkingdom",
     "phylum",
@@ -850,33 +854,12 @@ distinct_taxonomic_ranks <- function(df) {
     "genus",
     "species"
   )
-  checkmate::assert_data_frame(df, min.rows = 1)
-  checkmate::assert_names(names(df), must.include = taxonomy_levels)
 
-  # TODO: This is not how the LCA script treats taxonomic ranks
-  result <- df |>
-    dplyr::summarise(dplyr::across(
-      dplyr::all_of(taxonomy_levels),
-      .fns = dplyr::n_distinct
-    ))
-
-  checkmate::assert_names(names(result), must.include = taxonomy_levels)
-
-  result
-}
-
-distinct_taxonomic_ranks2 <- function(df, id_column) {
-  taxonomy_levels <- c(
-    "superkingdom",
-    "phylum",
-    "class",
-    "order",
-    "family",
-    "genus",
-    "species"
-  )
-
-  identity_columns <- c(id_column, taxonomy_levels)
+  if (is.null(id_column)) {
+    identity_columns <- taxonomy_levels
+  } else {
+    identity_columns <- c(id_column, taxonomy_levels)
+  }
 
   checkmate::assert_data_frame(df, min.rows = 1)
   checkmate::assert_names(names(df), must.include = identity_columns)
@@ -891,216 +874,6 @@ distinct_taxonomic_ranks2 <- function(df, id_column) {
   checkmate::assert_names(names(result), must.include = identity_columns)
 
   result
-}
-
-
-# TODO: not used....
-# NOTE: It is *possible* that you have duplicate accession-range pairs, if the
-# user provided BLAST DBs that have some overlapping sequences. This means that
-# you could in theory have exact duplicates in the resulting amplicon
-# files/data. (TODO may need to address this -- not sure if it's really a big
-# deal, because when you blast those amplicons, you would get "duplicate" hits
-# too...so potentially as long as we dedup the amplicon blast results, we can
-# ignore this). The question is, do I care to attach the range to the resulting
-# IDs? I think we will just leave them off for now.
-write_plausible_amplicon_sequences <- function(
-  plausible_amplicons_coordinates_with_taxonomy,
-  blastdbcmd_entry_batch_path,
-  plausible_amplicon_path,
-  ncbi_bin_directory = NULL
-) {
-  # Empty data frames shouldn't be passed in here, they should be handled before
-  # you get to this function
-  checkmate::assert_data_frame(
-    plausible_amplicons_coordinates_with_taxonomy,
-    min.rows = 1
-  )
-  checkmate::assert_names(
-    names(plausible_amplicons_coordinates_with_taxonomy),
-    must.include = c(
-      "accession",
-      "forward_start",
-      "forward_stop",
-      "reverse_start",
-      "reverse_stop"
-    )
-  )
-
-  # TODO: not sure about correct orientation, e.g., if the reverse primer is
-  # actually provided in the reversecomplement orientation then the reverse
-  # start will be < reverse stop, but if they provide it in the other direction,
-  # reverse start > reverse stop, and we won't know which way the user will have
-  # provided it. so as long as the forward is to the left of the reverse its
-  # probably fine?
-
-  plausible_amplicons_coordinates_with_taxonomy |>
-    # # Take only the columns that we need to construct the entry_batch file
-    # dplyr::select("accession", "forward_start", "reverse_stop") |>
-    dplyr::mutate(
-      far_left_coordinate = min(
-        .data$forward_start,
-        .data$forward_stop,
-        .data$reverse_start,
-        .data$reverse_stop
-      ),
-      far_right_coordinate = max(
-        .data$forward_start,
-        .data$forward_stop,
-        .data$reverse_start,
-        .data$reverse_stop
-      )
-    ) |>
-    dplyr::select("accession", "far_left_coordinate", "far_right_coordinate") |>
-    # Original code uses forward_stop and reverse_stop, which I think is a bug.
-    # Since that would exclude the forward primer and include the reverse. This
-    # way is including both.
-    tidyr::unite(
-      col = "range",
-      "far_left_coordinate",
-      "far_right_coordinate",
-      sep = "-",
-      remove = TRUE
-    ) |>
-    # This should already be all the columns that are left, but just to be
-    # sure....
-    dplyr::select("accession", "range") |>
-    readr::write_delim(
-      file = blastdbcmd_entry_batch_path,
-      delim = " ",
-      col_names = FALSE
-    )
-
-  # blastdbcmd -entry all -db nt -outfmt '%a | %s'
-  #
-
-  blastdbcmd <- SnailBLAST::sys_which("blastdbcmd", ncbi_bin_directory)
-  # TODO: need a better user facing error message for this
-  checkmate::assert_string(blastdbcmd, min.chars = 1)
-  result <- processx::run(
-    command = blastdbcmd,
-    args = c(
-      "-db",
-      blast_db_path,
-      "-dbtype",
-      "nucl",
-      "-entry_batch",
-      blastdbcmd_entry_batch_path,
-      "-outfmt",
-      # This is sequence ID and sequence
-      "%a %s"
-    ),
-    error_on_status = FALSE
-  )
-
-  if (rlang::is_na(result$status) || result$status != 0) {
-    # TODO: custom error class and better error message
-    stop("blastdbcmd to create amplicons failed")
-  }
-
-  result$stdout |>
-    I() |>
-    readr::read_delim(col_names = c("id", "sequence"), delim = " ")
-}
-
-write_plausible_amplicon_sequences2 <- function(
-  plausible_amplicons_coordinates_with_taxonomy,
-  blast_db_path,
-  out_dir,
-  prefix = "amplicons",
-  num_splits = 1
-) {
-  checkmate::assert_data_frame(plausible_amplicons_coordinates_with_taxonomy)
-  checkmate::assert_names(
-    names(plausible_amplicons_coordinates_with_taxonomy),
-    must.include = c("accession", "forward_start", "reverse_stop")
-  )
-  checkmate::assert_string(blast_db_path)
-  checkmate::assert_directory_exists(out_dir)
-  checkmate::assert_count(num_splits, positive = TRUE)
-
-  # Prepare data for entry_batch: accession and start-end range
-  df <- plausible_amplicons_coordinates_with_taxonomy |>
-    dplyr::select("accession", "forward_start", "reverse_stop") |>
-    tidyr::unite(
-      col = "range",
-      "forward_start",
-      "reverse_stop",
-      sep = "-",
-      remove = TRUE
-    ) |>
-    dplyr::select("accession", "range")
-
-  # TODO
-  n <- nrow(df)
-  if (n == 0) {
-    stop("No amplicon coordinates provided (0 rows).")
-  }
-
-  k <- max(1, min(num_splits, n)) # don't create empty splits
-  # Split indices into k roughly equal groups
-  grp_id <- cut(seq_len(n), breaks = k, labels = FALSE)
-  splits <- split(df, grp_id)
-
-  results <- vector("list", length(splits))
-
-  for (i in seq_along(splits)) {
-    batch_path <- file.path(
-      out_dir,
-      sprintf("%s.entry_batch.%03d.txt", prefix, i)
-    )
-    query_path <- file.path(out_dir, sprintf("%s.query.%03d.fasta", prefix, i))
-
-    # Write entry_batch with no header, space-delimited: "accession range"
-    readr::write_delim(
-      splits[[i]],
-      file = batch_path,
-      delim = " ",
-      col_names = FALSE
-    )
-
-    # Run blastdbcmd for this batch
-    # -outfmt %f ensures FASTA
-    exit_code <- system2(
-      command = "blastdbcmd",
-      args = c(
-        "-db",
-        blast_db_path,
-        "-dbtype",
-        "nucl",
-        "-entry_batch",
-        batch_path,
-        "-outfmt",
-        "%f",
-        "-out",
-        query_path
-      ),
-      stdout = TRUE,
-      stderr = TRUE
-    )
-
-    # You can enhance error handling by inspecting attr(exit_code, "status")
-    # and the captured stdout/stderr
-    status <- attr(exit_code, "status")
-    if (!is.null(status) && status != 0) {
-      stop(sprintf(
-        "blastdbcmd failed for split %d (status %s). See stderr above.",
-        i,
-        status
-      ))
-    }
-
-    results[[i]] <- list(
-      split = i,
-      entry_batch_path = batch_path,
-      query_path = query_path
-    )
-  }
-
-  tibble::tibble(
-    split = vapply(results, `[[`, integer(1), "split"),
-    entry_batch_path = vapply(results, `[[`, character(1), "entry_batch_path"),
-    query_path = vapply(results, `[[`, character(1), "query_path")
-  )
 }
 
 
@@ -1126,7 +899,6 @@ test_file_non_empty <- function(path) {
 }
 
 
-# TODO: actual logging for failures and such
 # TODO: would be nice to include the blast_db_path in the output here.
 #
 #' Wrapper for \code{SnailBLAST::crawl} to run \code{blastn} that specifies
@@ -1145,7 +917,6 @@ test_file_non_empty <- function(path) {
     blast_executable_directory = blast_executable_directory,
     query_paths = query_paths,
     db_paths = db_paths,
-    # These are the original rCRUX specifiers TODO i think this needs to be adjusted
     outfmt_specifiers = outfmt_specifiers,
     extra_blast_arguments = extra_blast_arguments,
     use_long_names_in_parsed_result = use_long_names_in_parsed_result,
@@ -1157,7 +928,7 @@ test_file_non_empty <- function(path) {
       args,
       stderr
     ) {
-      message(paste(
+      warning(paste(
         "Job failed for query",
         query_path,
         "and database",
@@ -1180,7 +951,7 @@ test_file_non_empty <- function(path) {
       args,
       stderr
     ) {
-      message(paste(
+      warning(paste(
         "Parsing output for query",
         query_path,
         "and database",

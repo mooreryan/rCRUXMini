@@ -3,7 +3,7 @@
 # serialized output makes the snapshot diffing too tedious. So do _not_ change
 # this test very often!
 
-test_that("pipeline works", {
+test_that("the pipeline returns the golden value", {
   config_data <- create_config_for_test()
   on.exit(config_data$on_exit(), add = TRUE)
 
