@@ -37,4 +37,6 @@ describe("the pipeline", {
     expect_snapshot(output_data_files)
     expect_snapshot(result)
   })
+
+  it("handles multiple primers and DBs", {})
 })

@@ -6,7 +6,10 @@ create_temp_config <- function(content) {
 }
 
 # Helper to create a minimal valid config with required files/dirs
-create_config_for_test <- function() {
+create_config_for_test <- function(
+  forward_primers = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC",
+  reverse_primers = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
+) {
   taxonomy_db <- testthat::test_path(
     "data",
     "small_test_db",
@@ -23,12 +26,14 @@ create_config_for_test <- function() {
   # We don't create output_dir because it must NOT exist
 
   config_content <- sprintf(
-    "forward_primers: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
-reverse_primers: 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
+    "forward_primers: '%s'
+reverse_primers: '%s'
 output_directory: '%s'
 taxonomy_database: '%s'
 blast_databases: '%s'
 ",
+    forward_primers,
+    reverse_primers,
     output_directory,
     taxonomy_db,
     blast_db
