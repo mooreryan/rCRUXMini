@@ -130,6 +130,8 @@ new_general_config <- function(params = NULL) {
         min.chars = 1
       )
 
+    params$blast_databases |> SnailBLAST::assert_blast_dbs_exist()
+
     # TODO: This won't work because blast db paths aren't actually real paths.
     # They point to the path and name. Check snail blast for code to ensure these
     # exist.

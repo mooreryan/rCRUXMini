@@ -5,8 +5,11 @@ describe("creating a new config object from a YAML file", {
     taxonomy_db <- tempfile(fileext = ".db")
     file.create(taxonomy_db)
 
-    blast_db <- tempfile()
+    blast_db <- tempfile(fileext = ".nsq")
     file.create(blast_db)
+    # Now that we created a fake DB with the nsq suffix, strip it off and use
+    # that as the argument.
+    blast_db <- stringr::str_replace(blast_db, "\\.nsq$", "")
 
     output_directory <- tempfile()
     # Don't create output_dir, it must NOT exist
@@ -100,8 +103,9 @@ ncbi_bin_directory: '/usr/local/ncbi/blast/bin'"
 
   it("correctly parses multiple primers and blast databases", {
     temp_files <- create_minimal_valid_config()
-    blast_db2 <- tempfile()
+    blast_db2 <- tempfile(fileext = ".nsq")
     file.create(blast_db2)
+    blast_db2 <- stringr::str_replace(blast_db2, "\\.nsq$", "")
 
     config_content <- sprintf(
       "forward_primers:
@@ -126,8 +130,10 @@ blast_databases:
     on.exit({
       unlink(config_file)
       unlink(temp_files$taxonomy_db)
-      unlink(temp_files$blast_db)
-      unlink(blast_db2)
+      unlink(stringr::str_glue("{temp_files$blast_db}.nsq"))
+      unlink(stringr::str_glue(
+        "{blast_db2}.nsq"
+      ))
     })
 
     config <- new_config(config_file)
@@ -148,22 +154,6 @@ blast_databases:
     config <- new_config(temp_files$config_file)
     expect_default_params(config)
   })
-
-  # TODO
-  #
-  #   it("handles empty or minimal config files with defaults", {
-  #     config_content <- "
-  # primer_blast:
-
-  # plausible_amplicons:
-  # "
-
-  #     config_file <- create_temp_config(config_content)
-  #     config <- new_config(config_file)
-  #     expect_default_params(config)
-
-  #     unlink(config_file)
-  #   })
 
   it("handles partial config by using default values for missing params", {
     temp_files <- create_minimal_valid_config(
@@ -253,28 +243,27 @@ plausible_amplicons:
     )
   })
 
-  # TODO: fix this once we implement the blast db existance check
-  #
-  # it("validates that blast_db_paths exist", {
-  #   temp_files <- create_minimal_valid_config()
-  #   # TODO: use the add param for all on.exit calls
-  #   on.exit({
-  #     unlink(temp_files$config_file)
-  #     unlink(temp_files$taxonomy_db)
-  #     unlink(temp_files$blast_db)
-  #   })
+  it("validates that blast_db_paths exist", {
+    temp_files <- create_minimal_valid_config()
 
-  #   config <- new_config(temp_files$config_file)
+    # Delete the taxonomy DB file, which should trigger the validation error
+    unlink(stringr::str_glue("{temp_files$blast_db}.nsq"))
 
-  #   # Delete the taxonomy DB file, which should trigger the validation error
-  #   unlink(temp_files$taxonomy_db)
+    # TODO: use the add param for all on.exit calls
+    on.exit({
+      unlink(temp_files$config_file)
+      unlink(temp_files$taxonomy_db)
+      unlink(stringr::str_glue("{temp_files$blast_db}.nsq"))
+    })
 
-  #   expect_error(
-  #     new_config(config_file),
-  #     class = "rcrux_mini_error",
-  #     regexp = "TODO"
-  #   )
-  # })
+    expect_error(
+      new_config(temp_files$config_file),
+      # TODO: it would be better for this to be an rcrux error or even a
+      # SnailBLAST error
+      class = "checkmateError",
+      regexp = "No .nsq or .psq file found"
+    )
+  })
 
   it("validates that ncbi_bin_directory exists when provided", {
     # We don't create this file!
