@@ -550,51 +550,22 @@ add_taxonomy_columns <- function(input_data, taxonomy_db_path) {
   checkmate::assert_character(input_data$accession)
   checkmate::assert_file_exists(taxonomy_db_path)
 
-  # TODO: what does this do when the accession isn't present in the DB
-  taxonomy_ids <- taxonomizr::accessionToTaxa(
-    input_data$accession,
-    taxonomy_db_path
-  )
-  checkmate::assert_numeric(taxonomy_ids, len = length(input_data$accession))
-
-  # TODO : check this but the taxonomy IDs should be in the same order as the accession table. Could avoid this assumption by joining.
-
-  taxonomy_table <- taxonomy_ids_to_taxonomy_table(
-    taxonomy_ids = taxonomy_ids,
+  taxonomy_table <- create_taxonomy_table(
+    accessions = input_data$accession,
     taxonomy_db_path = taxonomy_db_path,
-    desired_taxa = c(
-      "species",
-      "superkingdom",
-      "kingdom",
-      "phylum",
-      "subphylum",
-      "superclass",
-      "class",
-      "subclass",
-      "order",
-      "family",
-      "subfamily",
-      "genus",
-      "infraorder",
-      "subcohort",
-      "superorder",
-      "superfamily",
-      "tribe",
-      "subspecies",
-      "subgenus",
-      "species group",
-      "parvorder",
-      "varietas"
-    )
-  )
-  checkmate::assert_data_frame(
-    taxonomy_table,
-    nrows = length(input_data$accession)
+    accession_column_name = "accession"
   )
 
-  result <-
-    # These _should_ still be in the correct order
-    dplyr::bind_cols(input_data, taxonomy_table) |>
+  # TODO: look up the join options
+  result <- dplyr::left_join(
+    input_data,
+    taxonomy_table,
+    by = "accession",
+    # Be careful and explicit about the relationship to try and catch errors
+    # early
+    relationship = "one-to-one",
+    unmatched = "error"
+  ) |>
     dplyr::arrange(
       "superkingdom",
       "phylum",
