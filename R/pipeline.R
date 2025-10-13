@@ -98,7 +98,7 @@ pipeline <- function(config) {
   }
 
   # TODO: this data frame has a completely different naming scheme than all the ones that I made later in time. These are a lot of the old rCRUX names and they no longer match up with the other stuff
-  plausible_amplicons_coordinates_with_taxonomy <- accession_to_taxonomy(
+  plausible_amplicons_coordinates_with_taxonomy <- add_taxonomy_columns(
     plausible_amplicons_coordinates,
     taxonomy_db_path
   )
@@ -542,24 +542,27 @@ find_plausible_amplicon_coordinates <- function(
 # TODO (important): do I really want this to throw? Probably not. Rather, it
 # should report accessions that didn't have taxonomy, and return two things, one
 # with good accessions with taxonomy and one with missing accessions.
-accession_to_taxonomy <- function(input_data, taxonomy_db_path) {
+#
+# E.g., "I have a dataframe with many columns, add taxonomy info to it"
+add_taxonomy_columns <- function(input_data, taxonomy_db_path) {
   checkmate::assert_data_frame(input_data, min.rows = 1)
   checkmate::assert_names(names(input_data), must.include = c("accession"))
   checkmate::assert_character(input_data$accession)
   checkmate::assert_file_exists(taxonomy_db_path)
 
-  # TODO: What does this do for accessions that don't have taxonomy IDs?
+  # TODO: what does this do when the accession isn't present in the DB
   taxonomy_ids <- taxonomizr::accessionToTaxa(
     input_data$accession,
     taxonomy_db_path
   )
   checkmate::assert_numeric(taxonomy_ids, len = length(input_data$accession))
 
-  # TODO: What does this do for taxonomy IDs that do not exist?
-  taxonomy_data <- taxonomizr::getTaxonomy(
-    taxonomy_ids,
-    taxonomy_db_path,
-    desiredTaxa = c(
+  # TODO : check this but the taxonomy IDs should be in the same order as the accession table. Could avoid this assumption by joining.
+
+  taxonomy_table <- taxonomy_ids_to_taxonomy_table(
+    taxonomy_ids = taxonomy_ids,
+    taxonomy_db_path = taxonomy_db_path,
+    desired_taxa = c(
       "species",
       "superkingdom",
       "kingdom",
@@ -584,10 +587,14 @@ accession_to_taxonomy <- function(input_data, taxonomy_db_path) {
       "varietas"
     )
   )
-  checkmate::assert_matrix(taxonomy_data, nrows = length(input_data$accession))
+  checkmate::assert_data_frame(
+    taxonomy_table,
+    nrows = length(input_data$accession)
+  )
 
-  result <- input_data |>
-    dplyr::mutate(taxonomy_id = taxonomy_ids, data.frame(taxonomy_data)) |>
+  result <-
+    # These _should_ still be in the correct order
+    dplyr::bind_cols(input_data, taxonomy_table) |>
     dplyr::arrange(
       "superkingdom",
       "phylum",
@@ -603,116 +610,11 @@ accession_to_taxonomy <- function(input_data, taxonomy_db_path) {
   result
 }
 
-accession_to_taxonomy2 <- function(
-  accessions,
-  taxonomy_db_path,
-  accession_column_name
-) {
-  checkmate::assert_character(accessions)
-  checkmate::assert_string(accession_column_name)
-  checkmate::assert_file_exists(taxonomy_db_path)
-
-  if (length(accessions) == 0) {
-    return(tibble::tibble(
-      species = character(0),
-      superkingdom = character(0),
-      kingdom = character(0),
-      phylum = character(0),
-      subphylum = character(0),
-      superclass = character(0),
-      class = character(0),
-      subclass = character(0),
-      order = character(0),
-      family = character(0),
-      subfamily = character(0),
-      genus = character(0),
-      infraorder = character(0),
-      subcohort = character(0),
-      superorder = character(0),
-      superfamily = character(0),
-      tribe = character(0),
-      subspecies = character(0),
-      subgenus = character(0),
-      `species group` = character(0),
-      parvorder = character(0),
-      varietas = character(0)
-    ))
-  }
-
-  # If any of the accessions do NOT have a match in the taxonomy DB, then those
-  # will have `NA` in the result.
-  taxonomy_ids <- taxonomizr::accessionToTaxa(accessions, taxonomy_db_path)
-
-  taxonomy_df <- tibble::tibble(
-    # This will splice in the string held by the accession_column_name parameter
-    # as a column name
-    !!accession_column_name := accessions,
-    taxonomy_id = taxonomy_ids
-  )
-
-  # TODO: I don't actually want this split up.
-
-  tmp <- .split_by_has_taxonomy_id(taxonomy_df)
-  taxonomy_df <- tmp$has_taxonomy_id
-  missing_taxonomy_df <- tmp$missing_taxonomy_id
-  # TODO: log the accessions with missing taxonomy IDs
-
-  # TODO: now I need to split out rows that have NA for taxonomy ID.
-
-  # For taxonomy IDs that don't exist, all elements of that row will be NA.
-  # This will only contain columns that are specified in the desiredTaxa arg.
-  desired_taxa <- c(
-    "species",
-    "superkingdom",
-    "kingdom",
-    "phylum",
-    "subphylum",
-    "superclass",
-    "class",
-    "subclass",
-    "order",
-    "family",
-    "subfamily",
-    "genus",
-    "infraorder",
-    "subcohort",
-    "superorder",
-    "superfamily",
-    "tribe",
-    "subspecies",
-    "subgenus",
-    "species group",
-    "parvorder",
-    "varietas"
-  )
-  taxonomy_details <- taxonomizr::getTaxonomy(
-    taxonomy_df$taxonomy_id,
-    taxonomy_db_path,
-    desiredTaxa = desired_taxa
-  ) |>
-    tibble::as_tibble()
-
-  checkmate::assert_data_frame(
-    taxonomy_details,
-    nrows = length(taxonomy_df$taxonomy_id)
-  )
-  checkmate::assert_names(names(taxonomy_details), identical.to = desired_taxa)
-
-  result <- dplyr::bind_cols(taxonomy_df, taxonomy_details) |>
-    dplyr::arrange(
-      "superkingdom",
-      "phylum",
-      "class",
-      "order",
-      "family",
-      "genus",
-      "species"
-    )
-
-  list(has_taxonomy_id = result, missing_taxonomy_id = missing_taxonomy_df)
-}
-
-accession_to_taxonomy3 <- function(
+# TODO: this one is pretty similar to the add_taxonomy_columns, but this one has
+# some better patterns.
+#
+# E.g., "I have a list of accessions, give me just the taxonomy info"
+create_taxonomy_table <- function(
   accessions,
   taxonomy_db_path,
   accession_column_name

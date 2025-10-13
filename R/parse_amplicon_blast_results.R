@@ -132,7 +132,7 @@ parse_amplicon_blast_results <- function(
   )
 
   # This returns taxonomy info for the target/subject sequences that were hit.
-  taxonomy_info_of_hits <- accession_to_taxonomy3(
+  taxonomy_info_of_hits <- create_taxonomy_table(
     accessions = hits$subject_accession_version,
     taxonomy_db_path = taxonomy_db_path,
     # This will be the name of the accession column in the output. We can join
