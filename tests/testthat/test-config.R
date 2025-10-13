@@ -98,46 +98,44 @@ ncbi_bin_directory: '/usr/local/ncbi/blast/bin'"
     expect_equal(config$ncbi_bin_directory, "/usr/local/ncbi/blast/bin")
   })
 
-  # TODO: good idea, but not like this!
-  #
-  # it("correctly parses multiple primers and blast databases", {
-  #     temp_files <- create_minimal_valid_config()
-  #     blast_db2 <- tempfile()
-  #     file.create(blast_db2)
+  it("correctly parses multiple primers and blast databases", {
+    temp_files <- create_minimal_valid_config()
+    blast_db2 <- tempfile()
+    file.create(blast_db2)
 
-  #     config_content <- sprintf(
-  #       "forward_primers:
-  #   - 'ACGT'
-  #   - 'AAAA'
-  # reverse_primers:
-  #   - 'TGCA'
-  #   - 'TTTT'
-  # output_directory: '%s'
-  # taxonomy_db_path: '%s'
-  # blast_db_paths:
-  #   - '%s'
-  #   - '%s'",
-  #       temp_files$output_dir,
-  #       temp_files$taxonomy_db,
-  #       temp_files$blast_db,
-  #       blast_db2
-  #     )
+    config_content <- sprintf(
+      "forward_primers:
+  - 'ACGT'
+  - 'AAAA'
+reverse_primers:
+  - 'TGCA'
+  - 'TTTT'
+output_directory: '%s'
+taxonomy_database: '%s'
+blast_databases:
+  - '%s'
+  - '%s'",
+      temp_files$output_dir,
+      temp_files$taxonomy_db,
+      temp_files$blast_db,
+      blast_db2
+    )
 
-  #     config_file <- create_temp_config(config_content)
+    config_file <- create_temp_config(config_content)
 
-  #     on.exit({
-  #       unlink(config_file)
-  #       unlink(temp_files$taxonomy_db)
-  #       unlink(temp_files$blast_db)
-  #       unlink(blast_db2)
-  #     })
+    on.exit({
+      unlink(config_file)
+      unlink(temp_files$taxonomy_db)
+      unlink(temp_files$blast_db)
+      unlink(blast_db2)
+    })
 
-  #     config <- new_config(config_file)
+    config <- new_config(config_file)
 
-  #     expect_equal(config$forward_primers, c("ACGT", "AAAA"))
-  #     expect_equal(config$reverse_primers, c("TGCA", "TTTT"))
-  #     expect_equal(config$blast_db_paths, c(temp_files$blast_db, blast_db2))
-  #   })
+    expect_equal(config$forward_primers, c("ACGT", "AAAA"))
+    expect_equal(config$reverse_primers, c("TGCA", "TTTT"))
+    expect_equal(config$blast_databases, c(temp_files$blast_db, blast_db2))
+  })
 
   it("applies default values for optional parameters", {
     temp_files <- create_minimal_valid_config()
