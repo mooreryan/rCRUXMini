@@ -5,7 +5,7 @@ num_args <- length(cli_args)
 if (!(num_args %in% c(1, 2))) {
   message("\n\n")
   message(
-    "usage: Rscript --vanilla pipeline.R </path/to/config.yml> [path/to/rCRUXMini]"
+    "usage: Rscript --vanilla /path/to/rCRUXMini.R </path/to/config.yml> [path/to/rCRUXMini]"
   )
   message(
     "  - The 1st argument is the path to a YAML file containing the parameters."
@@ -20,18 +20,14 @@ if (!(num_args %in% c(1, 2))) {
 }
 
 if (num_args == 2) {
-  # TODO: switch this out to not use devtools so we don't have to make users
-  # install it
   devtools::load_all(cli_args[[2]], quiet = TRUE)
 } else {
   library(rCRUXMini, quietly = TRUE)
 }
 
-# TODO: add to imports
-config <- yaml::read_yaml(cli_args[[1]])
-
-print(config)
+config_file <- cli_args[[1]]
+config <- new_config(config_file)
 
 # Capture the result here.  This prevents prenting NULL to the console when
 # calling Rscript.
-result <- do.call(what = get_seeds, args = config)
+result <- pipeline(config)

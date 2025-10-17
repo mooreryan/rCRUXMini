@@ -131,21 +131,6 @@ new_general_config <- function(params = NULL) {
       )
 
     params$blast_databases |> SnailBLAST::assert_blast_dbs_exist()
-
-    # TODO: This won't work because blast db paths aren't actually real paths.
-    # They point to the path and name. Check snail blast for code to ensure these
-    # exist.
-    #
-    # Check that all paths exist
-    # missing_paths <- params$blast_db_paths[!file.exists(params$blast_db_paths)]
-    # if (length(missing_paths) > 0) {
-    #   abort_rcrux_mini_error(
-    #     stringr::str_glue(
-    #       "BLAST database path(s) do not exist: {paths}",
-    #       paths = paste(missing_paths, collapse = ", ")
-    #     )
-    #   )
-    # }
   }
 
   # Validate query_chunk_count
