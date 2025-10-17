@@ -1,8 +1,4 @@
-# TODO: rather than use the example pipeline config, write a config file specific for the test (START HERE)
-
 describe("the pipeline", {
-  # TODO: this is duplicated from test-config
-
   it("works", {
     config_data <- create_config_for_test()
     on.exit(config_data$on_exit(), add = TRUE)
@@ -45,60 +41,89 @@ describe("the pipeline", {
       "taxonomy.db"
     )
 
-    blast_db_1 <- testthat::test_path(
-      "data",
-      "small_test_db",
-      "generated_sequences.part_001"
-    )
-
-    blast_db_2 <- testthat::test_path(
-      "data",
-      "small_test_db",
-      "generated_sequences.part_002"
-    )
-
-    blast_db_3 <- testthat::test_path(
-      "data",
-      "small_test_db",
-      "generated_sequences.part_003"
-    )
-
-    output_directory <- tempfile()
-    # We don't create output_dir because it must NOT exist
-
-    config_content <- sprintf(
+    # Run the pipeline with the split DB
+    blast_db_multi <- purrr::map(1:10, function(i) {
+      testthat::test_path(
+        "data",
+        "small_test_db",
+        sprintf("generated_sequences.part_%03d", i)
+      )
+    })
+    output_directory_multi <- tempfile()
+    config_content_multi <- sprintf(
       "forward_primers:
   - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
   - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
-  reverse_primers:
+reverse_primers:
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
-  output_directory: '%s'
-  taxonomy_database: '%s'
-  blast_databases:
+output_directory: '%s'
+taxonomy_database: '%s'
+blast_databases:
+  - '%s'
+  - '%s'
+  - '%s'
+  - '%s'
+  - '%s'
+  - '%s'
+  - '%s'
   - '%s'
   - '%s'
   - '%s'
   ",
-      output_directory,
+      output_directory_multi,
       taxonomy_db,
-      blast_db_1,
-      blast_db_2,
-      blast_db_3
+      blast_db_multi[[1]],
+      blast_db_multi[[2]],
+      blast_db_multi[[3]],
+      blast_db_multi[[4]],
+      blast_db_multi[[5]],
+      blast_db_multi[[6]],
+      blast_db_multi[[7]],
+      blast_db_multi[[8]],
+      blast_db_multi[[9]],
+      blast_db_multi[[10]]
+    )
+    config_file_multi <- create_temp_config(config_content_multi)
+    result_multi <- pipeline(config = new_config(config_file_multi))
+
+    # Run the pipeline with the same inputs, but on the single DB
+    output_directory_single <- tempfile()
+    blast_db_single <- testthat::test_path(
+      "data",
+      "small_test_db",
+      "generated_sequences"
+    )
+    config_content_single <- sprintf(
+      "forward_primers:
+  - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
+  - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCC'
+reverse_primers:
+  - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
+  - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
+output_directory: '%s'
+taxonomy_database: '%s'
+blast_databases: '%s'
+  ",
+      output_directory_single,
+      taxonomy_db,
+      blast_db_single
+    )
+    config_file_single <- create_temp_config(config_content_single)
+    result_single <- pipeline(config = new_config(config_file_single))
+
+    # Compare the results
+
+    # TODO: check more stuff
+    expect_equal(
+      result_single$parsed_amplicon_blast_result_distinct_taxonomic_ranks,
+      result_multi$parsed_amplicon_blast_result_distinct_taxonomic_ranks
     )
 
-    # TODO: this function is from the other test
-    config_file <- create_temp_config(config_content)
-
-    on_exit <- function() {
-      unlink(output_directory, recursive = TRUE)
-      unlink(config_file)
-    }
-
-    config_data <- create_config_for_test()
-    on.exit(config_data$on_exit(), add = TRUE)
-
-    config <- new_config(config_data$config_file)
-    result <- pipeline(config = config)
+    # Clean up
+    unlink(output_directory_multi, recursive = TRUE)
+    unlink(config_file_multi)
+    unlink(output_directory_single, recursive = TRUE)
+    unlink(config_file_single)
   })
 })
