@@ -1,32 +1,3 @@
-#' Create a new plausible amplicons configuration object
-#'
-#' Constructs a validated configuration object for plausible amplicon filtering.
-#' User-provided parameters are validated and merged with sensible defaults.
-#'
-#' @param params A named list of plausible amplicon parameters, or NULL. Valid parameter
-#'   names include:
-#'   \describe{
-#'     \item{minimum_length}{Minimum amplicon length in base pairs (positive integer). Default: 150}
-#'     \item{maximum_length}{Maximum amplicon length in base pairs (positive integer). Default: 650}
-#'     \item{maximum_mismatches}{Maximum number of mismatches allowed (positive integer). Default: 4}
-#'     \item{ambiguous_run_limit}{Maximum consecutive ambiguous bases allowed (non-negative integer). Default: 5}
-#'   }
-#'   Note: minimum_length must be less than maximum_length.
-#'
-#' @return An object of class "rcrux_plausible_amplicons_config" containing the
-#'   validated and complete set of plausible amplicon parameters.
-#'
-#' @examples
-#' # Use all defaults
-#' config <- new_plausible_amplicons_config()
-#'
-#' # Override specific parameters
-#' config <- new_plausible_amplicons_config(params = list(
-#'   minimum_length = 200,
-#'   maximum_length = 500,
-#'   maximum_mismatches = 2
-#' ))
-#'
 new_plausible_amplicons_config <- function(params = NULL) {
   params |>
     .validate_plausible_amplicons_params() |>
@@ -49,13 +20,6 @@ assert_plausible_amplicons_params <- function(object) {
     any.missing = FALSE,
     null.ok = TRUE
   )
-
-  # TODO: I need a test for this because I'm not sure if it is correct anymore
-  #
-  # `null.ok = TRUE` is nice, but I want to ensure the user doesn't do something
-  # like `minimum_length: NULL` in the yaml file. In other words, if the key/name is
-  # present, then NULL is _not_ okay, but none of the keys/names are required to
-  # be present.
 
   if (is.null(params)) {
     return(params)
@@ -109,8 +73,7 @@ assert_plausible_amplicons_params <- function(object) {
   # Cross-parameter validation: ensure minimum_length < maximum_length
   if (all(c("minimum_length", "maximum_length") %in% params_names)) {
     if (params$minimum_length >= params$maximum_length) {
-      # TODO: raise the same type of error as the other validations
-      stop("minimum_length must be less than maximum_length")
+      abort_rcrux_mini_error("minimum_length must be less than maximum_length")
     }
   }
 

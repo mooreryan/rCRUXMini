@@ -1,35 +1,3 @@
-#' Create a new primer BLAST configuration object
-#'
-#' Constructs a validated configuration object for primer BLAST operations.
-#' User-provided parameters are validated and merged with sensible defaults.
-#'
-#' @param params A named list of BLAST parameters, or NULL. Valid parameter
-#'   names include:
-#'   \describe{
-#'     \item{evalue}{Expectation value threshold (numeric). Default: 3e7}
-#'     \item{num_alignments}{Maximum number of alignments to keep (positive integer). Default: 10000000}
-#'     \item{num_threads}{Number of threads to use (positive integer). Default: 1}
-#'     \item{perc_identity}{Minimum percent identity (positive integer). Default: 50}
-#'     \item{qcov_hsp_perc}{Minimum query coverage per HSP (positive integer). Default: 90}
-#'     \item{reward}{Reward for a nucleotide match (positive integer). Default: 2}
-#'     \item{task}{BLAST task type (character). Must be one of: "blastn", "blastn-short",
-#'       "dc-megablast", "megablast", or "rmblastn". Default: "blastn-short"}
-#'     \item{word_size}{Word size for wordfinder algorithm (positive integer). Default: 7}
-#'   }
-#'
-#' @return An object of class "rcrux_primer_blast_config" containing the
-#'   validated and complete set of BLAST parameters.
-#'
-#' @examples
-#' # Use all defaults
-#' config <- new_primer_blast_config()
-#'
-#' # Override specific parameters
-#' config <- new_primer_blast_config(params = list(
-#'   num_threads = 4,
-#'   perc_identity = 80
-#' ))
-#'
 new_primer_blast_config <- function(params = NULL) {
   params |>
     .validate_primer_blast_params() |>
@@ -105,8 +73,6 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
   # forms of scientific notation as characters, e.g., 3e7 will parse to "3e7"
   # string.
 
-  # TODO: validate percentages are between 0-100
-
   if ("evalue" %in% params_names) {
     params$evalue <- .parse_numeric(params$evalue)
 
@@ -132,14 +98,14 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
     params$perc_identity <- .parse_integer(params$perc_identity)
 
     params$perc_identity |>
-      checkmate::assert_count(positive = TRUE)
+      checkmate::assert_int(lower = 0, upper = 100)
   }
 
   if ("qcov_hsp_perc" %in% params_names) {
     params$perc_identity <- .parse_integer(params$perc_identity)
 
     params$qcov_hsp_perc |>
-      checkmate::assert_count(positive = TRUE)
+      checkmate::assert_int(lower = 0, upper = 100)
   }
 
   if ("reward" %in% params_names) {
