@@ -16,10 +16,9 @@
 #' # Generate empty tibble
 #' empty_df <- empty_tibble_from_col_spec(spec)
 #' print(empty_df)
+#'
 empty_tibble_from_col_spec <- function(col_spec) {
   checkmate::assert_class(col_spec, "col_spec")
-  # TODO: this has a really bad error message
-  # TODO: add the fact that it must be named to the docs
   checkmate::assert_named(col_spec$cols)
 
   # Create empty vectors for each column based on its type
