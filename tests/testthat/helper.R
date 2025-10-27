@@ -31,6 +31,7 @@ reverse_primers: '%s'
 output_directory: '%s'
 taxonomy_database: '%s'
 blast_databases: '%s'
+workers: 2
 ",
     forward_primers,
     reverse_primers,

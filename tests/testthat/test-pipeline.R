@@ -76,6 +76,7 @@ reverse_primers:
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
 output_directory: '%s'
+workers: 2
 taxonomy_database: '%s'
 blast_databases:
   - '%s'
@@ -120,6 +121,7 @@ reverse_primers:
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
 output_directory: '%s'
+workers: 2
 taxonomy_database: '%s'
 blast_databases: '%s'
   ",

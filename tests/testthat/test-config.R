@@ -41,6 +41,7 @@ blast_databases: '%s'
     # Defaults for general config
     expect_equal(config$query_chunk_count, 1)
     expect_equal(config$ncbi_bin_directory, "")
+    expect_equal(config$workers, 1)
 
     # Defaults for primer blast
     expect_equal(config$primer_blast$evalue, 3e7)
@@ -158,6 +159,7 @@ blast_databases:
   it("handles partial config by using default values for missing params", {
     temp_files <- create_minimal_valid_config(
       "query_chunk_count: 8
+workers: 3
 
 primer_blast:
   evalue: 47
@@ -178,6 +180,7 @@ plausible_amplicons:
 
     # General params (custom and defaults)
     expect_equal(config$query_chunk_count, 8)
+    expect_equal(config$workers, 3)
     expect_equal(config$ncbi_bin_directory, "")
 
     # Primer blast params (custom and defaults)

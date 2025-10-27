@@ -29,7 +29,8 @@ new_general_config <- function(params = NULL) {
     "query_chunk_count",
     # Users aren't required to specify params for the nested params.
     "primer_blast",
-    "plausible_amplicons"
+    "plausible_amplicons",
+    "workers"
   )
 
   checkmate::assert_names(
@@ -141,6 +142,14 @@ new_general_config <- function(params = NULL) {
       checkmate::assert_count(positive = TRUE)
   }
 
+  # Validate workers
+  if ("workers" %in% params_names) {
+    params$workers <- .parse_integer(params$workers)
+
+    params$workers |>
+      checkmate::assert_count(positive = TRUE)
+  }
+
   # If we get here, then we know the params is valid, so return it.
   params
 }
@@ -157,7 +166,8 @@ new_general_config <- function(params = NULL) {
     query_chunk_count = 1,
     # NOTE: we use an empty string rather than NULL here, because we don't allow
     # users to enter NULL-like values as valid paramters in the yaml files.
-    ncbi_bin_directory = ""
+    ncbi_bin_directory = "",
+    workers = 1
   )
 
   if (is.null(params)) {

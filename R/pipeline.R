@@ -15,7 +15,10 @@ pipeline <- function(config) {
   # and has the required keys/names.
   assert_config_class(config)
 
-  # Pull params from config for easier access in the pipeline
+  # Pull params from config for easier access in the pipeline.
+  #
+  # These are mainly so that we don't have to remember which values come from
+  # the config file.
   forward_primers <- config$forward_primers
   reverse_primers <- config$reverse_primers
   output_directory_path <- config$output_directory
@@ -23,6 +26,7 @@ pipeline <- function(config) {
   ncbi_bin_directory <- config$ncbi_bin_directory
   blast_db_paths <- config$blast_databases
   query_chunk_count <- config$query_chunk_count
+  workers <- config$workers
 
   # The log file goes into this directory by default. So it _must_ be created
   # before any calls to the logger!
@@ -35,8 +39,11 @@ pipeline <- function(config) {
     )
   }
 
-  # TODO: need to take this from the config as well
-  with(future::plan(future::multisession, workers = 2), local = TRUE)
+  if (workers > 1) {
+    with(future::plan(future::multisession, workers = workers), local = TRUE)
+  } else {
+    with(future::plan(future::sequential), local = TRUE)
+  }
 
   log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
 
