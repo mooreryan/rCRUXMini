@@ -1,3 +1,5 @@
+default: test
+
 test:
     Rscript --vanilla -e 'devtools::test()'
 

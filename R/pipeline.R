@@ -1,6 +1,5 @@
 # TODO: the names of the output files need fixing
 # TODO: I don't think I actually need all the output files anymore
-# TODO: take logging config in the config file
 # TODO: update the docs for params...and make sure to document them in the config section
 
 #' Run the rCRUXMini pipeline
@@ -12,16 +11,6 @@
 #' @return A list containing the pipeline results.
 #'
 pipeline <- function(config) {
-  # with(future::plan(future::multisession, workers = 2), local = TRUE)
-
-  rebind_global_logger(
-    console_level = "info",
-    file_level = NULL,
-    file_path = NULL
-  )
-
-  log_info("pipeline starting")
-
   # From here on, we assume that the params was created properly
   # and has the required keys/names.
   assert_config_class(config)
@@ -35,11 +24,8 @@ pipeline <- function(config) {
   blast_db_paths <- config$blast_databases
   query_chunk_count <- config$query_chunk_count
 
-  # TODO: would be nicer if the config itself handled this
-  if (ncbi_bin_directory == "") {
-    ncbi_bin_directory <- NULL
-  }
-
+  # The log file goes into this directory by default. So it _must_ be created
+  # before any calls to the logger!
   if (!dir.exists(output_directory_path)) {
     dir.create(
       output_directory_path,
@@ -47,6 +33,29 @@ pipeline <- function(config) {
       mode = "0750",
       recursive = TRUE
     )
+  }
+
+  # with(future::plan(future::multisession, workers = 2), local = TRUE)
+
+  log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
+
+  # Delete the log file if it exists. TODO: this breaks all tests....
+  # if (file.exists(log_file_path)) {
+  #   unlink(log_file_path)
+  # }
+
+  rebind_global_logger(
+    console_level = "info",
+    # TODO: take these from the config struct
+    file_level = "debug",
+    file_path = log_file_path
+  )
+
+  log_info("pipeline starting")
+
+  # TODO: would be nicer if the config itself handled this
+  if (ncbi_bin_directory == "") {
+    ncbi_bin_directory <- NULL
   }
 
   log_info("enumerating ambiguities")

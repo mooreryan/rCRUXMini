@@ -17,13 +17,31 @@ describe("the pipeline", {
 
     output_files_basenames <- output_files |> purrr::map(basename)
 
+    redact_log_details <- function(line) {
+      line |>
+        stringr::str_replace(
+          pattern = "\\d{4}-\\d{2}-\\d{2}",
+          replacement = "YYYY-MM-DD"
+        ) |>
+        stringr::str_replace(
+          pattern = "\\d{2}:\\d{2}:\\d{2}\\.\\d{6}",
+          replacement = "HH:mm:ss.dddddd"
+        ) |>
+        stringr::str_replace(
+          pattern = "#\\d+",
+          replacement = "#PID"
+        )
+    }
+
     output_data_files <- output_files |>
       purrr::set_names(output_files_basenames) |>
       purrr::map(function(file) {
         file |>
           readr::read_lines(n_max = 10) |>
           purrr::map(function(line) {
-            preview <- line |> stringr::str_sub(start = 1, end = 70)
+            preview <- line |>
+              redact_log_details() |>
+              stringr::str_sub(start = 1, end = 70)
             stringr::str_glue(
               "{preview}..."
             )

@@ -14,4 +14,5 @@
        [9] "primer_blast.tsv"                                            
       [10] "primer_blast_results.tsv"                                    
       [11] "primers.fasta"                                               
+      [12] "rcrux_log.txt"                                               
 

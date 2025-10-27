@@ -14,6 +14,7 @@
        [9] "primer_blast.tsv"                                            
       [10] "primer_blast_results.tsv"                                    
       [11] "primers.fasta"                                               
+      [12] "rcrux_log.txt"                                               
 
 ---
 
@@ -272,6 +273,38 @@
       
       $primers.fasta[[4]]
       GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT...
+      
+      
+      $rcrux_log.txt
+      $rcrux_log.txt[[1]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- pipeline starting...
+      
+      $rcrux_log.txt[[2]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- enumerating ambiguities...
+      
+      $rcrux_log.txt[[3]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- writing primers...
+      
+      $rcrux_log.txt[[4]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- running primer blast...
+      
+      $rcrux_log.txt[[5]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- writing primer blast resu...
+      
+      $rcrux_log.txt[[6]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- parsing primer blast resu...
+      
+      $rcrux_log.txt[[7]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- finding plausible amplico...
+      
+      $rcrux_log.txt[[8]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- adding taxonomy columns...
+      
+      $rcrux_log.txt[[9]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- finding distinct taxonomi...
+      
+      $rcrux_log.txt[[10]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- pulling amplicon data...
       
       
 
