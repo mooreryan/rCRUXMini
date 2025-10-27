@@ -44,7 +44,13 @@ pull_amplicons <- function(
   result <- furrr::future_map2(
     .x = entry_batch_paths,
     .y = blast_db_paths,
-    .f = function(entry_batch_path, blast_db_path) {
+    .pull_sequences_from_blast_db = .pull_sequences_from_blast_db,
+    .f = function(
+      entry_batch_path,
+      blast_db_path,
+      # TODO: is there a cleaner way than passing in functions?
+      .pull_sequences_from_blast_db
+    ) {
       rlang::try_fetch(
         .pull_sequences_from_blast_db(
           blastdbcmd = blastdbcmd,
@@ -53,9 +59,9 @@ pull_amplicons <- function(
         ),
         # TODO: need to check for the rcrux_error instead
         error = function(condition) {
+          # TODO: need to actually get the logger working in the future_map2 context when using multiprocessing
           rlang::warn("something bad happend in .pull_sequences_from_blast_db")
-
-          # TODO: log this error
+          rlang::warn(condition |> conditionMessage())
 
           # TODO: this type is connected to the read_delim call in
           #      .pull_sequences_from_blast_db, so it would be nice to connect

@@ -35,7 +35,8 @@ pipeline <- function(config) {
     )
   }
 
-  # with(future::plan(future::multisession, workers = 2), local = TRUE)
+  # TODO: need to take this from the config as well
+  with(future::plan(future::multisession, workers = 2), local = TRUE)
 
   log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
 

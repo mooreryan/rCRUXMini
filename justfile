@@ -1,9 +1,12 @@
 default: test
 
-test:
+clear:
+    clear; clear; clear
+
+test: clear
     Rscript --vanilla -e 'devtools::test()'
 
-test_file basename:
+test_file basename: clear
     Rscript --vanilla -e 'devtools::test_active_file("tests/testthat/test-{{ basename }}.R")'
 
 check:
