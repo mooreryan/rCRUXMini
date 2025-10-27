@@ -13,6 +13,16 @@
 #' @return A list containing the pipeline results.
 #'
 pipeline <- function(config) {
+  # with(future::plan(future::multisession, workers = 2), local = TRUE)
+
+  rebind_global_logger(
+    console_level = "info",
+    file_level = NULL,
+    file_path = NULL
+  )
+
+  log_info("pipeline starting")
+
   # From here on, we assume that the params was created properly
   # and has the required keys/names.
   assert_config_class(config)
@@ -40,6 +50,8 @@ pipeline <- function(config) {
     )
   }
 
+  log_info("enumerating ambiguities")
+
   enumerated_forward_primers <- enumerate_ambiguities(forward_primers)
   enumerated_reverse_primers <- enumerate_ambiguities(reverse_primers)
 
@@ -48,11 +60,15 @@ pipeline <- function(config) {
     "primers.fasta"
   )
 
+  log_info("writing primers")
+
   .write_primers(
     forward = enumerated_forward_primers,
     reverse = enumerated_reverse_primers,
     to_file = primers_fasta_path
   )
+
+  log_info("running primer blast")
 
   primer_blast_data <- .run_blastn(
     blast_executable_directory = ncbi_bin_directory,
@@ -67,6 +83,8 @@ pipeline <- function(config) {
 
   # TODO: checkmate the names of the output
 
+  log_info("writing primer blast results")
+
   primer_blast_data |>
     readr::write_tsv(file.path(
       output_directory_path,
@@ -78,11 +96,13 @@ pipeline <- function(config) {
     abort_rcrux_mini_error("No hits found in the primer blast data")
   }
 
+  log_info("parsing primer blast results")
   primer_blast_results <- parse_primer_blast_results(
     primer_blast_data,
     maximum_mismatches = 4
   )
 
+  log_info("finding plausible amplicon coordinates")
   plausible_amplicons_coordinates <- find_plausible_amplicon_coordinates(
     primer_blast_results,
     minimum_length = config$plausible_amplicons$minimum_length,
@@ -98,6 +118,7 @@ pipeline <- function(config) {
   }
 
   # TODO: this data frame has a completely different naming scheme than all the ones that I made later in time. These are a lot of the old rCRUX names and they no longer match up with the other stuff
+  log_info("adding taxonomy columns")
   plausible_amplicons_coordinates_with_taxonomy <- add_taxonomy_columns(
     plausible_amplicons_coordinates,
     taxonomy_db_path
@@ -109,6 +130,7 @@ pipeline <- function(config) {
       nrow(plausible_amplicons_coordinates_with_taxonomy)
   )
 
+  log_info("finding distinct taxonomic ranks")
   plausible_amplicons_coordinates_distinct_taxonomic_ranks <- distinct_taxonomic_ranks(
     plausible_amplicons_coordinates_with_taxonomy
   )
@@ -118,6 +140,7 @@ pipeline <- function(config) {
     ncbi_bin_directory = ncbi_bin_directory
   )
 
+  log_info("pulling amplicon data")
   amplicon_data <- pull_amplicons(
     blastdbcmd = blastdbcmd,
     amplicon_coordinates = plausible_amplicons_coordinates_with_taxonomy,
@@ -132,6 +155,7 @@ pipeline <- function(config) {
     )
   }
 
+  log_info("writing amplicon data to tsv")
   amplicon_data_tsv_path <- file.path(
     output_directory_path,
     "amplicon_data.tsv"
@@ -144,6 +168,7 @@ pipeline <- function(config) {
     must.include = c("accession", "sequence")
   )
 
+  log_info("writing amplicon query fasta files")
   amplicon_query_fasta_paths <- .write_pieces_to_tempfastas(
     amplicon_data,
     chunks = query_chunk_count,
@@ -151,6 +176,7 @@ pipeline <- function(config) {
     sequence_column = "sequence"
   )
 
+  log_info("running amplicon blast")
   amplicon_blast_result <- .run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = amplicon_query_fasta_paths,
@@ -188,6 +214,7 @@ pipeline <- function(config) {
   }
 
   # TODO take these from the config
+  log_info("parsing amplicon blast")
   parsed_amplicon_blast_result <- parse_amplicon_blast_results(
     amplicon_blast_result = amplicon_blast_result,
     blastdbcmd = blastdbcmd,
@@ -196,6 +223,7 @@ pipeline <- function(config) {
   ) |>
     checkmate::assert_data_frame()
 
+  log_info("checking for problems in amplicon blast")
   parsed_amplicon_blast_result <- parsed_amplicon_blast_result |>
     # TODO: these should probably be set in the parse function above
     dplyr::mutate(
@@ -242,12 +270,14 @@ pipeline <- function(config) {
   # This is sort of like the old summary.csv file combined with some of the
   # other diagnostic files that reported sequences/amplicons that had any
   # problems.
+  log_info("writing parsed amplicon blast results")
   parsed_amplicon_blast_result |>
     readr::write_tsv(file.path(
       output_directory_path,
       "parsed_amplicon_blast_results.tsv"
     ))
 
+  log_info("writing parsed amplicon blast results as fasta")
   parsed_amplicon_blast_result |>
     write_fasta(
       to_filename = file.path(
@@ -268,11 +298,13 @@ pipeline <- function(config) {
   # needs to be in the identity calculation is that the same subject ID could
   # theoretically be present in multiple different DBs, and those DBs could have
   # a different taxonomy for each of them.)
+  log_info("counting distinct taxonomic ranks")
   parsed_amplicon_blast_result_distinct_taxonomic_ranks <- distinct_taxonomic_ranks(
     parsed_amplicon_blast_result,
     id_column = "subject_accession_version"
   )
 
+  log_info("writing parsed_amplicon_blast_result_taxonomy.tsv")
   parsed_amplicon_blast_result_taxonomy <- parsed_amplicon_blast_result |>
     dplyr::select(c(
       "subject_accession_version",
@@ -291,6 +323,7 @@ pipeline <- function(config) {
       "parsed_amplicon_blast_result_taxonomy.tsv"
     ))
 
+  log_info("writing rds file")
   result <- list(
     primer_blast_results = primer_blast_results,
     plausible_amplicons_coordinates_with_taxonomy = plausible_amplicons_coordinates_with_taxonomy,
@@ -300,8 +333,9 @@ pipeline <- function(config) {
     parsed_amplicon_blast_result_distinct_taxonomic_ranks = parsed_amplicon_blast_result_distinct_taxonomic_ranks,
     parsed_amplicon_blast_result_taxonomy = parsed_amplicon_blast_result_taxonomy
   )
-
   saveRDS(result, file.path(output_directory_path, "pipeline_results.rds"))
+
+  log_info("writing more tsv files")
 
   readr::write_tsv(
     x = primer_blast_results,
