@@ -1,13 +1,3 @@
-# TODO: put these docs somewhere that the actual options are
-#
-# @param forward_primers A character vector of forward primers.
-# @param reverse_primers A character vector of reverse primers.
-# @param output_directory_path A string representing the output directory path.
-# @param blast_db_paths A character vector of BLAST database paths.
-# @param taxonomy_db_path A string representing the taxonomy database path.
-# @param query_chunk_count An integer representing the query chunk count.
-# @param ncbi_bin_directory A string representing the NCBI binary directory path.
-
 new_config <- function(config_file) {
   config_file |>
     .read_config_file() |>
