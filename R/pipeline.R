@@ -47,10 +47,10 @@ pipeline <- function(config) {
 
   log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
 
-  # Delete the log file if it exists. TODO: this breaks all tests....
-  # if (file.exists(log_file_path)) {
-  #   unlink(log_file_path)
-  # }
+  # Delete the log file if it exists.
+  if (file.exists(log_file_path)) {
+    unlink(log_file_path)
+  }
 
   rebind_global_logger(
     console_level = "info",
