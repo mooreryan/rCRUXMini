@@ -130,8 +130,6 @@ new_general_config <- function(params = NULL) {
         any.missing = FALSE,
         min.chars = 1
       )
-
-    params$blast_databases |> SnailBLAST::assert_blast_dbs_exist()
   }
 
   # Validate query_chunk_count

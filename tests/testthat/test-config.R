@@ -246,28 +246,6 @@ plausible_amplicons:
     )
   })
 
-  it("validates that blast_db_paths exist", {
-    temp_files <- create_minimal_valid_config()
-
-    # Delete the taxonomy DB file, which should trigger the validation error
-    unlink(stringr::str_glue("{temp_files$blast_db}.nsq"))
-
-    # TODO: use the add param for all on.exit calls
-    on.exit({
-      unlink(temp_files$config_file)
-      unlink(temp_files$taxonomy_db)
-      unlink(stringr::str_glue("{temp_files$blast_db}.nsq"))
-    })
-
-    expect_error(
-      new_config(temp_files$config_file),
-      # TODO: it would be better for this to be an rcrux error or even a
-      # SnailBLAST error
-      class = "checkmateError",
-      regexp = "No .nsq or .psq file found"
-    )
-  })
-
   it("validates that ncbi_bin_directory exists when provided", {
     # We don't create this file!
     ncbi_bin <- tempfile()
