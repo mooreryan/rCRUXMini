@@ -9,6 +9,7 @@ ncbi_bin_directory: "/usr/local/ncbi/blast/bin"
 blast_databases: "./rCRUXMini/tests/testthat/data/small_test_db/generated_sequences"
 
 query_chunk_count: 1
+workers: 4
 
 primer_blast:
   evalue: 3e7

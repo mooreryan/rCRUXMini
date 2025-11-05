@@ -1,7 +1,12 @@
 # This is a facade over littlelogger. It will make it easier if the logger needs
 # to change later.
 
-#' CALL THIS FUNCTION AT YOUR OWN PERIL!
+#' Rebind the global logger, e.g., to take into account values taken from the
+#' config file.
+#'
+#' This function should only be called _once_, and near the top of the
+#' \code{pipeline} function after the directory in which you will be logging to
+#' has been created. IGNORE THIS ADVICE AT YOUR OWN PERIL!
 #'
 rebind_global_logger <- function(
   console_level,

@@ -1,3 +1,7 @@
+START HERE: run the CLI on the real NCBI data and check it on split vs single
+
+- If the parent R process is killed...you will get ZOMBIE WORKERS!!!
+
 # rCRUXMini
 
 <!-- badges: start -->

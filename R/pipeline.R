@@ -851,6 +851,7 @@ test_file_non_empty <- function(path) {
       args,
       stderr
     ) {
+      # TODO: logging and also I think this gets truncated? (It does, regular message doesn't)
       warning(paste(
         "Job failed for query",
         query_path,
