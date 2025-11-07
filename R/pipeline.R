@@ -1,6 +1,7 @@
 # TODO: the names of the output files need fixing
 # TODO: I don't think I actually need all the output files anymore
 # TODO: update the docs for params...and make sure to document them in the config section
+# TODO: does the distinct taxonomic ranks exclude records that have "problems" (by the problems column?)
 
 #' Run the rCRUXMini pipeline
 #'
