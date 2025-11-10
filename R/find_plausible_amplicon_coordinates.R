@@ -3,11 +3,8 @@
 #' Note that the product length represents the full PCR product length which
 #' includes the primers.
 #'
-#' TODO: these terms are pretty ambiguous...is it the length of the PCR product, or is it the part with the primers stripped off?
-#'
-#' PCR product includes the primers
-#' target sequence is the good stuff between the primers
-#' amplicon is ambiguous
+#' TODO: need to clarify the lengths and stuff: PCR product includes the primers
+#' target sequence is the good stuff between the primers amplicon is ambiguous
 #'
 #' @param forward_start Numeric vector of forward primer start positions
 #' @param forward_stop Numeric vector of forward primer stop positions
@@ -54,6 +51,24 @@
   )
 }
 
+# We need to process these target by target, rather than building the whole join
+# at once to avoid the cartesian explosion, which can overflow the 32 bit int
+# used in the join, as some targets may have 10,000 hits, e.g., this test
+# against nt (late 2025 version)
+#
+# First field is the count, second field is the target/subject GI
+#
+# $ sed -E 's/^ +//' hits | awk '$1 > 10' | sort -nr | head
+# 11930 2440392461
+# 10539 2705591226
+# 8999 2020514959
+# 7410 2734211036
+# 7132 2440392458
+# 6843 2020514973
+# 6569 2211227459
+# 6041 2955233968
+# 5999 2626227570
+# 5957 2955233952
 .find_all_product_lengths <- function(forward_hits, reverse_hits) {
   checkmate::assert_data_frame(
     forward_hits,
@@ -103,25 +118,78 @@
     )
   )
 
-  result <- dplyr::inner_join(
-    forward_hits,
-    reverse_hits,
-    # TODO: why bother including staxids here? Seems redundant.
+  grouped_forward_hits <- forward_hits |>
+    dplyr::group_by(
+      .data$subject_accession_version,
+      .data$subject_gi,
+      .data$unique_subject_taxonomy_ids
+    ) |>
+    tidyr::nest(
+      forward_info = c("forward_start", "forward_stop", "forward_mismatch")
+    )
+
+  grouped_reverse_hits <- reverse_hits |>
+    dplyr::group_by(
+      .data$subject_accession_version,
+      .data$subject_gi,
+      .data$unique_subject_taxonomy_ids
+    ) |>
+    tidyr::nest(
+      reverse_info = c("reverse_start", "reverse_stop", "reverse_mismatch")
+    )
+
+  result0 <- dplyr::inner_join(
+    grouped_forward_hits,
+    grouped_reverse_hits,
     by = c(
       "subject_accession_version",
       "subject_gi",
       "unique_subject_taxonomy_ids"
     ),
     relationship = "many-to-many"
-  ) |>
-    dplyr::mutate(
-      product_length = .calculate_product_length(
-        forward_start = .data$forward_start,
-        forward_stop = .data$forward_stop,
-        reverse_start = .data$reverse_start,
-        reverse_stop = .data$reverse_stop
-      )
+  )
+
+  if (nrow(result0) == 0) {
+    result <- tibble::tibble(
+      subject_accession_version = character(0),
+      subject_gi = character(0),
+      unique_subject_taxonomy_ids = character(0),
+      forward_start = integer(0),
+      forward_stop = integer(0),
+      forward_mismatch = integer(0),
+      reverse_start = integer(0),
+      reverse_stop = integer(0),
+      reverse_mismatch = integer(0),
+      product_length = integer(0)
     )
+  } else {
+    result <- result0 |>
+      dplyr::rowwise() |>
+      dplyr::reframe({
+        # Need to capture these values outside of the `mutate` call.
+        subject_accession_version_ <- .data$subject_accession_version
+        subject_gi_ <- .data$subject_gi
+        unique_subject_taxonomy_ids_ <- .data$unique_subject_taxonomy_ids
+
+        # Need to capture these values outside of the `expand_grid` call.
+        forward_info_ <- .data$forward_info
+        reverse_info_ <- .data$reverse_info
+
+        tidyr::expand_grid(forward_info_, reverse_info_) |>
+          dplyr::mutate(
+            subject_accession_version = subject_accession_version_,
+            subject_gi = subject_gi_,
+            unique_subject_taxonomy_ids = unique_subject_taxonomy_ids_,
+
+            product_length = .calculate_product_length(
+              forward_start = .data$forward_start,
+              forward_stop = .data$forward_stop,
+              reverse_start = .data$reverse_start,
+              reverse_stop = .data$reverse_stop
+            )
+          )
+      })
+  }
 
   checkmate::assert_names(
     names(result),
@@ -207,22 +275,10 @@ find_plausible_amplicon_coordinates <- function(
       reverse_mismatch = "mismatch"
     )
 
-  # TODO: note that the starts and stops may be a little different that you might expect given the generated sequences depending on what is around the primers. (e.g., see sequence_11)
+  # Note that in the tests, the starts and stops may be a little different that
+  # you might expect given the generated sequences depending on what is around
+  # the primers. (e.g., see sequence_11)
 
-  # TODO: we need to process these target by target, rather than building the whole join at once to avoid the cartesian explosion ... some targets may have 10,000 hits
-  #
-  # moorer | biomix14 | big_nt_test__split -> sed -E 's/^ +//' YO | awk '$1 > 10' | sort -nr | head
-  # 11930 2440392461
-  # 10539 2705591226
-  # 8999 2020514959
-  # 7410 2734211036
-  # 7132 2440392458
-  # 6843 2020514973
-  # 6569 2211227459
-  # 6041 2955233968
-  # 5999 2626227570
-  # 5957 2955233952
-  # Join and calculate amplicon length in one step
   amplicons <- .find_all_product_lengths(forward_hits, reverse_hits) |>
     dplyr::filter(
       # product length will be NA if none of the case_when conditions match
