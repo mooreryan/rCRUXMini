@@ -182,14 +182,14 @@ pipeline <- function(config) {
   checkmate::assert_names(
     names(amplicon_data),
     # TODO: would be nice to always use accession version for everything
-    must.include = c("accession", "sequence")
+    must.include = c("subject_accession_version", "sequence")
   )
 
   log_info("writing amplicon query fasta files")
   amplicon_query_fasta_paths <- .write_pieces_to_tempfastas(
     amplicon_data,
     chunks = query_chunk_count,
-    id_column = "accession",
+    id_column = "subject_accession_version",
     sequence_column = "sequence"
   )
 
@@ -504,9 +504,9 @@ find_plausible_amplicon_coordinates <- function(
   forward_hits <- filtered_primer_blast_results |>
     dplyr::filter(stringr::str_detect(.data$qseqid, "forward")) |>
     dplyr::select(
-      accession = "saccver",
-      gi = "sgi",
-      "staxids",
+      subject_accession_version = "saccver",
+      subject_gi = "sgi",
+      unique_subject_taxonomy_ids = "staxids",
       forward_start = "sstart",
       forward_stop = "send",
       forward_mismatch = "mismatch"
@@ -515,9 +515,9 @@ find_plausible_amplicon_coordinates <- function(
   reverse_hits <- filtered_primer_blast_results |>
     dplyr::filter(stringr::str_detect(.data$qseqid, "reverse")) |>
     dplyr::select(
-      accession = "saccver",
-      gi = "sgi",
-      "staxids",
+      subject_accession_version = "saccver",
+      subject_gi = "sgi",
+      unique_subject_taxonomy_ids = "staxids",
       reverse_start = "sstart",
       reverse_stop = "send",
       reverse_mismatch = "mismatch"
@@ -525,15 +525,33 @@ find_plausible_amplicon_coordinates <- function(
 
   # TODO: note that the starts and stops may be a little different that you might expect given the generated sequences depending on what is around the primers. (e.g., see sequence_11)
 
+  # TODO: we need to process these target by target, rather than building the whole join at once to avoid the cartesian explosion ... some targets may have 10,000 hits
+  #
+  # moorer | biomix14 | big_nt_test__split -> sed -E 's/^ +//' YO | awk '$1 > 10' | sort -nr | head
+  # 11930 2440392461
+  # 10539 2705591226
+  # 8999 2020514959
+  # 7410 2734211036
+  # 7132 2440392458
+  # 6843 2020514973
+  # 6569 2211227459
+  # 6041 2955233968
+  # 5999 2626227570
+  # 5957 2955233952
   # Join and calculate amplicon length in one step
   amplicons <- dplyr::inner_join(
     forward_hits,
     reverse_hits,
-    by = c("accession", "gi", "staxids"),
+    # TODO: why bother including staxids here? Seems redundant.
+    by = c(
+      "subject_accession_version",
+      "subject_gi",
+      "unique_subject_taxonomy_ids"
+    ),
     relationship = "many-to-many"
   ) |>
     dplyr::mutate(
-      # TODO: this product length is off by 2 (off by one on both sides?)
+      # TODO: is this product length is off by 2 (off by one on both sides?)
       product_length = dplyr::case_when(
         #  F ---------->                        <------------ R  Primers
         # ====================================================== DNA Target
@@ -565,15 +583,15 @@ find_plausible_amplicon_coordinates <- function(
     ) |>
     # What if there is more than one plausible amplicon,
     # shouldn't we select the best?
-    dplyr::distinct(.data$accession, .keep_all = TRUE)
+    dplyr::distinct(.data$subject_accession_version, .keep_all = TRUE)
 
   # TODO: switch to assert data frame
   checkmate::assert_names(
     names(amplicons),
     must.include = c(
-      "accession",
-      "gi",
-      "staxids",
+      "subject_accession_version",
+      "subject_gi",
+      "unique_subject_taxonomy_ids",
       "forward_start",
       "forward_stop",
       "forward_mismatch",
@@ -597,21 +615,24 @@ find_plausible_amplicon_coordinates <- function(
 # E.g., "I have a dataframe with many columns, add taxonomy info to it"
 add_taxonomy_columns <- function(input_data, taxonomy_db_path) {
   checkmate::assert_data_frame(input_data, min.rows = 1)
-  checkmate::assert_names(names(input_data), must.include = c("accession"))
-  checkmate::assert_character(input_data$accession)
+  checkmate::assert_names(
+    names(input_data),
+    must.include = c("subject_accession_version")
+  )
+  checkmate::assert_character(input_data$subject_accession_version)
   checkmate::assert_file_exists(taxonomy_db_path)
 
   taxonomy_table <- create_taxonomy_table(
-    accessions = input_data$accession,
+    accessions = input_data$subject_accession_version,
     taxonomy_db_path = taxonomy_db_path,
-    accession_column_name = "accession"
+    accession_column_name = "subject_accession_version"
   )
 
   # TODO: look up the join options
   result <- dplyr::left_join(
     input_data,
     taxonomy_table,
-    by = "accession",
+    by = "subject_accession_version",
     # Be careful and explicit about the relationship to try and catch errors
     # early
     relationship = "one-to-one",
@@ -627,7 +648,10 @@ add_taxonomy_columns <- function(input_data, taxonomy_db_path) {
       "species"
     )
 
-  checkmate::assert_data_frame(result, nrows = length(input_data$accession))
+  checkmate::assert_data_frame(
+    result,
+    nrows = length(input_data$subject_accession_version)
+  )
 
   result
 }

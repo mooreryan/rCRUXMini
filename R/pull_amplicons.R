@@ -69,7 +69,7 @@ pull_amplicons <- function(
           tibble::tibble(
             index = integer(0),
             blast_ordinal_id = integer(0),
-            accession = character(0),
+            subject_accession_version = character(0),
             sequence_hash_value = character(0),
             sequence = character(0)
           )
@@ -89,8 +89,7 @@ pull_amplicons <- function(
     permutation.of = c(
       "index",
       "blast_ordinal_id",
-      # TODO: need to be more specific with this accession name (version? subject?)
-      "accession",
+      "subject_accession_version",
       "sequence_hash_value",
       "sequence",
       "blast_db_path"
@@ -121,7 +120,7 @@ pull_amplicons <- function(
   checkmate::assert_names(
     names(amplicon_coordinates),
     must.include = c(
-      "accession",
+      "subject_accession_version",
       "forward_start",
       "forward_stop",
       "reverse_start",
@@ -156,7 +155,11 @@ pull_amplicons <- function(
         na.rm = TRUE
       )
     ) |>
-    dplyr::select("accession", "far_left_coordinate", "far_right_coordinate") |>
+    dplyr::select(
+      "subject_accession_version",
+      "far_left_coordinate",
+      "far_right_coordinate"
+    ) |>
 
     # Original code uses forward_stop and reverse_stop, which I think is a bug. -- actually not sure if its a bug since they will change the reverse start/stop depending on orientation...but the primers should probably be included in the product so theirs is probably a bug regardless
     # Since that would exclude the forward primer and include the reverse. This
@@ -170,7 +173,7 @@ pull_amplicons <- function(
     ) |>
     # This should already be all the columns that are left, but just to be
     # sure....
-    dplyr::select("accession", "range")
+    dplyr::select("subject_accession_version", "range")
 }
 
 .write_to_tempfile <- function(data_frame, delim) {
@@ -292,6 +295,10 @@ pull_amplicons <- function(
       "-outfmt",
       # This is blast ordinal ID (OID), accession, sequence hash value, sequence
       #
+      # Note that the "accession" as returned by blastdbcmd will include the
+      # version if the BLAST DB has accessoins with versions. So we will call it
+      # subject_accession_version to match with everything else in the code.
+      #
       # TODO: be careful about blast ordinal IDs. You could have a case where a
       # mostly identical hit has a different blast ordinal ID if it came from a
       # different DB. The e-values would likely not match though as the DB
@@ -347,7 +354,7 @@ pull_amplicons <- function(
       col_names = c(
         # You will need this for grouping sequences later
         "blast_ordinal_id",
-        "accession",
+        "subject_accession_version",
         "sequence_hash_value",
         "sequence"
       ),

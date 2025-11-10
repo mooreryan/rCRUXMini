@@ -44,3 +44,7 @@ Keep in mind that pretty much all functions may throw a `checkmateError` which s
 ---
 
 We need to manually exclude non-R files because lintr in Zed will try to lint non-R files.
+
+---
+
+Plausible amplicon coordinates files have `subject_accession_version`, `subject_gi`, `unique_subject_taxonomy`, etc. This is because those are the subjects from the BLAST DBs that you searched against.
