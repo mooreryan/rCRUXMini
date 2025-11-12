@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - "--include-directory=/Library/Frameworks/R.framework/Resources/include"
+    - "--include-directory=/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include"
+    - "--include-directory=/opt/homebrew/opt/libomp/include"
+    - "--include-directory=/opt/homebrew/include"

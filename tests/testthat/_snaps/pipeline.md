@@ -8,13 +8,12 @@
        [3] "parsed_amplicon_blast_result_taxonomy.tsv"                   
        [4] "parsed_amplicon_blast_results.fasta"                         
        [5] "parsed_amplicon_blast_results.tsv"                           
-       [6] "pipeline_results.rds"                                        
+       [6] "plausible_amplicon_coordinates.tsv"                          
        [7] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
        [8] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
        [9] "primer_blast.tsv"                                            
-      [10] "primer_blast_results.tsv"                                    
-      [11] "primers.fasta"                                               
-      [12] "rcrux_log.txt"                                               
+      [10] "primers.fasta"                                               
+      [11] "rcrux_log.txt"                                               
 
 ---
 
@@ -29,7 +28,7 @@
       1	1	11	sequence_11	0X7C670790	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
       
       $amplicon_data.tsv[[3]]
-      1	2	15	sequence_15	0X1027983E	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCC...
+      1	2	15	sequence_15	0X1027983E	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
       
       $amplicon_data.tsv[[4]]
       1	3	17	sequence_17	0X58F529BF	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
@@ -44,7 +43,7 @@
       1	6	21	sequence_21	0XC55CED3B	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
       
       $amplicon_data.tsv[[8]]
-      1	7	22	sequence_22	0X71ABE309	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC...
+      1	7	22	sequence_22	0X71ABE309	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCC...
       
       $amplicon_data.tsv[[9]]
       1	8	27	sequence_27	0XDC7C7B5	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCC...
@@ -116,7 +115,7 @@
       >sequence_15...
       
       $parsed_amplicon_blast_results.fasta[[8]]
-      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCTCTAGACCTCAAGGTAGCGTTT...
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCTCTAGACCTCAAGGTAGCGTTTC...
       
       $parsed_amplicon_blast_results.fasta[[9]]
       >sequence_16...
@@ -139,7 +138,7 @@
       sequence_11	sequence_11	100	320	8.059999999999999e-171	7763	5724	6043	...
       
       $parsed_amplicon_blast_results.tsv[[5]]
-      sequence_15	sequence_15	100	640	0	7334	6665	7304	AAAAAAAAAAAAAAAAAAAAA...
+      sequence_15	sequence_15	100	639	0	7334	6666	7304	AAAAAAAAAAAAAAAAAAAAA...
       
       $parsed_amplicon_blast_results.tsv[[6]]
       sequence_15	sequence_16	98.718	546	0	7240	6666	7211	TCTAGACCTCAAGGTAGC...
@@ -155,6 +154,38 @@
       
       $parsed_amplicon_blast_results.tsv[[10]]
       sequence_2	sequence_2	100	319	2.89e-170	777	48	366	AAAAAAAAAAAAAAAAAAA...
+      
+      
+      $plausible_amplicon_coordinates.tsv
+      $plausible_amplicon_coordinates.tsv[[1]]
+      saccver	sgi	staxids	forward_start	forward_stop	forward_mismatch	revers...
+      
+      $plausible_amplicon_coordinates.tsv[[2]]
+      sequence_47	0	3118629	9814	9860	0	10126	10080	0	312...
+      
+      $plausible_amplicon_coordinates.tsv[[3]]
+      sequence_88	0	2815379	32	78	0	382	336	1	350...
+      
+      $plausible_amplicon_coordinates.tsv[[4]]
+      sequence_4	0	1144371	20	66	1	419	373	0	399...
+      
+      $plausible_amplicon_coordinates.tsv[[5]]
+      sequence_31	0	732243	33	79	0	479	433	0	446...
+      
+      $plausible_amplicon_coordinates.tsv[[6]]
+      sequence_21	0	2980489	264	310	0	702	656	0	438...
+      
+      $plausible_amplicon_coordinates.tsv[[7]]
+      sequence_44	0	1720847	5	51	0	606	560	1	601...
+      
+      $plausible_amplicon_coordinates.tsv[[8]]
+      sequence_38	0	1861726	5430	5476	0	5811	5765	0	381...
+      
+      $plausible_amplicon_coordinates.tsv[[9]]
+      sequence_37	0	2969134	190	236	0	612	566	0	422...
+      
+      $plausible_amplicon_coordinates.tsv[[10]]
+      sequence_99	0	5987	2380	2426	0	2835	2789	0	455...
       
       
       $plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv
@@ -173,7 +204,7 @@
       sequence_11	0	1861716	5724	5770	0	6043	5997	1	319	1861716	Diplosphaera...
       
       $plausible_amplicons_coordinates_with_taxonomy.tsv[[3]]
-      sequence_15	0	1400020	6665	6711	1	7304	7258	0	639	1400020	Deuterostich...
+      sequence_15	0	1400020	6666	6712	0	7304	7258	0	638	1400020	Deuterostich...
       
       $plausible_amplicons_coordinates_with_taxonomy.tsv[[4]]
       sequence_17	0	1077733	156	202	0	678	632	0	522	1077733	Diplosphaera sp....
@@ -185,10 +216,10 @@
       sequence_2	0	2735166	48	94	0	366	320	0	318	2735166	NA	NA	Viridiplantae...
       
       $plausible_amplicons_coordinates_with_taxonomy.tsv[[7]]
-      sequence_21	0	2980489	264	310	0	701	655	1	437	2980489	Trimyema sp. str...
+      sequence_21	0	2980489	264	310	0	702	656	0	438	2980489	Trimyema sp. str...
       
       $plausible_amplicons_coordinates_with_taxonomy.tsv[[8]]
-      sequence_22	0	1461498	3579	3625	0	4149	4103	0	570	1461498	Stichococcus...
+      sequence_22	0	1461498	3581	3627	2	4149	4103	0	568	1461498	Stichococcus...
       
       $plausible_amplicons_coordinates_with_taxonomy.tsv[[9]]
       sequence_27	0	40805	7496	7542	0	7980	7934	1	484	40805	NA	NA	NA	Cilioph...
@@ -229,38 +260,6 @@
       forward_1	0	sequence_88	0	32	78	2815379...
       
       
-      $primer_blast_results.tsv
-      $primer_blast_results.tsv[[1]]
-      qseqid	sgi	saccver	mismatch	sstart	send	staxids...
-      
-      $primer_blast_results.tsv[[2]]
-      forward_1	0	sequence_0	0	335	381	1861737...
-      
-      $primer_blast_results.tsv[[3]]
-      forward_1	0	sequence_0	1	336	382	1861737...
-      
-      $primer_blast_results.tsv[[4]]
-      reverse_1	0	sequence_0	0	1009	963	1861737...
-      
-      $primer_blast_results.tsv[[5]]
-      reverse_1	0	sequence_0	1	1010	964	1861737...
-      
-      $primer_blast_results.tsv[[6]]
-      forward_1	0	sequence_11	0	5724	5770	1861716...
-      
-      $primer_blast_results.tsv[[7]]
-      reverse_1	0	sequence_11	1	6043	5997	1861716...
-      
-      $primer_blast_results.tsv[[8]]
-      reverse_1	0	sequence_11	0	6044	5998	1861716...
-      
-      $primer_blast_results.tsv[[9]]
-      forward_1	0	sequence_15	1	6665	6711	1400020...
-      
-      $primer_blast_results.tsv[[10]]
-      forward_1	0	sequence_15	0	6666	6712	1400020...
-      
-      
       $primers.fasta
       $primers.fasta[[1]]
       >forward_1...
@@ -295,16 +294,16 @@
       I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- parsing primer blast resu...
       
       $rcrux_log.txt[[7]]
-      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- finding plausible amplico...
-      
-      $rcrux_log.txt[[8]]
       I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- adding taxonomy columns...
       
-      $rcrux_log.txt[[9]]
+      $rcrux_log.txt[[8]]
       I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- finding distinct taxonomi...
       
-      $rcrux_log.txt[[10]]
+      $rcrux_log.txt[[9]]
       I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- pulling amplicon data...
+      
+      $rcrux_log.txt[[10]]
+      I, [YYYY-MM-DD HH:mm:ss.dddddd #PID] INFO -- writing amplicon data to ...
       
       
 
@@ -313,33 +312,17 @@
     Code
       result
     Output
-      $primer_blast_results
-      # A tibble: 131 x 7
-         qseqid    sgi   saccver     mismatch sstart  send staxids
-         <chr>     <chr> <chr>          <int>  <int> <int> <chr>  
-       1 forward_1 0     sequence_0         0    335   381 1861737
-       2 forward_1 0     sequence_0         1    336   382 1861737
-       3 reverse_1 0     sequence_0         0   1009   963 1861737
-       4 reverse_1 0     sequence_0         1   1010   964 1861737
-       5 forward_1 0     sequence_11        0   5724  5770 1861716
-       6 reverse_1 0     sequence_11        1   6043  5997 1861716
-       7 reverse_1 0     sequence_11        0   6044  5998 1861716
-       8 forward_1 0     sequence_15        1   6665  6711 1400020
-       9 forward_1 0     sequence_15        0   6666  6712 1400020
-      10 reverse_1 0     sequence_15        0   7304  7258 1400020
-      # i 121 more rows
-      
       $plausible_amplicons_coordinates_with_taxonomy
       # A tibble: 38 x 33
          subject_accession_version subject_gi unique_subject_taxonomy_~1 forward_start
          <chr>                     <chr>      <chr>                              <int>
        1 sequence_11               0          1861716                             5724
-       2 sequence_15               0          1400020                             6665
+       2 sequence_15               0          1400020                             6666
        3 sequence_17               0          1077733                              156
        4 sequence_18               0          1909397                               14
        5 sequence_2                0          2735166                               48
        6 sequence_21               0          2980489                              264
-       7 sequence_22               0          1461498                             3579
+       7 sequence_22               0          1461498                             3581
        8 sequence_27               0          40805                               7496
        9 sequence_28               0          2749887                             5319
       10 sequence_31               0          732243                                33

@@ -189,7 +189,7 @@ abort_rcrux_mini_error <- function(message, ...) {
 #'
 #' @return A single string: the path to the command.
 #'
-#' @throws \code{rcrux_mini_error} if the command is not found.
+#' Throws \code{rcrux_mini_error} if the command is not found.
 #'
 #'
 sys_which_or_abort <- function(command, ncbi_bin_directory) {

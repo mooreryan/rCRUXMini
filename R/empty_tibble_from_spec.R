@@ -5,12 +5,12 @@
 #'
 #' @examples
 #' # Create a column specification
-#' spec <- cols(
-#'   id = col_integer(),
-#'   name = col_character(),
-#'   score = col_double(),
-#'   date = col_date(),
-#'   active = col_logical()
+#' spec <- readr::cols(
+#'   id = readr::col_integer(),
+#'   name = readr::col_character(),
+#'   score = readr::col_double(),
+#'   date = readr::col_date(),
+#'   active = readr::col_logical()
 #' )
 #'
 #' # Generate empty tibble

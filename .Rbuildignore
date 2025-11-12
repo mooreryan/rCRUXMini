@@ -5,3 +5,15 @@
 ^\.Rproj\.user$
 ^_.*
 ^.zed$
+
+^_big_nt_test_data$
+.*.html
+\.RData
+\.Rhistory
+\.Rproj\.user
+
+^.clangd$
+
+src/.*tmp
+src/build
+src/cmake-.*

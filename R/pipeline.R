@@ -87,6 +87,7 @@ pipeline <- function(config) {
 
   log_info("running primer blast")
 
+  # TODO: check to see if reading all this data into the data frame is an issue
   primer_blast_data <- .run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_path,
@@ -101,31 +102,40 @@ pipeline <- function(config) {
   # TODO: checkmate the names of the output
 
   log_info("writing primer blast results")
-
-  primer_blast_data |>
-    readr::write_tsv(file.path(
-      output_directory_path,
-      "primer_blast.tsv"
-    ))
+  primer_blast_tsv <- file.path(
+    output_directory_path,
+    "primer_blast.tsv"
+  )
+  primer_blast_data |> readr::write_tsv(primer_blast_tsv)
 
   # TODO: shutdown gracefully
   if (nrow(primer_blast_data) == 0) {
     abort_rcrux_mini_error("No hits found in the primer blast data")
   }
 
-  log_info("parsing primer blast results")
-  primer_blast_results <- parse_primer_blast_results(
-    primer_blast_data,
-    maximum_mismatches = 4
+  log_info("parsing primer blast results to find plausible amplicons")
+  plausible_amplicon_coordinates_tsv <- file.path(
+    output_directory_path,
+    "plausible_amplicon_coordinates.tsv"
   )
-
-  log_info("finding plausible amplicon coordinates")
-  plausible_amplicons_coordinates <- find_plausible_amplicon_coordinates(
-    primer_blast_results,
+  parse_primer_blast(
+    primer_blast_tsv = primer_blast_tsv,
+    output_tsv = plausible_amplicon_coordinates_tsv,
+    maximum_mismatches = config$plausible_amplicons$maximum_mismatches,
     minimum_length = config$plausible_amplicons$minimum_length,
     maximum_length = config$plausible_amplicons$maximum_length,
-    maximum_mismatches = config$plausible_amplicons$maximum_mismatches
+    num_threads = config$workers
   )
+  plausible_amplicons_coordinates <- readr::read_tsv(
+    plausible_amplicon_coordinates_tsv,
+    col_types = "ccciiiiiii"
+  ) |>
+    dplyr::rename(
+      subject_accession_version = "saccver",
+      subject_gi = "sgi",
+      unique_subject_taxonomy_ids = "staxids"
+    ) |>
+    dplyr::arrange(.data$subject_accession_version)
 
   # TODO: gracefully handle if there are no plausible amplicons.
   #       This throws the assertion error, which isn't very nice for the user.
@@ -181,7 +191,6 @@ pipeline <- function(config) {
 
   checkmate::assert_names(
     names(amplicon_data),
-    # TODO: would be nice to always use accession version for everything
     must.include = c("subject_accession_version", "sequence")
   )
 
@@ -230,7 +239,6 @@ pipeline <- function(config) {
     abort_rcrux_mini_error("No hits found in the amplicon blast result")
   }
 
-  # TODO take these from the config
   log_info("parsing amplicon blast")
   parsed_amplicon_blast_result <- parse_amplicon_blast_results(
     amplicon_blast_result = amplicon_blast_result,
@@ -340,9 +348,9 @@ pipeline <- function(config) {
       "parsed_amplicon_blast_result_taxonomy.tsv"
     ))
 
-  log_info("writing rds file")
+  # log_info("writing rds file")
   result <- list(
-    primer_blast_results = primer_blast_results,
+    # primer_blast_results = primer_blast_results,
     plausible_amplicons_coordinates_with_taxonomy = plausible_amplicons_coordinates_with_taxonomy,
     plausible_amplicons_coordinates_distinct_taxonomic_ranks = plausible_amplicons_coordinates_distinct_taxonomic_ranks,
     amplicon_blast_result = amplicon_blast_result,
@@ -350,14 +358,14 @@ pipeline <- function(config) {
     parsed_amplicon_blast_result_distinct_taxonomic_ranks = parsed_amplicon_blast_result_distinct_taxonomic_ranks,
     parsed_amplicon_blast_result_taxonomy = parsed_amplicon_blast_result_taxonomy
   )
-  saveRDS(result, file.path(output_directory_path, "pipeline_results.rds"))
+  # saveRDS(result, file.path(output_directory_path, "pipeline_results.rds"))
 
   log_info("writing more tsv files")
 
-  readr::write_tsv(
-    x = primer_blast_results,
-    file = file.path(output_directory_path, "primer_blast_results.tsv")
-  )
+  # readr::write_tsv(
+  #   x = primer_blast_results,
+  #   file = file.path(output_directory_path, "primer_blast_results.tsv")
+  # )
   readr::write_tsv(
     x = plausible_amplicons_coordinates_with_taxonomy,
     file = file.path(
@@ -385,79 +393,6 @@ pipeline <- function(config) {
 # NOTE: You may have duplicate accessions in this output, IF they have different
 # coordinates.
 #
-# TODO: you will need to adapt the tests for the original function which parsed
-#       a real file to work with this one that takes the data frame directly.
-parse_primer_blast_results <- function(
-  primer_blast_data,
-  maximum_mismatches = 4
-) {
-  # TODO: does this lower value make sense?
-  checkmate::assert_int(maximum_mismatches, lower = 0)
-  checkmate::assert_data_frame(
-    primer_blast_data,
-    min.rows = 1,
-    # TODO: you need the other function to check col names
-    # col.names = names(primer_blast_column_types),
-    # Checkmate needs the types in a different form than readr, so we don't
-    # use the data from primer_blast_column_types directly.
-    types = c(
-      "character",
-      "character",
-      "character",
-      "integer",
-      "integer",
-      "integer",
-      "character"
-    )
-  )
-
-  # TODO: column names assert
-
-  result <- primer_blast_data |>
-    # TODO: pretty sure the original code was confused about whether it should
-    #       be 4 or 6 max mismatches.
-    #
-    # We only care about hits with less than 4 mismatches.
-    dplyr::filter(.data$mismatch < maximum_mismatches) |>
-    # Group by target sequence and target sequence start position
-    dplyr::group_by(.data$saccver, .data$sstart) |>
-    # Keep hits with the lowest number of mismatches
-    dplyr::filter(.data$mismatch == min(.data$mismatch)) |>
-    # Remove any remaining hits with duplicate saacver-sstart pairs, ignoring
-    # any other differences like send.
-    dplyr::slice(1)
-
-  result <- result |>
-    # Keep only the accessions that have both a forward and a reverse primer hit
-    dplyr::group_by(.data$saccver) |>
-    dplyr::filter(
-      # TODO: pull these forward and reverse names into a global -- it's also
-      #       used in to_fasta_string
-      any(grepl("forward", .data$qseqid)) & any(grepl("reverse", .data$qseqid))
-    ) |>
-    # Remove duplicate end positions per accession
-    dplyr::distinct(.data$saccver, .data$send, .keep_all = TRUE)
-
-  # Ungroup and sort
-  result <- result |>
-    dplyr::ungroup() |>
-    dplyr::arrange(.data$saccver, .data$sstart, .data$mismatch)
-
-  # TODO: min rows shouldn't be a checkmate thing right? or is it just to ensure
-  #       we didn't lose anything in the parsing
-
-  # TODO: checkmate on results
-  checkmate::assert_data_frame(
-    result,
-    min.rows = 1,
-    # The result is potentially removing rows, so it should never have more
-    # rows than the starting data does.
-    max.rows = nrow(primer_blast_data)
-  )
-
-  result
-}
-
 
 # This function will throw if taxonomy data cannot be found for the given
 # accessions.
@@ -481,7 +416,6 @@ add_taxonomy_columns <- function(input_data, taxonomy_db_path) {
     taxonomy_db_path = taxonomy_db_path,
     accession_column_name = "subject_accession_version"
   )
-
   # TODO: look up the join options
   result <- dplyr::left_join(
     input_data,

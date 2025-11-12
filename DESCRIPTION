@@ -30,9 +30,15 @@ Imports:
     slider,
     stringr,
     taxonomizr,
-    yaml
+    yaml,
+    data.table,
+    Rcpp
 Remotes:
     mooreryan/littlelogger,
     mooreryan/SnailBLAST
 Depends:
     R (>= 3.5)
+RoxygenNote: 7.3.3
+LinkingTo:
+    Rcpp
+SystemRequirements: C++11

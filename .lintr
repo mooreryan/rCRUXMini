@@ -5,6 +5,7 @@ linters: linters_with_defaults(
   )
 exclusions: list(
   ".lintr",
-  "./tests/testthat/data/example_pipeline_config.yml"
+  "./tests/testthat/data/example_pipeline_config.yml",
+  "./src/parse_primer_blast.cpp"
   )
 encoding: "UTF-8"

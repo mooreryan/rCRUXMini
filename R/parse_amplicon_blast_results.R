@@ -1,3 +1,5 @@
+#' Parse amplicon blast results
+#'
 #' @param ambiguous_run_limit \code{integer(1)}\cr
 #'   Sets the max allowed number of ambiguous bases in a row that a sequence
 #'   can have before it is thrown out.
