@@ -88,7 +88,7 @@ pipeline <- function(config) {
   log_info("running primer blast")
 
   # TODO: check to see if reading all this data into the data frame is an issue
-  primer_blast_data <- .run_blastn(
+  primer_blast_data <- run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
@@ -203,7 +203,7 @@ pipeline <- function(config) {
   )
 
   log_info("running amplicon blast")
-  amplicon_blast_result <- .run_blastn(
+  amplicon_blast_result <- run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = amplicon_query_fasta_paths,
     db_paths = blast_db_paths,
@@ -631,77 +631,5 @@ test_file_non_empty <- function(path) {
     x = to_fasta_string("reverse", reverse),
     file = to_file,
     append = TRUE
-  )
-}
-
-
-# TODO: would be nice to include the blast_db_path in the output here.
-#
-#' Wrapper for \code{SnailBLAST::crawl} to run \code{blastn} that specifies
-#' standard rCRUX error handlers.
-#'
-.run_blastn <- function(
-  blast_executable_directory,
-  query_paths,
-  db_paths,
-  outfmt_specifiers,
-  extra_blast_arguments,
-  use_long_names_in_parsed_result
-) {
-  SnailBLAST::crawl(
-    "blastn",
-    blast_executable_directory = blast_executable_directory,
-    query_paths = query_paths,
-    db_paths = db_paths,
-    outfmt_specifiers = outfmt_specifiers,
-    extra_blast_arguments = extra_blast_arguments,
-    use_long_names_in_parsed_result = use_long_names_in_parsed_result,
-    job_failed_callback = function(
-      query_path,
-      db_path,
-      exit_status,
-      command,
-      args,
-      stderr
-    ) {
-      # TODO: logging and also I think this gets truncated? (It does, regular message doesn't)
-      warning(paste(
-        "Job failed for query",
-        query_path,
-        "and database",
-        db_path,
-        "with exit status",
-        exit_status,
-        "and command",
-        command,
-        "and arguments",
-        args,
-        "and stderr",
-        stderr
-      ))
-    },
-    parse_failed_callback = function(
-      query_path,
-      db_path,
-      error_condition,
-      command,
-      args,
-      stderr
-    ) {
-      warning(paste(
-        "Parsing output for query",
-        query_path,
-        "and database",
-        db_path,
-        "with error condition",
-        error_condition,
-        "and command",
-        command,
-        "and arguments",
-        args,
-        "and stderr",
-        stderr
-      ))
-    }
   )
 }
