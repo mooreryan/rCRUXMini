@@ -1,6 +1,4 @@
-START HERE: run the CLI on the real NCBI data and check it on split vs single
-
-- If the parent R process is killed...you will get ZOMBIE WORKERS!!!
+_Note: in progress!_
 
 # rCRUXMini
 
@@ -48,3 +46,7 @@ We need to manually exclude non-R files because lintr in Zed will try to lint no
 ---
 
 Plausible amplicon coordinates files have `subject_accession_version`, `subject_gi`, `unique_subject_taxonomy`, etc. This is because those are the subjects from the BLAST DBs that you searched against.
+
+---
+
+If the parent R process is killed...you will get ZOMBIE WORKERS!!!
