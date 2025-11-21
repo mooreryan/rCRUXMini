@@ -68,17 +68,14 @@ pipeline <- function(config) {
   }
 
   log_info("enumerating ambiguities")
-
   enumerated_forward_primers <- enumerate_ambiguities(forward_primers)
   enumerated_reverse_primers <- enumerate_ambiguities(reverse_primers)
 
+  log_info("writing primers")
   primers_fasta_path <- file.path(
     output_directory_path,
     "primers.fasta"
   )
-
-  log_info("writing primers")
-
   .write_primers(
     forward = enumerated_forward_primers,
     reverse = enumerated_reverse_primers,
