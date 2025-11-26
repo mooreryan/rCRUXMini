@@ -52,6 +52,7 @@ describe("the pipeline", {
     expect_snapshot(result)
   })
 
+  # TODO: this is repeated in multi_primer_multi_db
   it("handles multiple primers and DBs", {
     taxonomy_db <- testthat::test_path(
       "data",

@@ -40,12 +40,6 @@ pipeline <- function(config) {
     )
   }
 
-  if (workers > 1) {
-    with(future::plan(future::multisession, workers = workers), local = TRUE)
-  } else {
-    with(future::plan(future::sequential), local = TRUE)
-  }
-
   log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
 
   # Delete the log file if it exists.
@@ -61,6 +55,14 @@ pipeline <- function(config) {
   )
 
   log_info("pipeline starting")
+
+  if (workers > 1) {
+    log_debug("using %d workers", workers)
+    with(future::plan(future::multisession, workers = workers), local = TRUE)
+  } else {
+    log_debug("using 1 worker")
+    with(future::plan(future::sequential), local = TRUE)
+  }
 
   # TODO: would be nicer if the config itself handled this
   if (ncbi_bin_directory == "") {

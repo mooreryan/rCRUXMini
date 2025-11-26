@@ -1,4 +1,7 @@
 describe("Multiple primers and multiple DBs", {
+  # 10 blast DBs
+  # 3 workers
+  # 7 query chunk counts
   it("it works with non-divisible numbers", {
     taxonomy_db <- testthat::test_path(
       "data",
@@ -23,7 +26,8 @@ reverse_primers:
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
 output_directory: '%s'
-workers: 2
+query_chunk_count: 7
+workers: 3
 taxonomy_database: '%s'
 blast_databases:
   - '%s'

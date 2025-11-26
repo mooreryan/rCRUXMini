@@ -41,9 +41,14 @@ pull_amplicons <- function(
 
   # TODO: I actually don't think I need to pull this part into chunks. We would rather run the blastdbcmd
 
-  result <- furrr::future_map2(
-    .x = entry_batch_paths,
-    .y = blast_db_paths,
+  log_debug("entry batch paths length: %d", length(entry_batch_paths))
+  log_debug("blast db paths length: %d", length(blast_db_paths))
+
+  result <- furrr::future_pmap_dfr(
+    .l = tidyr::expand_grid(
+      entry_batch_path = entry_batch_paths,
+      blast_db_path = blast_db_paths,
+    ),
     .pull_sequences_from_blast_db = .pull_sequences_from_blast_db,
     .f = function(
       entry_batch_path,
@@ -52,11 +57,14 @@ pull_amplicons <- function(
       .pull_sequences_from_blast_db
     ) {
       rlang::try_fetch(
-        .pull_sequences_from_blast_db(
-          blastdbcmd = blastdbcmd,
-          entry_batch_path = entry_batch_path,
-          blast_db_path = blast_db_path
-        ),
+        {
+          .pull_sequences_from_blast_db(
+            blastdbcmd = blastdbcmd,
+            entry_batch_path = entry_batch_path,
+            blast_db_path = blast_db_path
+          ) |>
+            dplyr::mutate(blast_db_path = blast_db_path)
+        },
         # TODO: need to check for the rcrux_error instead
         error = function(condition) {
           # TODO: need to actually get the logger working in the future_map2 context when using multiprocessing
@@ -71,18 +79,16 @@ pull_amplicons <- function(
             blast_ordinal_id = integer(0),
             subject_accession_version = character(0),
             sequence_hash_value = character(0),
-            sequence = character(0)
+            sequence = character(0),
+            blast_db_path = character(0)
           )
         }
       )
     }
   )
 
-  result <- result |>
-    purrr::list_rbind(names_to = "blast_db_path")
-
   # TODO: these amplicons have the forward primer, but not the reverse. It needs
-  # both or neither.
+  # both or neither. (Is this still the case, or is this an old todo?)
 
   checkmate::assert_names(
     names(result),
