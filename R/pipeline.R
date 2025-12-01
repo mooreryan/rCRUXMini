@@ -214,6 +214,14 @@ pipeline <- function(config) {
     use_long_names_in_parsed_result = TRUE
   )
 
+  # TODO: write amplicon blast result here
+  log_info("writing amplicon blast results")
+  amplicon_blast_tsv <- file.path(
+    output_directory_path,
+    "amplicon_blast.tsv"
+  )
+  amplicon_blast_result |> readr::write_tsv(amplicon_blast_tsv)
+
   # TODO: include the blast ordinal ID in the blast results, it will make it
   # 1000x easier to do the expand multi taxids step ... watch out though there
   # is another todo with a note about whether this would actually make it easier

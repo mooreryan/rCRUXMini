@@ -3,23 +3,56 @@
     Code
       system2("ls", config_data$output_directory, stdout = TRUE)
     Output
-       [1] "amplicon_data.tsv"                                           
-       [2] "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"   
-       [3] "parsed_amplicon_blast_result_taxonomy.tsv"                   
-       [4] "parsed_amplicon_blast_results.fasta"                         
-       [5] "parsed_amplicon_blast_results.tsv"                           
-       [6] "plausible_amplicon_coordinates.tsv"                          
-       [7] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
-       [8] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
-       [9] "primer_blast.tsv"                                            
-      [10] "primers.fasta"                                               
-      [11] "rcrux_log.txt"                                               
+       [1] "amplicon_blast.tsv"                                          
+       [2] "amplicon_data.tsv"                                           
+       [3] "parsed_amplicon_blast_result_distinct_taxonomic_ranks.tsv"   
+       [4] "parsed_amplicon_blast_result_taxonomy.tsv"                   
+       [5] "parsed_amplicon_blast_results.fasta"                         
+       [6] "parsed_amplicon_blast_results.tsv"                           
+       [7] "plausible_amplicon_coordinates.tsv"                          
+       [8] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
+       [9] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
+      [10] "primer_blast.tsv"                                            
+      [11] "primers.fasta"                                               
+      [12] "rcrux_log.txt"                                               
 
 ---
 
     Code
       output_data_files
     Output
+      $amplicon_blast.tsv
+      $amplicon_blast.tsv[[1]]
+      query_accession	subject_accession_version	percent_identical_matches	al...
+      
+      $amplicon_blast.tsv[[2]]
+      sequence_11	sequence_11	100	320	8.059999999999999e-171	7763	5724	6043	...
+      
+      $amplicon_blast.tsv[[3]]
+      sequence_15	sequence_15	100	639	0	7334	6666	7304	AAAAAAAAAAAAAAAAAAAAA...
+      
+      $amplicon_blast.tsv[[4]]
+      sequence_15	sequence_16	98.718	546	0	7240	6666	7211	TCTAGACCTCAAGGTAGC...
+      
+      $amplicon_blast.tsv[[5]]
+      sequence_17	sequence_17	100	523	0	988	156	678	AAAAAAAAAAAAAAAAAAAAAAAA...
+      
+      $amplicon_blast.tsv[[6]]
+      sequence_18	sequence_18	100	507	0	2607	14	520	AAAAAAAAAAAAAAAAAAAAAAAA...
+      
+      $amplicon_blast.tsv[[7]]
+      sequence_18	sequence_19	97.816	412	0	2513	13	424	CCTTTCTATGTTATCAGGACG...
+      
+      $amplicon_blast.tsv[[8]]
+      sequence_2	sequence_2	100	319	2.89e-170	777	48	366	AAAAAAAAAAAAAAAAAAA...
+      
+      $amplicon_blast.tsv[[9]]
+      sequence_21	sequence_21	100	439	0	9427	264	702	AAAAAAAAAAAAAAAAAAAAAAA...
+      
+      $amplicon_blast.tsv[[10]]
+      sequence_22	sequence_22	100	569	0	4186	3581	4149	AAAAAAAAAAAAAAAAAAAAA...
+      
+      
       $amplicon_data.tsv
       $amplicon_data.tsv[[1]]
       index	blast_ordinal_id	subject_accession_version	sequence_hash_value	s...

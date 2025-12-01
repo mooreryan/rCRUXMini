@@ -44,6 +44,8 @@ expand_multi_tax_ids <- function(
 
   result <- furrr::future_map(
     .x = blast_db_paths,
+    .pull_sequence_hashes_from_blast_db = .pull_sequence_hashes_from_blast_db,
+    empty_tibble_from_col_spec = empty_tibble_from_col_spec,
     .f = function(blast_db_path) {
       rlang::try_fetch(
         .pull_sequence_hashes_from_blast_db(
@@ -57,7 +59,7 @@ expand_multi_tax_ids <- function(
           #
           rlang::warn("something bad happend in .pull_sequences_from_blast_db")
 
-          empty_tibble_from_col_spec(.todo_column_specification) |>
+          empty_tibble_from_col_spec(.sequence_hash_column_specification) |>
             tibble::rowid_to_column("index")
         }
       )
@@ -128,7 +130,7 @@ expand_multi_tax_ids <- function(
 
 # TODO: I don't really want this as a top level item.
 # TODO: fix the name
-.todo_column_specification <- readr::cols(
+.sequence_hash_column_specification <- readr::cols(
   # You will need this for grouping sequences later. It's an int but let's
   # treat it as a character.
   blast_ordinal_id = readr::col_character(),
@@ -202,8 +204,8 @@ expand_multi_tax_ids <- function(
     I() |>
     # TODO: handle parsing problems
     readr::read_delim(
-      col_names = names(.todo_column_specification$cols),
-      col_types = .todo_column_specification,
+      col_names = names(.sequence_hash_column_specification$cols),
+      col_types = .sequence_hash_column_specification,
       delim = " ~~~ "
     ) |>
     tibble::rowid_to_column("index")
