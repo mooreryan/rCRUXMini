@@ -59,6 +59,7 @@ expand_multi_tax_ids <- function(
           #
           rlang::warn("something bad happend in .pull_sequences_from_blast_db")
 
+          # TODO: I need a test that actually triggers this branch!
           empty_tibble_from_col_spec(.sequence_hash_column_specification) |>
             tibble::rowid_to_column("index")
         }

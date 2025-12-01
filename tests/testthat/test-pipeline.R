@@ -90,6 +90,7 @@ blast_databases:
   - '%s'
   - '%s'
   - '%s'
+  - '%s'
   ",
       output_directory_multi,
       taxonomy_db,
@@ -102,12 +103,15 @@ blast_databases:
       blast_db_multi[[7]],
       blast_db_multi[[8]],
       blast_db_multi[[9]],
-      blast_db_multi[[10]]
+      blast_db_multi[[10]],
+      # This DB should have no hits
+      testthat::test_path("data", "ecoli_rnr", "ecoli_rnr")
     )
     config_file_multi <- create_temp_config(config_content_multi)
     result_multi <- pipeline(config = new_config(config_file_multi))
 
     # Run the pipeline with the same inputs, but on the single DB
+    # (almost the same inputs...the ecoli_rnr DB will have no hits)
     output_directory_single <- tempfile()
     blast_db_single <- testthat::test_path(
       "data",
@@ -122,7 +126,7 @@ reverse_primers:
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
   - 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT'
 output_directory: '%s'
-workers: 2
+workers: 3
 taxonomy_database: '%s'
 blast_databases: '%s'
   ",
@@ -131,7 +135,8 @@ blast_databases: '%s'
       blast_db_single
     )
     config_file_single <- create_temp_config(config_content_single)
-    result_single <- pipeline(config = new_config(config_file_single))
+    config <- new_config(config_file_single)
+    result_single <- pipeline(config = config)
 
     # Compare the results
 
