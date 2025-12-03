@@ -46,7 +46,11 @@ expand_multi_tax_ids <- function(
     .x = blast_db_paths,
     .pull_sequence_hashes_from_blast_db = .pull_sequence_hashes_from_blast_db,
     empty_tibble_from_col_spec = empty_tibble_from_col_spec,
-    .f = function(blast_db_path) {
+    .f = function(
+      blast_db_path,
+      .pull_sequence_hashes_from_blast_db,
+      empty_tibble_from_col_spec
+    ) {
       rlang::try_fetch(
         .pull_sequence_hashes_from_blast_db(
           blastdbcmd = blastdbcmd,
