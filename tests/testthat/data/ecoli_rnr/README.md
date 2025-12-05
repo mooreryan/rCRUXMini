@@ -1,7 +1,7 @@
 Make the DB
 
 ```
-makeblastdb -in ecoli_rnr.fasta -parse_seqids -taxid_map ecoli_rnr.accession2taxid -dbtype nucl -title 'E. coli RNR' -out ecoli_rnr
+makeblastdb -in ecoli_rnr.fasta -parse_seqids -taxid_map taxid_map.tsv -dbtype nucl -title 'E. coli RNR' -out ecoli_rnr
 ```
 
 Test it
