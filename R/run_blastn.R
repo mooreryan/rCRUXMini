@@ -7,6 +7,8 @@ run_blastn <- function(
   blast_executable_directory,
   query_paths,
   db_paths,
+  output_directory,
+  slurp,
   outfmt_specifiers,
   extra_blast_arguments,
   use_long_names_in_parsed_result
@@ -16,6 +18,8 @@ run_blastn <- function(
     blast_executable_directory = blast_executable_directory,
     query_paths = query_paths,
     db_paths = db_paths,
+    output_directory = output_directory,
+    slurp = slurp,
     outfmt_specifiers = outfmt_specifiers,
     extra_blast_arguments = extra_blast_arguments,
     use_long_names_in_parsed_result = use_long_names_in_parsed_result,

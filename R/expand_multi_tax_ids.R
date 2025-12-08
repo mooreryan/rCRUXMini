@@ -26,7 +26,10 @@ expand_multi_tax_ids <- function(
     all.missing = FALSE
   )
 
+  print(hits_with_multiple_taxonomy_ids)
+
   if (nrow(hits_with_multiple_taxonomy_ids) == 0) {
+    log_debug("hits_with_multiple_taxonomy_ids had zero rows")
     return(hits_with_multiple_taxonomy_ids)
   }
 
@@ -42,6 +45,8 @@ expand_multi_tax_ids <- function(
 
   # TODO: almost all of this function can be replaced by pull_amplicons, it just needs renaming
 
+  # TODO: this function isn't being properly exercised in the tests. I think I
+  # need some hits with multiple taxids in the test data.
   result <- furrr::future_map(
     .x = blast_db_paths,
     .pull_sequence_hashes_from_blast_db = .pull_sequence_hashes_from_blast_db,

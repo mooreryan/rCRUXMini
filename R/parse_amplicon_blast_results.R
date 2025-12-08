@@ -4,14 +4,18 @@
 #'   Sets the max allowed number of ambiguous bases in a row that a sequence
 #'   can have before it is thrown out.
 #'
-#' @details We keep the longest alignment per query accession. The "longest" is
+#' @details We keep the longest alignment per subject accession. The "longest" is
 #' based on the original \code{alignment_length} as reported by BLAST. After
 #' this, the alignment is degapped and the alignment length is recalculated. So
 #' be aware that the sequences are filtered based on original reported alignment
 #' length, but then degapped alignment length is used going forward. This is the
 #' behavior that matches the original rCRUX.
 parse_amplicon_blast_results <- function(
-  amplicon_blast_result,
+  amplicon_blast_tsv_files,
+  single_taxonomy_hits_outfile,
+  multi_taxonomy_hits_outfile,
+  # This is the rust program that parses the outfiles
+  parse_amplicon_blast_command,
   # We need this to "expand" the multi tax ID hits
   blastdbcmd,
   blast_db_paths,
@@ -20,44 +24,88 @@ parse_amplicon_blast_results <- function(
   # TODO: checkmate the inputs
   #
 
-  checkmate::assert_names(
-    names(amplicon_blast_result),
-    must.include = c(
-      "query_accession",
-      "subject_accession_version",
-      "percent_identical_matches",
-      "alignment_length",
-      "expect_value",
-      "subject_sequence_length",
-      "subject_alignment_start",
-      "subject_alignment_end",
-      "subject_aligned_sequence",
-      "unique_subject_taxonomy_ids"
-    )
+  checkmate::assert_character(amplicon_blast_tsv_files, min.len = 1)
+
+  command_result <- processx::run(
+    # TODO: take this from the args
+    command = parse_amplicon_blast_command,
+    args = c(
+      "--threads",
+      # TODO: take this from the args too
+      "8",
+      single_taxonomy_hits_outfile,
+      multi_taxonomy_hits_outfile,
+      amplicon_blast_tsv_files
+    ),
+    echo_cmd = FALSE,
+    error_on_status = FALSE
   )
 
-  amplicon_blast_result <- amplicon_blast_result |>
-    .add_degapped_subject_alignment()
-
-  checkmate::assert_names(
-    names(amplicon_blast_result),
-    must.include = c(
-      "degapped_subject_aligned_sequence",
-      "degapped_alignment_length"
+  if (is.na(command_result$status) || command_result$status != 0) {
+    abort_rcrux_mini_error(
+      "There was some error when running the parse_amplicon_blast script.",
+      processx_object = result
     )
+  }
+
+  # NOTE: either of these may have zero rows
+
+  col_types <- list(
+    query_accession = readr::col_character(),
+    subject_accession_version = readr::col_character(),
+    percent_identical_matches = readr::col_double(),
+    alignment_length = readr::col_integer(),
+    expect_value = readr::col_double(),
+    subject_sequence_length = readr::col_integer(),
+    subject_alignment_start = readr::col_integer(),
+    subject_alignment_end = readr::col_integer(),
+    subject_aligned_sequence = readr::col_character(),
+    unique_subject_taxonomy_ids = readr::col_character(),
+    degapped_subject_aligned_sequence = readr::col_character(),
+    degapped_alignment_length = readr::col_integer()
   )
-
-  amplicon_blast_result <- amplicon_blast_result |>
-    .keep_longest_degapped_alignment_per_accession()
-
-  #RYAN
-  checkmate::assert_names(
-    names(amplicon_blast_result),
-    must.include = c(
-      "degapped_subject_aligned_sequence",
-      "degapped_alignment_length"
+  hits_with_single_taxonomy_id <- readr::read_tsv(
+    single_taxonomy_hits_outfile,
+    col_types = col_types
+  )
+  names(hits_with_single_taxonomy_id) |>
+    checkmate::assert_names(
+      must.include = c(
+        "query_accession",
+        "subject_accession_version",
+        "percent_identical_matches",
+        "alignment_length",
+        "expect_value",
+        "subject_sequence_length",
+        "subject_alignment_start",
+        "subject_alignment_end",
+        "subject_aligned_sequence",
+        "unique_subject_taxonomy_ids",
+        "degapped_subject_aligned_sequence",
+        "degapped_alignment_length"
+      )
     )
+  hits_with_multiple_taxonomy_ids <- readr::read_tsv(
+    multi_taxonomy_hits_outfile,
+    col_types = col_types
   )
+  names(hits_with_multiple_taxonomy_ids) |>
+    checkmate::assert_names(
+      must.include = c(
+        "query_accession",
+        "subject_accession_version",
+        "percent_identical_matches",
+        "alignment_length",
+        "expect_value",
+        "subject_sequence_length",
+        "subject_alignment_start",
+        "subject_alignment_end",
+        "subject_aligned_sequence",
+        "unique_subject_taxonomy_ids",
+        "degapped_subject_aligned_sequence",
+        "degapped_alignment_length"
+      )
+    )
 
   # We want to report the most info to the user as possible for all the sequences. So we need to filter and add data in the correct order:
   #
@@ -65,29 +113,6 @@ parse_amplicon_blast_results <- function(
   # - add taxonomy info to all these
   # - add diagnostic info to all of these: maybe a problems column? or maybe a function that detects problems?
   #
-
-  # NOTE: either of these may have 0 rows, which is not an error
-  tmp <- .split_by_multiple_unique_subject_taxonomy_ids(amplicon_blast_result)
-  hits_with_single_taxonomy_id <- tmp$single
-  hits_with_multiple_taxonomy_ids <- tmp$multiple
-
-  #RYAN
-  checkmate::assert_names(
-    names(hits_with_single_taxonomy_id),
-    must.include = c(
-      "degapped_subject_aligned_sequence",
-      "degapped_alignment_length"
-    )
-  )
-
-  #RYAN
-  checkmate::assert_names(
-    names(hits_with_multiple_taxonomy_ids),
-    must.include = c(
-      "degapped_subject_aligned_sequence",
-      "degapped_alignment_length"
-    )
-  )
 
   # This is safe to run if the input has 0 rows, as long as it has the correct
   # column names.

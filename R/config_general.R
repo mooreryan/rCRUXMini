@@ -26,6 +26,7 @@ new_general_config <- function(params = NULL) {
 
   optional_top_level_params <- c(
     "ncbi_bin_directory",
+    "scripts_bin_directory",
     "query_chunk_count",
     # Users aren't required to specify params for the nested params.
     "primer_blast",
@@ -122,6 +123,28 @@ new_general_config <- function(params = NULL) {
     }
   }
 
+  # Validate scripts_bin_directory (optional, must exist if provided)
+  if ("scripts_bin_directory" %in% params_names) {
+    # The default value in this case is for the user to NOT provide an bin
+    # directory. But we use `""` to represent that.
+    if (
+      !is.null(params$scripts_bin_directory) &&
+        params$scripts_bin_directory != ""
+    ) {
+      params$scripts_bin_directory |>
+        checkmate::assert_string(min.chars = 1)
+
+      if (!dir.exists(params$scripts_bin_directory)) {
+        abort_rcrux_mini_error(
+          stringr::str_glue(
+            "rCRUXMini scripts bin directory does not exist: {path}",
+            path = params$scripts_bin_directory
+          )
+        )
+      }
+    }
+  }
+
   # Validate blast_db_paths (must exist)
   if ("blast_databases" %in% params_names) {
     params$blast_databases |>
@@ -165,6 +188,7 @@ new_general_config <- function(params = NULL) {
     # NOTE: we use an empty string rather than NULL here, because we don't allow
     # users to enter NULL-like values as valid paramters in the yaml files.
     ncbi_bin_directory = "",
+    scripts_bin_directory = "",
     workers = 1
   )
 

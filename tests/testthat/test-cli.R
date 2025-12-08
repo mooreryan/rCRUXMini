@@ -12,7 +12,15 @@ describe("the command line interface", {
       args = c("--vanilla", script_path, config_data$config_file, repo_path)
     )
 
-    system2("ls", config_data$output_directory, stdout = TRUE) |>
-      expect_snapshot()
+    output_files <- list.files(
+      path = config_data$output_directory,
+      recursive = FALSE,
+      full.names = FALSE
+    ) |>
+      purrr::discard(function(file) {
+        stringr::str_ends(file, pattern = ".rds")
+      })
+
+    output_files |> expect_snapshot()
   })
 })

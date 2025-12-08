@@ -48,3 +48,9 @@ yo:
     # pkgbuild::clean_dll(); pkgbuild::compile_dll(); devtools::load_all()
     # Sys.time(); unlink("/Users/ryan/Desktop/hiii.tsv"); parse_primer_blast(primer_blast_tsv="/Users/ryan/Projects/uw/rCRUX_world/rCRUXMini/_big_nt_test_data/primer_blast.10000000.tsv", output_tsv="/Users/ryan/Desktop/hiii.tsv", maximum_mismatches=4, minimum_length=150, maximum_length=450, num_threads=8); Sys.time()
     echo hi
+
+build_scripts:
+    cd scripts && cargo build --release
+
+install_scripts:
+    cd scripts && sudo cargo install --path . --root /usr/local

@@ -53,7 +53,6 @@ pull_amplicons <- function(
     .f = function(
       entry_batch_path,
       blast_db_path,
-      # TODO: is there a cleaner way than passing in functions?
       .pull_sequences_from_blast_db
     ) {
       rlang::try_fetch(

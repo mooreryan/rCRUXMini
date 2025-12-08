@@ -5,7 +5,10 @@
 \title{Parse amplicon blast results}
 \usage{
 parse_amplicon_blast_results(
-  amplicon_blast_result,
+  amplicon_blast_tsv_files,
+  single_taxonomy_hits_outfile,
+  multi_taxonomy_hits_outfile,
+  parse_amplicon_blast_command,
   blastdbcmd,
   blast_db_paths,
   taxonomy_db_path
@@ -20,7 +23,7 @@ can have before it is thrown out.}
 Parse amplicon blast results
 }
 \details{
-We keep the longest alignment per query accession. The "longest" is
+We keep the longest alignment per subject accession. The "longest" is
 based on the original \code{alignment_length} as reported by BLAST. After
 this, the alignment is degapped and the alignment length is recalculated. So
 be aware that the sequences are filtered based on original reported alignment

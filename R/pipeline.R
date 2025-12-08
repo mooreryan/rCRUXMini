@@ -25,6 +25,7 @@ pipeline <- function(config) {
   output_directory_path <- config$output_directory
   taxonomy_db_path <- config$taxonomy_database
   ncbi_bin_directory <- config$ncbi_bin_directory
+  scripts_bin_directory <- config$scripts_bin_directory
   blast_db_paths <- config$blast_databases
   query_chunk_count <- config$query_chunk_count
   workers <- config$workers
@@ -68,6 +69,9 @@ pipeline <- function(config) {
   if (ncbi_bin_directory == "") {
     ncbi_bin_directory <- NULL
   }
+  if (scripts_bin_directory == "") {
+    scripts_bin_directory <- NULL
+  }
 
   log_info("enumerating ambiguities")
   enumerated_forward_primers <- enumerate_ambiguities(forward_primers)
@@ -76,7 +80,7 @@ pipeline <- function(config) {
   log_info("writing primers")
   primers_fasta_path <- file.path(
     output_directory_path,
-    "primers.fasta"
+    "enumerated_primers.fasta"
   )
   .write_primers(
     forward = enumerated_forward_primers,
@@ -91,6 +95,8 @@ pipeline <- function(config) {
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
+    output_directory = NULL,
+    slurp = TRUE,
     outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
     extra_blast_arguments = primer_blast_config_to_cli_args(
       config$primer_blast
@@ -181,10 +187,10 @@ pipeline <- function(config) {
     )
   }
 
-  log_info("writing amplicon data to tsv")
+  log_info("writing plausible amplicon data to tsv")
   amplicon_data_tsv_path <- file.path(
     output_directory_path,
-    "amplicon_data.tsv"
+    "amplicons.tsv"
   )
   amplicon_data |> readr::write_tsv(file = amplicon_data_tsv_path)
 
@@ -202,10 +208,16 @@ pipeline <- function(config) {
   )
 
   log_info("running amplicon blast")
-  amplicon_blast_result <- run_blastn(
+  amplicon_blast_output_directory <- file.path(
+    output_directory_path,
+    "amplicon_blast"
+  )
+  run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = amplicon_query_fasta_paths,
     db_paths = blast_db_paths,
+    output_directory = amplicon_blast_output_directory,
+    slurp = FALSE,
     # These are the outfmt specifiers from the original rCRUX
     #
     # TODO: why these? why not the usual + taxids?
@@ -214,41 +226,42 @@ pipeline <- function(config) {
     use_long_names_in_parsed_result = TRUE
   )
 
-  # TODO: write amplicon blast result here
-  log_info("writing amplicon blast results")
-  amplicon_blast_tsv <- file.path(
-    output_directory_path,
-    "amplicon_blast.tsv"
+  amplicon_blast_tsv_files <- list.files(
+    path = amplicon_blast_output_directory,
+    pattern = ".tsv$",
+    full.names = TRUE
   )
-  amplicon_blast_result |> readr::write_tsv(amplicon_blast_tsv)
 
   # TODO: include the blast ordinal ID in the blast results, it will make it
   # 1000x easier to do the expand multi taxids step ... watch out though there
   # is another todo with a note about whether this would actually make it easier
   # or not.
-  checkmate::assert_names(
-    names(amplicon_blast_result),
-    must.include = c(
-      "query_accession",
-      "subject_accession_version",
-      "percent_identical_matches",
-      "alignment_length",
-      "expect_value",
-      "subject_sequence_length",
-      "subject_alignment_start",
-      "subject_alignment_end",
-      "subject_aligned_sequence",
-      "unique_subject_taxonomy_ids"
-    )
+  #
+  # TODO: check how snail blast resolves the blastn binary location, then do that here
+  #
+
+  print(scripts_bin_directory)
+  parse_amplicon_blast_command <- SnailBLAST::sys_which(
+    "rCRUXMini__ParseAmpliconBlast",
+    scripts_bin_directory
   )
 
-  if (nrow(amplicon_blast_result) == 0) {
-    abort_rcrux_mini_error("No hits found in the amplicon blast result")
-  }
+  single_taxonomy_hits_outfile <- file.path(
+    amplicon_blast_output_directory,
+    "amplicon_blast_single_taxonomy_hits.tsv"
+  )
+
+  multi_taxonomy_hits_outfile <- file.path(
+    amplicon_blast_output_directory,
+    "amplicon_blast_multi_taxonomy_hits.tsv"
+  )
 
   log_info("parsing amplicon blast")
   parsed_amplicon_blast_result <- parse_amplicon_blast_results(
-    amplicon_blast_result = amplicon_blast_result,
+    amplicon_blast_tsv_files = amplicon_blast_tsv_files,
+    single_taxonomy_hits_outfile = single_taxonomy_hits_outfile,
+    multi_taxonomy_hits_outfile = multi_taxonomy_hits_outfile,
+    parse_amplicon_blast_command = parse_amplicon_blast_command,
     blastdbcmd = blastdbcmd,
     blast_db_paths = blast_db_paths,
     taxonomy_db_path = taxonomy_db_path
@@ -360,7 +373,6 @@ pipeline <- function(config) {
     # primer_blast_results = primer_blast_results,
     plausible_amplicons_coordinates_with_taxonomy = plausible_amplicons_coordinates_with_taxonomy,
     plausible_amplicons_coordinates_distinct_taxonomic_ranks = plausible_amplicons_coordinates_distinct_taxonomic_ranks,
-    amplicon_blast_result = amplicon_blast_result,
     parsed_amplicon_blast_result = parsed_amplicon_blast_result,
     parsed_amplicon_blast_result_distinct_taxonomic_ranks = parsed_amplicon_blast_result_distinct_taxonomic_ranks,
     parsed_amplicon_blast_result_taxonomy = parsed_amplicon_blast_result_taxonomy

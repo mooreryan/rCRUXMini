@@ -17,3 +17,5 @@
 src/.*tmp
 src/build
 src/cmake-.*
+
+^scripts$

@@ -5,6 +5,7 @@ reverse_primers: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGTTTTTTTTTTTTTTT"
 output_directory: "./rCRUXMini/tests/testthat/data/__tmp_output__"
 taxonomy_database: "./rCRUXMini/tests/testthat/data/example_pipeline_config.yml"
 ncbi_bin_directory: "/usr/local/ncbi/blast/bin"
+scripts_bin_directory: "./rCRUXMini/scripts/target/release"
 # This can also be a list
 blast_databases: "./rCRUXMini/tests/testthat/data/small_test_db/generated_sequences"
 
