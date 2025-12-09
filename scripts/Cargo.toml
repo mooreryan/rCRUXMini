@@ -6,8 +6,13 @@ edition = "2024"
 [dependencies]
 ahash = "0.8.12"
 clap = { version = "4.5.53", features = ["derive"] }
+itertools = "0.14.0"
 rayon = "1.11.0"
 
 [[bin]]
 name = "rCRUXMini__ParseAmpliconBlast"
 path = "./src/bin/parse_amplicon_blast.rs"
+
+[[bin]]
+name = "rCRUXMini__ParsePrimerBlast"
+path = "./src/bin/parse_primer_blast.rs"

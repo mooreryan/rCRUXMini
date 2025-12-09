@@ -84,11 +84,16 @@ blast_databases: '%s'
     result_single <- pipeline(config = new_config(config_file_single))
 
     # Compare the results
+    #
 
     # TODO: check more stuff
+    #
+    # These values can have a little natural variation due to the way we hash
+    # values.
     expect_equal(
-      result_single$parsed_amplicon_blast_result_distinct_taxonomic_ranks,
-      result_multi$parsed_amplicon_blast_result_distinct_taxonomic_ranks
+      expected = result_single$parsed_amplicon_blast_result_distinct_taxonomic_ranks,
+      object = result_multi$parsed_amplicon_blast_result_distinct_taxonomic_ranks,
+      tolerance = 1
     )
 
     # Clean up

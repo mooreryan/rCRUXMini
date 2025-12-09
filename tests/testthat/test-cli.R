@@ -14,12 +14,13 @@ describe("the command line interface", {
 
     output_files <- list.files(
       path = config_data$output_directory,
-      recursive = FALSE,
+      recursive = TRUE,
       full.names = FALSE
     ) |>
       purrr::discard(function(file) {
         stringr::str_ends(file, pattern = ".rds")
-      })
+      }) |>
+      purrr::map_chr(redact_tmp_filename)
 
     output_files |> expect_snapshot()
   })

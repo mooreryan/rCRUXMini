@@ -56,3 +56,10 @@ workers: 2
     on_exit = on_exit
   )
 }
+
+
+redact_tmp_filename <- function(filename, replacement = "REDACTED") {
+  # Replace hexadecimal strings (temp file identifiers)
+  # Pattern matches: underscore + hex chars + file extension
+  gsub("_[0-9a-f]+\\.", paste0("_", replacement, "."), filename)
+}

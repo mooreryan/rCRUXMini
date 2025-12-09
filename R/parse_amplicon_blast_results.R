@@ -1,15 +1,15 @@
-#' Parse amplicon blast results
-#'
-#' @param ambiguous_run_limit \code{integer(1)}\cr
-#'   Sets the max allowed number of ambiguous bases in a row that a sequence
-#'   can have before it is thrown out.
-#'
-#' @details We keep the longest alignment per subject accession. The "longest" is
-#' based on the original \code{alignment_length} as reported by BLAST. After
-#' this, the alignment is degapped and the alignment length is recalculated. So
-#' be aware that the sequences are filtered based on original reported alignment
-#' length, but then degapped alignment length is used going forward. This is the
-#' behavior that matches the original rCRUX.
+# Parse amplicon blast results
+#
+#  ambiguous_run_limit \code{integer(1)}\cr
+#   Sets the max allowed number of ambiguous bases in a row that a sequence
+#   can have before it is thrown out.
+#
+#  We keep the longest alignment per subject accession. The "longest" is
+# based on the original \code{alignment_length} as reported by BLAST. After
+# this, the alignment is degapped and the alignment length is recalculated. So
+# be aware that the sequences are filtered based on original reported alignment
+# length, but then degapped alignment length is used going forward. This is the
+# behavior that matches the original rCRUX.
 parse_amplicon_blast_results <- function(
   amplicon_blast_tsv_files,
   single_taxonomy_hits_outfile,
@@ -44,7 +44,7 @@ parse_amplicon_blast_results <- function(
   if (is.na(command_result$status) || command_result$status != 0) {
     abort_rcrux_mini_error(
       "There was some error when running the parse_amplicon_blast script.",
-      processx_object = result
+      processx_object = command_result
     )
   }
 

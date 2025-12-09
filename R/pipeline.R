@@ -32,14 +32,7 @@ pipeline <- function(config) {
 
   # The log file goes into this directory by default. So it _must_ be created
   # before any calls to the logger!
-  if (!dir.exists(output_directory_path)) {
-    dir.create(
-      output_directory_path,
-      showWarnings = FALSE,
-      mode = "0750",
-      recursive = TRUE
-    )
-  }
+  .create_directory_if_not_exists(output_directory_path)
 
   log_file_path <- file.path(config$output_directory, "rcrux_log.txt")
 
@@ -73,13 +66,19 @@ pipeline <- function(config) {
     scripts_bin_directory <- NULL
   }
 
+  primer_blast_output_directory <- file.path(
+    output_directory_path,
+    "primer_blast"
+  )
+  .create_directory_if_not_exists(primer_blast_output_directory)
+
   log_info("enumerating ambiguities")
   enumerated_forward_primers <- enumerate_ambiguities(forward_primers)
   enumerated_reverse_primers <- enumerate_ambiguities(reverse_primers)
 
   log_info("writing primers")
   primers_fasta_path <- file.path(
-    output_directory_path,
+    primer_blast_output_directory,
     "enumerated_primers.fasta"
   )
   .write_primers(
@@ -91,12 +90,12 @@ pipeline <- function(config) {
   log_info("running primer blast")
 
   # TODO: check to see if reading all this data into the data frame is an issue
-  primer_blast_data <- run_blastn(
+  run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_path,
     db_paths = blast_db_paths,
-    output_directory = NULL,
-    slurp = TRUE,
+    output_directory = primer_blast_output_directory,
+    slurp = FALSE,
     outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
     extra_blast_arguments = primer_blast_config_to_cli_args(
       config$primer_blast
@@ -107,24 +106,30 @@ pipeline <- function(config) {
   # TODO: checkmate the names of the output
 
   log_info("writing primer blast results")
-  primer_blast_tsv <- file.path(
-    output_directory_path,
-    "primer_blast.tsv"
+  primer_blast_tsv_files <- list.files(
+    path = primer_blast_output_directory,
+    pattern = "*.tsv$",
+    full.names = TRUE
   )
-  primer_blast_data |> readr::write_tsv(primer_blast_tsv)
 
-  # TODO: shutdown gracefully
-  if (nrow(primer_blast_data) == 0) {
-    abort_rcrux_mini_error("No hits found in the primer blast data")
-  }
+  # Parse primer blast
 
   log_info("parsing primer blast results to find plausible amplicons")
   plausible_amplicon_coordinates_tsv <- file.path(
     output_directory_path,
     "plausible_amplicon_coordinates.tsv"
   )
-  parse_primer_blast(
-    primer_blast_tsv = primer_blast_tsv,
+
+  parse_primer_blast_command <- SnailBLAST::sys_which(
+    "rCRUXMini__ParsePrimerBlast",
+    scripts_bin_directory
+  )
+
+  # TODO: Need to rewrite this function to take the un-collated primer blast
+  # results files and collate them in addition to parsing.
+  parse_primer_blast2(
+    parse_primer_blast_command = parse_primer_blast_command,
+    primer_blast_tsvs = primer_blast_tsv_files,
     output_tsv = plausible_amplicon_coordinates_tsv,
     maximum_mismatches = config$plausible_amplicons$maximum_mismatches,
     minimum_length = config$plausible_amplicons$minimum_length,
@@ -212,6 +217,7 @@ pipeline <- function(config) {
     output_directory_path,
     "amplicon_blast"
   )
+  .create_directory_if_not_exists(amplicon_blast_output_directory)
   run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = amplicon_query_fasta_paths,
@@ -651,4 +657,16 @@ test_file_non_empty <- function(path) {
     file = to_file,
     append = TRUE
   )
+}
+
+
+.create_directory_if_not_exists <- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(
+      path,
+      showWarnings = FALSE,
+      mode = "0750",
+      recursive = TRUE
+    )
+  }
 }
