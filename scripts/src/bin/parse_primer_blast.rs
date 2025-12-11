@@ -1,12 +1,20 @@
 use ahash::{HashMap, HashMapExt};
 use clap::Parser;
 use itertools::Itertools;
+use jiff::Zoned;
 use rayon::prelude::*;
 use std::fs::File;
+use std::io;
 use std::io::Write;
 use std::io::{BufRead, BufReader, BufWriter};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
+
+fn log(message: &str) {
+    let now = Zoned::now().strftime("%Y-%M-%d %H:%M:%S");
+
+    writeln!(io::stderr(), "{} -- {}", now, message).expect("failed to log message");
+}
 
 fn main() {
     let cli = Cli::parse();
@@ -31,6 +39,7 @@ fn main() {
     // IDK if you can ever even get that since we are only ever keeping one of
     // the filtered hits anyway?
 
+    log("processing files");
     let hits_grouped_by_saccver_sstart = cli
         .blast_files
         .par_iter()
@@ -39,6 +48,7 @@ fn main() {
 
     // Within the saccver-sstart grouped hits, we need to keep the one with the lowest number of
     // mismatches. If there is more than one of those, the original code simply picks the first one.
+    log("picking best hits");
     hits_grouped_by_saccver_sstart
         .values()
         .map(|hits| {
@@ -54,10 +64,10 @@ fn main() {
                 .add_primer_hit(hit.clone());
         });
 
+    log("finding amplicon regions");
     writeln!(writer, "{}", AmpliconRegion::tsv_header()).expect("could not write line");
-
-    forward_and_reverse_hits_grouped_by_saccver
-        .iter()
+    let amplicon_regions: Vec<_> = forward_and_reverse_hits_grouped_by_saccver
+        .par_iter()
         .filter(|(_, forward_and_reverse_hits)| {
             forward_and_reverse_hits.has_both_forward_and_reverse_hits()
         })
@@ -76,9 +86,14 @@ fn main() {
                     }
                 })
         })
-        .for_each(|amplicon_region| {
-            writeln!(writer, "{}", amplicon_region.to_tsv_string()).expect("could not write line")
-        });
+        .collect();
+
+    log("writing regions");
+    for amplicon_region in amplicon_regions {
+        writeln!(writer, "{}", amplicon_region.to_tsv_string()).expect("could not write line")
+    }
+
+    log("done!");
 }
 
 /// Process a given primer BLAST output file.
