@@ -28,21 +28,21 @@ fn main() {
 fn run(cli: Cli) -> Result<()> {
     let file = File::create(&cli.outfile)?;
     let mut writer = BufWriter::new(file);
-    
+
     let mut missing_target_pid_count = 0;
 
     loop {
         std::thread::sleep(time::Duration::from_secs(1));
         let found_target_pid = process_ps(&mut writer, &cli)?;
-        
+
         // Anytime we find the target PID, we reset the count
         if found_target_pid {
             missing_target_pid_count = 0;
         } else {
             missing_target_pid_count += 1;
         }
-        
-        // If we haven't found the target PID in the last 10 tries (about ten seconds), 
+
+        // If we haven't found the target PID in the last 10 tries (about ten seconds),
         // then that process is probably gone, so stop.
         if missing_target_pid_count > MISSING_TARGET_PID_THRESHOLD {
             break;
@@ -54,6 +54,7 @@ fn run(cli: Cli) -> Result<()> {
 
 struct ProcessRecord {
     timestamp: Timestamp,
+    monitored_pid: u32,
     uid: u32,
     pid: u32,
     lstart: DateTime,
@@ -69,8 +70,16 @@ impl ProcessRecord {
         let timestamp = self.timestamp.to_zoned(TimeZone::system()).strftime(format);
         let lstart = self.lstart.to_zoned(TimeZone::system())?.strftime(format);
         let formatted = format!(
-            "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
-            timestamp, self.uid, self.pid, lstart, self.rss, self.vsz, self.comm, self.args
+            "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+            timestamp,
+            self.monitored_pid,
+            self.uid,
+            self.pid,
+            lstart,
+            self.rss,
+            self.vsz,
+            self.comm,
+            self.args
         );
 
         Ok(formatted)
@@ -79,7 +88,7 @@ impl ProcessRecord {
     /// The timestamp represents the time when the ps command was run. You should get that before
     /// running `ps`, then pass it in here.
     ///
-    fn parse(line: &str, timestamp: &Timestamp) -> Result<ProcessRecord> {
+    fn parse(line: &str, timestamp: &Timestamp, monitored_pid: u32) -> Result<ProcessRecord> {
         let mut tokens = line.split_whitespace();
 
         // 101 12345 Thu Dec 11 10:30:14 2025 18720 426993376 blah blah -i something -o something_else
@@ -121,6 +130,7 @@ impl ProcessRecord {
 
         let record = ProcessRecord {
             timestamp: *timestamp,
+            monitored_pid,
             uid,
             pid,
             lstart,
@@ -162,7 +172,7 @@ fn process_ps(writer: &mut BufWriter<File>, cli: &Cli) -> Result<bool> {
 
     for line in ps_output.stdout.lines() {
         let line = line?;
-        let record = ProcessRecord::parse(&line, &now)?;
+        let record = ProcessRecord::parse(&line, &now, cli.pid)?;
 
         if record.pid == cli.pid {
             found_target_pid = true;
