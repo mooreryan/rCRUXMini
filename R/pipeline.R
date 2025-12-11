@@ -125,8 +125,6 @@ pipeline <- function(config) {
     scripts_bin_directory
   )
 
-  # TODO: Need to rewrite this function to take the un-collated primer blast
-  # results files and collate them in addition to parsing.
   parse_primer_blast2(
     parse_primer_blast_command = parse_primer_blast_command,
     primer_blast_tsvs = primer_blast_tsv_files,
@@ -246,7 +244,6 @@ pipeline <- function(config) {
   # TODO: check how snail blast resolves the blastn binary location, then do that here
   #
 
-  print(scripts_bin_directory)
   parse_amplicon_blast_command <- SnailBLAST::sys_which(
     "rCRUXMini__ParseAmpliconBlast",
     scripts_bin_directory

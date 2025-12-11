@@ -54,3 +54,6 @@ build_scripts:
 
 install_scripts:
     cd scripts && sudo cargo install --path . --root /usr/local
+
+instrument_scripts:
+    cd scripts && time cargo instruments --release -t time --bin rCRUXMini__ParsePrimerBlast -- --out-file HI --threads=4 --maximum-mismatches=4 --minimum-length=150 --maximum-length=450 ~/Projects/uw/rCRUX_world/rCRUXMini/_big_nt_test_data/primer_blast.5000000.tsv

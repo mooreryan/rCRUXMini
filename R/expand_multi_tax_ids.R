@@ -26,8 +26,6 @@ expand_multi_tax_ids <- function(
     all.missing = FALSE
   )
 
-  print(hits_with_multiple_taxonomy_ids)
-
   if (nrow(hits_with_multiple_taxonomy_ids) == 0) {
     log_debug("hits_with_multiple_taxonomy_ids had zero rows")
     return(hits_with_multiple_taxonomy_ids)

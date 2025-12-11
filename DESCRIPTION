@@ -16,28 +16,33 @@ Encoding: UTF-8
 LazyData: true
 Suggests:
     testthat (>= 3.0.0),
-    jsonlite
+    jsonlite,
+    hms
 Config/testthat/edition: 3
 Imports:
     checkmate,
-    devtools,
+    data.table,
     dplyr,
     furrr,
+    littlelogger,
+    pkgload,
     processx,
     purrr,
+    Rcpp,
     readr,
     rlang,
     slider,
+    SnailBLAST,
     stringr,
     taxonomizr,
     yaml,
-    data.table,
-    Rcpp
+    tibble,
+    future
 Remotes:
     mooreryan/littlelogger,
     mooreryan/SnailBLAST
 Depends:
-    R (>= 3.5)
+    R (>= 4.1)
 RoxygenNote: 7.3.3
 LinkingTo:
     Rcpp

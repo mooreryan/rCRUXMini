@@ -20,7 +20,7 @@ if (!(num_args %in% c(1, 2))) {
 }
 
 if (num_args == 2) {
-  devtools::load_all(cli_args[[2]], quiet = TRUE)
+  pkgload::load_all(cli_args[[2]], quiet = TRUE)
 } else {
   library(rCRUXMini, quietly = TRUE)
 }
