@@ -110,6 +110,8 @@ expand_multi_tax_ids2 <- function(
         # You shouldn't actually hit this default value, since we partitioned
         # the results into ok/error before, and we are only iterating on the OK
         # values.
+        #
+        # However, the stdout itself *could* still be empty!
         default = list(
           blast_db_path = "NA",
           stdout = ""
@@ -118,6 +120,10 @@ expand_multi_tax_ids2 <- function(
 
       blastdbcmd_data <- ok_data$stdout |>
         # TODO: try_catch with the reader error?
+        #
+        # NOTE: some of these stdouts may be the empty string, so need the I()
+        # to treat it as data.
+        I() |>
         readr::read_delim(
           col_names = names(sequence_hash_column_specification$cols),
           col_types = sequence_hash_column_specification,
@@ -193,7 +199,15 @@ expand_multi_tax_ids2 <- function(
 }
 
 .add_reference_subject_accession_versions <- function(.data_frame) {
-  checkmate::assert_data_frame(.data_frame, min.rows = 1)
+  # If the input has no rows, add the column that would have been added and
+  # return.
+  if (nrow(.data_frame) == 0) {
+    return(dplyr::mutate(
+      .data_frame,
+      reference_subject_accession_version = character(0)
+    ))
+  }
+
   checkmate::assert_names(
     names(.data_frame),
     must.include = c(

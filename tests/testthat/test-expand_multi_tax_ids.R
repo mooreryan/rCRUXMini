@@ -234,7 +234,7 @@ test_that(".expand_hits works", {
 
 
 describe("expand_multi_tax_ids2", {
-  blast_db_paths <- c("db_1", "db_2")
+  blast_db_paths <- c("db_1", "db_2", "db_missing_entries", "db_empty")
 
   it("works with sequential plan", {
     # Ensure the sequential plan is set for this test
@@ -279,7 +279,7 @@ describe("expand_multi_tax_ids2", {
         expand_multi_tax_ids2(
           blastdbcmd = testthat::test_path("scripts/blastdbcmd"),
           hits_with_multiple_taxonomy_ids = basic_with_degapped_blast_result(),
-          blast_db_paths = c(blast_db_paths, "db_3")
+          blast_db_paths = c(blast_db_paths, "db_with_error")
         )
       },
       class = "rcrux_mini_error"

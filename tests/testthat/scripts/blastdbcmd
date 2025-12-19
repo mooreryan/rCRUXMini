@@ -29,10 +29,17 @@ elif [[ "$db" == "db_2" ]]; then
     "400 ~~~ S104-2 ~~~ z ~~~ 1042" \
     "400 ~~~ S104-3 ~~~ z ~~~ 1043" \
     "400 ~~~ S104-4 ~~~ z ~~~ 1044"
-elif [[ "$db" == "db_3" ]]; then
-    printf "oops! db_3 error\n" >&2
+elif [[ "$db" == "db_empty" ]]; then
+    printf ""
+elif [[ "$db" == "db_missing_entries" ]]; then
+    printf "%s\n" \
+        "Error: [blastdbcmd] Entry not found: APPLE" \
+        "Error: [blastdbcmd] Entry or entries not found in BLAST database" >&2
+    exit 1
+elif [[ "$db" == "db_with_error" ]]; then
+    printf "oops! error in db_with_error\n" >&2
     exit 3
 else
-    printf "Error: This is a test mock of blastdbcmd that only works with db_1 or db_2\n" >&2
+    printf "Error: This is a test mock of blastdbcmd that only works with:  db_1, db_2, db_missing_entries, db_with_error\n" >&2
     exit 1
 fi

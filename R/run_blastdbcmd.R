@@ -60,7 +60,14 @@ run_blastdbcmd <- function(
               "error.*blastdbcmd.*skipped",
               ignore_case = TRUE
             )
-          )
+          ) ||
+            stringr::str_detect(
+              string = s,
+              pattern = stringr::regex(
+                "error.*entry.*not found",
+                ignore_case = TRUE
+              )
+            )
         }
 
         error_message_is_okay <- function(stderr_line) {
