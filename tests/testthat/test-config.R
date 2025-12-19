@@ -82,7 +82,7 @@ blast_databases: '%s'
   it("handles some non-default top-level params", {
     temp_files <- create_minimal_valid_config(
       "query_chunk_count: 4
-ncbi_bin_directory: '/usr/local/ncbi/blast/bin'"
+ncbi_bin_directory: '/opt/homebrew/bin'"
     )
     on.exit({
       unlink(temp_files$config_file)
@@ -99,7 +99,7 @@ ncbi_bin_directory: '/usr/local/ncbi/blast/bin'"
     expect_equal(config$taxonomy_database, temp_files$taxonomy_db)
     expect_equal(config$blast_databases, temp_files$blast_db)
     expect_equal(config$query_chunk_count, 4)
-    expect_equal(config$ncbi_bin_directory, "/usr/local/ncbi/blast/bin")
+    expect_equal(config$ncbi_bin_directory, "/opt/homebrew/bin")
   })
 
   it("correctly parses multiple primers and blast databases", {
