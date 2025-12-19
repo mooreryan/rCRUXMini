@@ -27,6 +27,13 @@ library(rCRUXMini)
 
 ## Hacking Guidelines
 
+### Functions in there own files
+
+This might seem a bit tedious, but putting functions in their own files can help the linter (lintr) to find issues such as `no visible binding for global variable 'apple' (lintr object_usage_linter)`.
+
+This can be especially important when you're using futures with multisession plans, as you have to ensure all dependencies (variables and functions) are made available to the functions executed
+in a future. This requires careful use of `.env_globals`, or simply passing in the dependencies as arguments to the function. The second option is much more easily done if your linter can alert you to variables that any of your functions/closures actually close over!
+
 ### Mapping to Original rCRUX
 
 - `rCRUX::get_seeds_local` -> `rCRUXMini::pipeline` (we call this finding amplicons)

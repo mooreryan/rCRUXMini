@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Parse the -db argument
+db=""
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -db)
+      db="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+if [[ "$db" == "db_1" ]]; then
+    printf "%s\n" \
+    "100 ~~~ S101-1 ~~~ w ~~~ 1011" \
+    "100 ~~~ S101-2 ~~~ w ~~~ 1012" \
+    "100 ~~~ S101-3 ~~~ w ~~~ 1013" \
+    "200 ~~~ S102-1 ~~~ x ~~~ 1021" \
+    "200 ~~~ S102-2 ~~~ x ~~~ 1022" \
+    "300 ~~~ S103-1 ~~~ y ~~~ 1031" \
+    "300 ~~~ S103-2 ~~~ y ~~~ 1032"
+elif [[ "$db" == "db_2" ]]; then
+    printf "%s\n" \
+    "400 ~~~ S104-1 ~~~ z ~~~ 1041" \
+    "400 ~~~ S104-2 ~~~ z ~~~ 1042" \
+    "400 ~~~ S104-3 ~~~ z ~~~ 1043" \
+    "400 ~~~ S104-4 ~~~ z ~~~ 1044"
+elif [[ "$db" == "db_3" ]]; then
+    printf "oops! db_3 error\n" >&2
+    exit 3
+else
+    printf "Error: This is a test mock of blastdbcmd that only works with db_1 or db_2\n" >&2
+    exit 1
+fi

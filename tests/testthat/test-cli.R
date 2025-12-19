@@ -9,8 +9,16 @@ describe("the command line interface", {
 
     run_result <- processx::run(
       "Rscript",
-      args = c("--vanilla", script_path, config_data$config_file, repo_path)
+      args = c("--vanilla", script_path, config_data$config_file, repo_path),
+      error_on_status = FALSE,
+      echo_cmd = TRUE
     )
+    print("status")
+    cat(run_result$status)
+    print("stdout")
+    cat(run_result$stdout)
+    print("stderr")
+    cat(run_result$stderr)
 
     output_files <- list.files(
       path = config_data$output_directory,

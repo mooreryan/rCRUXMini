@@ -3,7 +3,7 @@ describe("logging", {
     log_file <- tempfile()
     logger <- littlelogger::new_logger(file = log_file)
 
-    with(future::plan(future::multisession, workers = 2), local = TRUE)
+    with(future::plan(future::multisession, workers = 3), local = TRUE)
     furrr::future_map(1:10, function(x) {
       logger$info("hello %d", x)
     })
@@ -22,7 +22,7 @@ describe("logging", {
     log_file <- tempfile()
     logger <- littlelogger::new_logger(file = log_file)
 
-    with(future::plan(future::multisession, workers = 2), local = TRUE)
+    with(future::plan(future::multisession, workers = 3), local = TRUE)
     furrr::future_map(1:10, function(x) {
       logger$info("hello %d", x)
     })

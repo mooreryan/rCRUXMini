@@ -26,6 +26,7 @@ fn main() {
 }
 
 fn run(cli: Cli) -> Result<()> {
+    // TODO: would be nice to write to a gzip file for long running monitors, or else do some log rotation.
     let file = File::create(&cli.outfile)?;
     let mut writer = BufWriter::new(file);
 

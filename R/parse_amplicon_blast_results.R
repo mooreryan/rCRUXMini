@@ -70,7 +70,8 @@ parse_amplicon_blast_results <- function(
   )
   names(hits_with_single_taxonomy_id) |>
     checkmate::assert_names(
-      must.include = c(
+      # The names must be identical because we bind rows coming up here
+      identical.to = c(
         "query_accession",
         "subject_accession_version",
         "percent_identical_matches",
@@ -91,7 +92,8 @@ parse_amplicon_blast_results <- function(
   )
   names(hits_with_multiple_taxonomy_ids) |>
     checkmate::assert_names(
-      must.include = c(
+      # The names must be identical because we bind rows coming up here
+      identical.to = c(
         "query_accession",
         "subject_accession_version",
         "percent_identical_matches",
@@ -116,38 +118,45 @@ parse_amplicon_blast_results <- function(
 
   # This is safe to run if the input has 0 rows, as long as it has the correct
   # column names.
-  hits_with_multiple_taxonomy_ids_expanded <- expand_multi_tax_ids(
+  hits_with_multiple_taxonomy_ids_expanded <- expand_multi_tax_ids2(
     blastdbcmd = blastdbcmd,
     hits_with_multiple_taxonomy_ids = hits_with_multiple_taxonomy_ids,
     blast_db_paths = blast_db_paths
   )
 
-  #RYAN
-  checkmate::assert_names(
-    names(hits_with_multiple_taxonomy_ids_expanded),
-    must.include = c(
-      "degapped_subject_aligned_sequence",
-      "degapped_alignment_length"
-    )
-  )
+  if (is.null(hits_with_multiple_taxonomy_ids_expanded)) {
+    hits <- hits_with_single_taxonomy_id
+  } else {
+    #RYAN: why is this here?
+    # checkmate::assert_names(
+    #   names(hits_with_multiple_taxonomy_ids_expanded),
+    #   must.include = c(
+    #     "degapped_subject_aligned_sequence",
+    #     "degapped_alignment_length"
+    #   )
+    # )
 
-  if (
-    !all.equal(
-      colnames(hits_with_single_taxonomy_id),
-      colnames(hits_with_multiple_taxonomy_ids_expanded)
-    )
-  ) {
-    # TODO: this should be an assertion error
-    abort_rcrux_mini_error(
-      "hits_with_single_taxonomy_id and hits_with_multiple_taxonomy_ids_expanded should have identical column names"
+    # TODO: this part still isn't covered by tests, beacuse I had to mock the
+    # blastdbcmd to even get hits with multiple taxonomies.....I would also need
+    # to mock the blast command too to get this......?
+    if (
+      !all.equal(
+        colnames(hits_with_single_taxonomy_id),
+        colnames(hits_with_multiple_taxonomy_ids_expanded)
+      )
+    ) {
+      # TODO: this should be an assertion error
+      abort_rcrux_mini_error(
+        "hits_with_single_taxonomy_id and hits_with_multiple_taxonomy_ids_expanded should have identical column names"
+      )
+    }
+
+    # These are the good hits ready to go
+    hits <- dplyr::bind_rows(
+      hits_with_single_taxonomy_id,
+      hits_with_multiple_taxonomy_ids_expanded
     )
   }
-
-  # These are the good hits ready to go
-  hits <- dplyr::bind_rows(
-    hits_with_single_taxonomy_id,
-    hits_with_multiple_taxonomy_ids_expanded
-  )
 
   #RYAN
   checkmate::assert_names(
