@@ -9,7 +9,7 @@ compile_dll: clear
 clear:
     clear; clear; clear
 
-test: clear roxygenize
+test: clear roxygenize install_scripts
     Rscript --vanilla -e 'devtools::test()'
 
 test_file basename: clear
@@ -43,7 +43,6 @@ clang_tidy2:
     clear;clear;clear; clang-tidy ./src/parse_primer_blast.cpp -- \
     -DNDEBUG -fPIC -Wall -O2
 
-
 yo:
     # pkgbuild::clean_dll(); pkgbuild::compile_dll(); devtools::load_all()
     # Sys.time(); unlink("/Users/ryan/Desktop/hiii.tsv"); parse_primer_blast(primer_blast_tsv="/Users/ryan/Projects/uw/rCRUX_world/rCRUXMini/_big_nt_test_data/primer_blast.10000000.tsv", output_tsv="/Users/ryan/Desktop/hiii.tsv", maximum_mismatches=4, minimum_length=150, maximum_length=450, num_threads=8); Sys.time()
@@ -53,7 +52,7 @@ build_scripts:
     cd scripts && cargo build --release
 
 install_scripts:
-    cd scripts && sudo cargo install --path . --root /usr/local
+    cd scripts && sudo cargo install --path . --root /usr/local --force
 
 instrument_scripts:
     cd scripts && time cargo instruments --release -t time --bin rCRUXMini__ParsePrimerBlast -- --out-file HI --threads=4 --maximum-mismatches=4 --minimum-length=150 --maximum-length=450 ~/Projects/uw/rCRUX_world/rCRUXMini/_big_nt_test_data/primer_blast.5000000.tsv
