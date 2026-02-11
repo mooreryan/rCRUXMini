@@ -77,14 +77,11 @@ pipeline <- function(config) {
   enumerated_reverse_primers <- enumerate_ambiguities(reverse_primers)
 
   log_info("writing primers")
-  primers_fasta_path <- file.path(
-    primer_blast_output_directory,
-    "enumerated_primers.fasta"
-  )
-  .write_primers(
+  primers_fasta_paths <- .write_primers(
     forward = enumerated_forward_primers,
     reverse = enumerated_reverse_primers,
-    to_file = primers_fasta_path
+    chunk_count = query_chunk_count,
+    to_directory = primer_blast_output_directory
   )
 
   log_info("running primer blast")
@@ -92,7 +89,7 @@ pipeline <- function(config) {
   # TODO: check to see if reading all this data into the data frame is an issue
   run_blastn(
     blast_executable_directory = ncbi_bin_directory,
-    query_paths = primers_fasta_path,
+    query_paths = primers_fasta_paths,
     db_paths = blast_db_paths,
     output_directory = primer_blast_output_directory,
     slurp = FALSE,
@@ -226,6 +223,7 @@ pipeline <- function(config) {
     #
     # TODO: why these? why not the usual + taxids?
     outfmt_specifiers = "qacc saccver pident length evalue slen sstart send sseq staxids",
+    # TODO: does the original rCRUX set evalue and stuff like that?
     extra_blast_arguments = c("-num_threads", "1"),
     use_long_names_in_parsed_result = TRUE
   )
@@ -643,17 +641,71 @@ test_file_non_empty <- function(path) {
 }
 
 
-.write_primers <- function(forward, reverse, to_file) {
-  write(
-    x = to_fasta_string("forward", forward),
-    file = to_file,
-    append = FALSE
+#' Writes enumerated primers to fasta files.
+#'
+#' The number is specified by the `chunk` count.
+#'
+#' Returns the files names that were written.
+#'
+.write_primers <- function(forward, reverse, chunk_count, to_directory) {
+  checkmate::assert_character(
+    forward,
+    min.len = 1,
+    min.chars = 1,
+    null.ok = FALSE
   )
-  write(
-    x = to_fasta_string("reverse", reverse),
-    file = to_file,
-    append = TRUE
+  checkmate::assert_character(
+    reverse,
+    min.len = 1,
+    min.chars = 1,
+    null.ok = FALSE
   )
+  checkmate::assert_int(chunk_count, lower = 1, null.ok = FALSE)
+  checkmate::assert_string(to_directory, null.ok = FALSE, min.chars = 1)
+
+  fasta_strings <- c(
+    to_fasta_strings("forward", forward),
+    to_fasta_strings("reverse", reverse)
+  )
+
+  # assumption check
+  checkmate::assert_character(
+    fasta_strings,
+    len = length(forward) + length(reverse)
+  )
+
+  # Classic base R splitting of a vector into chunks, but watch out since it
+  # doesn't work with 1 break.
+  if (chunk_count == 1) {
+    # This list looks weird, but it matches the output of the split+cut
+    # operation when there are actually multiple chunks.
+    chunks <- list(`1` = fasta_strings)
+  } else {
+    chunks <- split(
+      fasta_strings,
+      cut(seq_along(fasta_strings), breaks = chunk_count, labels = FALSE)
+    )
+  }
+
+  # Another assumption check...
+  checkmate::assert_list(
+    chunks,
+    len = min(length(fasta_strings), chunk_count),
+    types = "character"
+  )
+
+  out_filenames <- purrr::map_chr(seq_along(chunks), function(i) {
+    file.path(
+      to_directory,
+      stringr::str_glue("enumerated_primers.part_{i}.fasta")
+    )
+  })
+
+  for (i in seq_along(chunks)) {
+    write(x = chunks[[i]], file = out_filenames[[i]], append = FALSE)
+  }
+
+  out_filenames
 }
 
 

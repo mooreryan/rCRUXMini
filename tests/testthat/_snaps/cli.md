@@ -15,6 +15,6 @@
       [10] "plausible_amplicons_coordinates_distinct_taxonomic_ranks.tsv"
       [11] "plausible_amplicons_coordinates_with_taxonomy.tsv"           
       [12] "primer_blast/blast_REDACTED.tsv"                             
-      [13] "primer_blast/enumerated_primers.fasta"                       
+      [13] "primer_blast/enumerated_primers.part_REDACTED.fasta"         
       [14] "rcrux_log.txt"                                               
 

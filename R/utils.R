@@ -135,6 +135,22 @@ read_file <- function(file_name) {
 #   result
 # }
 
+to_fasta_strings <- function(id, sequences) {
+  checkmate::assert_string(id, null.ok = FALSE)
+  checkmate::assert_character(
+    sequences,
+    null.ok = FALSE,
+    min.len = 1,
+    min.chars = 1
+  )
+
+  id <- ifelse(id == "", "seq", id)
+
+  purrr::map_chr(.x = seq_along(sequences), .f = function(i) {
+    stringr::str_glue(">{id}_{i}\n{sequences[[i]]}")
+  })
+}
+
 to_fasta_string <- function(id, sequences) {
   id <- ifelse(id == "", "seq", id)
 
