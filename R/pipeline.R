@@ -93,7 +93,7 @@ pipeline <- function(config) {
     db_paths = blast_db_paths,
     output_directory = primer_blast_output_directory,
     slurp = FALSE,
-    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids",
+    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids bitscore",
     extra_blast_arguments = primer_blast_config_to_cli_args(
       config$primer_blast
     ),
@@ -222,7 +222,11 @@ pipeline <- function(config) {
     # These are the outfmt specifiers from the original rCRUX
     #
     # TODO: why these? why not the usual + taxids?
-    outfmt_specifiers = "qacc saccver pident length evalue slen sstart send sseq staxids",
+    #
+    # NOTE: it _should_ be okay to simply tack on the bitscore to the end since
+    # the parse_amplicon_blast script just ignores anything beyond the staxids.
+    # The bitscore is only there for examining the quality of the hits.
+    outfmt_specifiers = "qacc saccver pident length evalue slen sstart send sseq staxids bitscore",
     # TODO: does the original rCRUX set evalue and stuff like that?
     extra_blast_arguments = c("-num_threads", "1"),
     use_long_names_in_parsed_result = TRUE
@@ -243,7 +247,8 @@ pipeline <- function(config) {
   #
 
   parse_amplicon_blast_command <- SnailBLAST::sys_which(
-    "rCRUXMini__ParseAmpliconBlast",
+    "r
+    CRUXMini__ParseAmpliconBlast",
     scripts_bin_directory
   )
 
