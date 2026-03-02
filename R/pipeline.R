@@ -246,8 +246,7 @@ pipeline <- function(config) {
   #
 
   parse_amplicon_blast_command <- SnailBLAST::sys_which(
-    "r
-    CRUXMini__ParseAmpliconBlast",
+    "rCRUXMini__ParseAmpliconBlast",
     scripts_bin_directory
   )
 
