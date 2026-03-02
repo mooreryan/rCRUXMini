@@ -86,7 +86,6 @@ pipeline <- function(config) {
 
   log_info("running primer blast")
 
-  # TODO: check to see if reading all this data into the data frame is an issue
   run_blastn(
     blast_executable_directory = ncbi_bin_directory,
     query_paths = primers_fasta_paths,
