@@ -30,6 +30,7 @@ new_general_config <- function(params = NULL) {
     "query_chunk_count",
     # Users aren't required to specify params for the nested params.
     "primer_blast",
+    "amplicon_blast",
     "plausible_amplicons",
     "workers"
   )
@@ -104,7 +105,7 @@ new_general_config <- function(params = NULL) {
 
   # Validate ncbi_bin_directory (optional, must exist if provided)
   if ("ncbi_bin_directory" %in% params_names) {
-    # The default value in this case is for the user to NOT provide an bin
+    # The default value in this case is for the user to NOT provide a bin
     # directory. But we use `""` to represent that.
     if (
       !is.null(params$ncbi_bin_directory) && params$ncbi_bin_directory != ""
@@ -125,7 +126,7 @@ new_general_config <- function(params = NULL) {
 
   # Validate scripts_bin_directory (optional, must exist if provided)
   if ("scripts_bin_directory" %in% params_names) {
-    # The default value in this case is for the user to NOT provide an bin
+    # The default value in this case is for the user to NOT provide a bin
     # directory. But we use `""` to represent that.
     if (
       !is.null(params$scripts_bin_directory) &&
@@ -186,7 +187,7 @@ new_general_config <- function(params = NULL) {
   defaults <- list(
     query_chunk_count = 1,
     # NOTE: we use an empty string rather than NULL here, because we don't allow
-    # users to enter NULL-like values as valid paramters in the yaml files.
+    # users to enter NULL-like values as valid parameters in the yaml files.
     ncbi_bin_directory = "",
     scripts_bin_directory = "",
     workers = 1

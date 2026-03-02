@@ -1,25 +1,32 @@
+.blast_config_class_name <- function() {
+  "rcrux_blast_config"
+}
+
 new_primer_blast_config <- function(params = NULL) {
   params |>
-    .validate_primer_blast_params() |>
-    .apply_primer_blast_param_defaults() |>
-    structure(class = .primer_blast_config_class_name())
+    .validate_blast_params() |>
+    .apply_primer_blast_defaults() |>
+    structure(class = .blast_config_class_name())
 }
 
-assert_primer_blast_params <- function(object) {
-  checkmate::assert_class(object, .primer_blast_config_class_name())
+new_amplicon_blast_config <- function(params = NULL) {
+  params |>
+    .validate_blast_params() |>
+    .apply_amplicon_blast_defaults() |>
+    structure(class = .blast_config_class_name())
 }
 
-.primer_blast_config_class_name <- function() {
-  "rcrux_primer_blast_config"
+assert_blast_config <- function(object) {
+  checkmate::assert_class(object, .blast_config_class_name())
 }
 
 # This assumes that the names are the same that the BLAST program CLI expects.
-primer_blast_config_to_cli_args <- function(primer_blast_config) {
-  assert_primer_blast_params(primer_blast_config)
+blast_config_to_cli_args <- function(blast_config) {
+  assert_blast_config(blast_config)
 
-  param_names <- names(primer_blast_config)
+  param_names <- names(blast_config)
 
-  seq_along(primer_blast_config) |>
+  seq_along(blast_config) |>
     purrr::map(function(i) {
       # Formats the name the way the blast CLI arg should be
       param_name <- stringr::str_glue("-{name}", name = param_names[[i]])
@@ -29,13 +36,13 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
       # [1] "1e+07"
       # > format(10000000, scientific=FALSE)
       # [1] "10000000"
-      param_value <- format(primer_blast_config[[i]], scientific = FALSE)
+      param_value <- format(blast_config[[i]], scientific = FALSE)
       c(param_name, param_value)
     }) |>
     purrr::list_c()
 }
 
-.validate_primer_blast_params <- function(params = NULL) {
+.validate_blast_params <- function(params = NULL) {
   checkmate::assert_list(
     params,
     # No missing values are allowed, i.e., no list(a=NULL)
@@ -102,14 +109,14 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
   }
 
   if ("qcov_hsp_perc" %in% params_names) {
-    params$perc_identity <- .parse_integer(params$perc_identity)
+    params$qcov_hsp_perc <- .parse_integer(params$qcov_hsp_perc)
 
     params$qcov_hsp_perc |>
       checkmate::assert_int(lower = 0, upper = 100)
   }
 
   if ("reward" %in% params_names) {
-    params$perc_identity <- .parse_integer(params$perc_identity)
+    params$reward <- .parse_integer(params$reward)
 
     params$reward |>
       checkmate::assert_count(positive = TRUE)
@@ -136,11 +143,11 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
       checkmate::assert_count(positive = TRUE)
   }
 
-  # If we get here, then we know the params is valid, so return it.
+  # At this point, params are valid.
   params
 }
 
-.apply_primer_blast_param_defaults <- function(params = NULL) {
+.apply_primer_blast_defaults <- function(params = NULL) {
   checkmate::assert_list(
     params,
     # No missing values are allowed, i.e., no list(a=NULL)
@@ -163,6 +170,33 @@ primer_blast_config_to_cli_args <- function(primer_blast_config) {
     return(defaults)
   }
 
-  # Merge config with defaults, with user-provided values taking precedence
+  modifyList(defaults, params)
+}
+
+# TODO: update amplicon blast defaults.
+# Currently using the same defaults as primer blast as a placeholder.
+.apply_amplicon_blast_defaults <- function(params = NULL) {
+  checkmate::assert_list(
+    params,
+    # No missing values are allowed, i.e., no list(a=NULL)
+    any.missing = FALSE,
+    null.ok = TRUE
+  )
+
+  defaults <- list(
+    evalue = 3e7,
+    num_alignments = 10000000,
+    num_threads = 1,
+    perc_identity = 50,
+    qcov_hsp_perc = 90,
+    reward = 2,
+    task = "blastn-short",
+    word_size = 7
+  )
+
+  if (is.null(params)) {
+    return(defaults)
+  }
+
   modifyList(defaults, params)
 }

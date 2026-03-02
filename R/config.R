@@ -24,8 +24,9 @@ assert_config_class <- function(config) {
   # Validate and set defaults for general parameters
   config <- new_general_config(config)
 
-  # Validate primer blast parameters if they are provided and set defaults
+  # Validate blast parameters for each step and set defaults
   config$primer_blast <- new_primer_blast_config(config$primer_blast)
+  config$amplicon_blast <- new_amplicon_blast_config(config$amplicon_blast)
 
   config$plausible_amplicons <- new_plausible_amplicons_config(
     config$plausible_amplicons
