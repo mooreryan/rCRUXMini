@@ -72,7 +72,7 @@ blast_databases: '%s'
 
     expect_type(config, "list")
     expect_s3_class(config, "rcrux_config")
-    expect_s3_class(config$primer_blast, "rcrux_primer_blast_config")
+    expect_s3_class(config$primer_blast, "rcrux_blast_config")
     expect_s3_class(
       config$plausible_amplicons,
       "rcrux_plausible_amplicons_config"
