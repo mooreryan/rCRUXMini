@@ -187,11 +187,7 @@ blast_config_to_cli_args <- function(blast_config) {
     evalue = 3e7,
     num_alignments = 10000000,
     num_threads = 1,
-    perc_identity = 50,
-    qcov_hsp_perc = 90,
-    reward = 2,
-    task = "blastn-short",
-    word_size = 7
+    task = "megablast"
   )
 
   if (is.null(params)) {
