@@ -1,59 +1,236 @@
-_Note: in progress!_
-
 # rCRUXMini
 
-<!-- badges: start -->
-<!-- badges: end -->
+## Setup
 
-The goal of rCRUXMini is to ...
+The basic flow is this:
 
-## Installation
+- Get the code from GitHub: https://github.com/mooreryan/rCRUXMini
+- Install Rust scripts
+- Create a config file
+- Create taxonomy DB
+- Run CLI program
 
-You can install the development version of rCRUXMini from [GitHub](https://github.com/) with:
+### Get the code
 
-```r
-# install.packages("pak")
-pak::pak("mooreryan/rCRUXMini")
+For now, you must track the main branch on GitHub. The main branch should always be in a working state, minus any possible bugs of course. That is, I don't push code that is known to be broken or unfinished to the main branch. This may not be the case for feature branches, however!
+
+Using git:
+
+```
+git clone https://github.com/mooreryan/rCRUXMini.git
 ```
 
-## Example
+Or manually download [from this link](https://github.com/mooreryan/rCRUXMini/archive/refs/heads/main.zip)
 
-This is a basic example which shows you how to solve a common problem:
+_Note: If you would like to include a version number for rCRUXMini, say for like a manuscript or something, put the commit hash._
 
-```r
-library(rCRUXMini)
-## basic example code
+### Install Rust Scripts
+
+rCRUXMini has some parts that require compilation. For this, you will need a Rust toolchain installed on your computer/server. Check out the [Install Rust](https://rust-lang.org/tools/install/) page for how to set up Rust for your particular OS.
+
+Once you have done that, you should be able to run `cargo --version` without error. If that is going well, you can install the scripts:
+
+```
+cd <path/to/rCRUXMini/repository>/scripts
+cargo install --path . --root /usr/local --force
 ```
 
-## Hacking Guidelines
+- You should replace `<path/to/rCRUXMini/repository>` with whatever you need to get into the rCRUXMini code repository that you downloaded earlier.
+- You should replace `/usr/local` with wherever you want the execuatble scripts to live.
 
-### Functions in there own files
+Alternatively, you can run `cargo build --release`, which will install the scripts to `<path/to/rCRUXMini/repository>/scripts/target/build/release`.
 
-This might seem a bit tedious, but putting functions in their own files can help the linter (lintr) to find issues such as `no visible binding for global variable 'apple' (lintr object_usage_linter)`.
+### Config Files
 
-This can be especially important when you're using futures with multisession plans, as you have to ensure all dependencies (variables and functions) are made available to the functions executed
-in a future. This requires careful use of `.env_globals`, or simply passing in the dependencies as arguments to the function. The second option is much more easily done if your linter can alert you to variables that any of your functions/closures actually close over!
+#### Required Top-Level Options
 
-### Mapping to Original rCRUX
+- `forward_primers`: one or more forward primers
+- `reverse_primers`: one or more reverse primers
+- `output_directory`: where rCRUXMini will put results
+- `taxonomy_database`: path to the taxonomy DB
+- `blast_databases`: one or more paths to (nucleotide) BLAST DBs to search
 
-- `rCRUX::get_seeds_local` -> `rCRUXMini::pipeline` (we call this finding amplicons)
-- `rCRUX::blast_seeds` -> `rCRUXMini::pipeline` (we call these pulling amplicons)
-  - They separate out this function into a lot of little blast helpers and each of them do some parsing of the results
+#### Optional Top-Level Options
 
-I need to separate out the functions as well so users can run them seperately if required
+- `workers`
+  - How many jobs to run in parallel?
+  - More jobs (up to a point) mean less wall time
+  - More jobs mean more memory (because multiple things will run at once)
+  - _Default: `1`_
+- `query_chunk_count`
+  - Control the amount of "splits" queries will be broken up into
+  - `5` would mean split the queries into five individual files to search
+  - Increasing this value will keep memory down, since BLAST memory usage is also influenced by the size of the query set.
+  - _Default: `1`_
+- `ncbi_bin_directory`
+  - Path to location of blastn, blastdbcmd, etc.
+  - If you don't provide this, we assume they are on your PATH.
+- `scripts_bin_directory`
+  - Path to the location of rCRUXMini helper scripts.
+  - If you don't provide this, we assume they are on your PATH.
+- `primer_blast`: options passed to blastn for the primer blast
+- `amplicon_blast`: options passed to blastn for the amplicon blast
+- `plausible_amplicons`: options controlling filtering of plausible amplicons
 
-### Assertion Errors
+#### Primer & Amplicon BLAST Options
 
-Keep in mind that pretty much all functions may throw a `checkmateError` which signals that an assertion has failed. Ideally these should never be caught, so if you want to be super thorough, you could include a clause specifically for that error in you `try_fetch`/`tryCatch` calls, and rethrow those specific conditions. The reason is because `checkmateError` itself is a sublcass of `error`, which regretably means that catching the `error` condition will also catch assertion errors, and this is almost certainly _not_ what you inteded to do.
+The `primer_blast` and `amplicon_blast` sections of the config file take the same options.
 
----
+- `evalue`
+- `num_alignments`
+- `num_threads`
+- `perc_identity`
+- `qcov_hsp_perc`
+- `reward`
+- `task`
+- `word_size`
 
-We need to manually exclude non-R files because lintr in Zed will try to lint non-R files.
+These are all optional. That is, you can provide any or all of them.
 
----
+##### Primer BLAST Defaults
 
-Plausible amplicon coordinates files have `subject_accession_version`, `subject_gi`, `unique_subject_taxonomy`, etc. This is because those are the subjects from the BLAST DBs that you searched against.
+- `evalue`: 3e7,
+- `num_alignments`: 10000000,
+- `num_threads`: 1,
+- `perc_identity`: 50,
+- `qcov_hsp_perc`: 90,
+- `reward`: 2,
+- `task`: "blastn-short",
+- `word_size`: 7
 
----
+_Note: You should probably set these yourself rather than relying on the defaults!_
 
-If the parent R process is killed...you will get ZOMBIE WORKERS!!!
+##### Amplicon BLAST Defaults
+
+- `evalue`: 3e7,
+- `num_alignments`: 10000000,
+- `num_threads`: 1,
+- `task`: "megablast"
+
+_Note: You should probably set these yourself rather than relying on the defaults!_
+
+#### Plausible Amplicons Options
+
+- `minimum_length`: valid amplicons must be at least this long
+- `maximum_length`: valid amplicons must be no more than this long
+- `maximum_mismatches`: valid amplicons must have no more than this many mismatches the BLAST search
+- `ambiguous_run_limit`: valid amplicons must no more than than this many ambiguous bases in a row
+
+##### Defaults
+
+- `minimum_length`: 150
+- `maximum_length`: 650
+- `maximum_mismatches`: 4
+- `ambiguous_run_limit`: 5
+
+_Again, you should set these to whatever makes sense for your amplicon!_
+
+#### Example
+
+Here is an example config file.
+
+```yaml
+# Each of these can be a list if you have more than one.
+forward_primers: "ANTG"
+reverse_primers:
+  - "AACCTTGG"
+  - "CCTTAAGG"
+
+# Where rCRUXMini will put the output files
+output_directory: "/home/ryan/rcrux_output"
+
+# Path to your taxonomy DB
+taxonomy_database: "/home/ryan/taxonomy.db"
+
+# Path to location of blastn, blastdbcmd, etc. If you don't provide this, we
+# assume they are on your PATH.
+ncbi_bin_directory: "/opt/ncbi/bin"
+
+# Path to the location of rCRUXMini helper scripts. If you don't provide this,
+# we assume they are on your PATH.
+scripts_bin_directory: "/opt/rCRUXMini/scripts/target/release"
+
+# Path or paths of blast DBs to search. You can split up a BLAST DB to keep the
+# memory down. It will increase the runtime (likely) and affect evalues.
+blast_databases:
+  - "/opt/ncbi/blastdb/nt.001"
+  - "/opt/ncbi/blastdb/nt.002"
+  # As many as you want!
+
+# If you just have one blast DB, you can do this:
+# blast_databases: "/path/to/my/db"
+
+# We can split queries to keep memory down. BLAST memory usage also scales with
+# the queries in addition to the subjects.
+query_chunk_count: 2
+
+# How many jobs to run at once. Higher numbers will use less wall time, but will
+# also use more memory, since more than one job may be running at one time.
+workers: 4
+
+# These options are passed to the blastn command for the primer blast step.
+primer_blast:
+  evalue: 3e7
+  num_alignments: 10000000
+  num_threads: 1
+  perc_identity: 50
+  qcov_hsp_perc: 90
+  reward: 2
+  task: "blastn-short"
+  word_size: 7
+
+# These options are passed to the blastn command for the primer blast step. You
+# can use the same options here as for the primer_blast.
+amplicon_blast:
+  evalue: 3e7
+  num_alignments: 10000000
+  num_threads: 1
+  perc_identity: 50
+  qcov_hsp_perc: 90
+  task: "megablast"
+
+# What do you consider plausible amplicons? You can filter by length, max
+# mismatches in the blast, max number of ambiguious bases (eg, NNNNN).
+#
+# You should base these on things you know about your specific amplicon.
+plausible_amplicons:
+  minimum_length: 150
+  maximum_length: 650
+  maximum_mismatches: 4
+  ambiguous_run_limit: 5
+```
+
+### Create Taxonomy DB
+
+Instructions coming soon!
+
+### Run the rCRUXMini CLI
+
+Now, it's finally time to run rCRUXMini!
+
+```
+time Rscript --vanilla \
+<path to rCRUXMini repo>/inst/cli/rCRUXMini.R \
+<path to config file>/config.yml \
+<path to rCRUXMini repo>
+```
+
+- Be sure to replace `<path to rCRUXMini repo>` with the actual location where you downloaded rCRUXMini repository.
+- Be sure to replace `<path to config file>` with the actual location of your config file.
+
+So, you might have something that looks like this:
+
+```
+time Rscript --vanilla \
+/opt/rCRUXMini/inst/cli/rCRUXMini.R \
+/home/ryan/cool_project/rcrux_config.yml \
+/opt/rCRUXMini
+```
+
+## rCRUXMini Output Files
+
+Guide coming soon!
+
+## Bug Reports
+
+If you run into any issues, feel free to [submit an issue](https://github.com/mooreryan/rCRUXMini/issues/new) on GitHub.
