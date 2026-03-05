@@ -1,4 +1,28 @@
+<!-- TOC --><a name="rcruxmini"></a>
+
 # rCRUXMini
+
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Setup](#setup)
+  - [Get the code](#get-the-code)
+  - [Install Rust Scripts](#install-rust-scripts)
+  - [Create Taxonomy DB](#create-taxonomy-db)
+  - [Config Files](#config-files)
+    - [Required Top-Level Options](#required-top-level-options)
+    - [Optional Top-Level Options](#optional-top-level-options)
+    - [Primer & Amplicon BLAST Options](#primer-amplicon-blast-options)
+      - [Primer BLAST Defaults](#primer-blast-defaults)
+      - [Amplicon BLAST Defaults](#amplicon-blast-defaults)
+    - [Plausible Amplicons Options](#plausible-amplicons-options)
+      - [Defaults](#defaults)
+    - [Example](#example)
+  - [Run the rCRUXMini CLI](#run-the-rcruxmini-cli)
+- [rCRUXMini Output Files](#rcruxmini-output-files)
+
+<!-- TOC end -->
+
+<!-- TOC --><a name="setup"></a>
 
 ## Setup
 
@@ -9,6 +33,8 @@ The basic flow is this:
 - Create a config file
 - Create taxonomy DB
 - Run CLI program
+
+<!-- TOC --><a name="get-the-code"></a>
 
 ### Get the code
 
@@ -23,6 +49,8 @@ git clone https://github.com/mooreryan/rCRUXMini.git
 Or manually download [from this link](https://github.com/mooreryan/rCRUXMini/archive/refs/heads/main.zip)
 
 _Note: If you would like to include a version number for rCRUXMini, say for like a manuscript or something, put the commit hash._
+
+<!-- TOC --><a name="install-rust-scripts"></a>
 
 ### Install Rust Scripts
 
@@ -39,6 +67,8 @@ cargo install --path . --root /usr/local --force
 - You should replace `/usr/local` with wherever you want the execuatble scripts to live.
 
 Alternatively, you can run `cargo build --release`, which will install the scripts to `<path/to/rCRUXMini/repository>/scripts/target/build/release`.
+
+<!-- TOC --><a name="create-taxonomy-db"></a>
 
 ### Create Taxonomy DB
 
@@ -82,7 +112,11 @@ read.accession2taxid(taxaFiles = accession_file, sqlFile = sql_file)
 
 _Note: The so-called `output.db` from this little R script will be what you need to provide to the `taxonomy_database` option in the config file._
 
+<!-- TOC --><a name="config-files"></a>
+
 ### Config Files
+
+<!-- TOC --><a name="required-top-level-options"></a>
 
 #### Required Top-Level Options
 
@@ -91,6 +125,8 @@ _Note: The so-called `output.db` from this little R script will be what you need
 - `output_directory`: where rCRUXMini will put results
 - `taxonomy_database`: path to the taxonomy DB
 - `blast_databases`: one or more paths to (nucleotide) BLAST DBs to search
+
+<!-- TOC --><a name="optional-top-level-options"></a>
 
 #### Optional Top-Level Options
 
@@ -114,6 +150,8 @@ _Note: The so-called `output.db` from this little R script will be what you need
 - `amplicon_blast`: options passed to blastn for the amplicon blast
 - `plausible_amplicons`: options controlling filtering of plausible amplicons
 
+<!-- TOC --><a name="primer-amplicon-blast-options"></a>
+
 #### Primer & Amplicon BLAST Options
 
 The `primer_blast` and `amplicon_blast` sections of the config file take the same options.
@@ -129,6 +167,8 @@ The `primer_blast` and `amplicon_blast` sections of the config file take the sam
 
 These are all optional. That is, you can provide any or all of them.
 
+<!-- TOC --><a name="primer-blast-defaults"></a>
+
 ##### Primer BLAST Defaults
 
 - `evalue`: 3e7,
@@ -142,6 +182,8 @@ These are all optional. That is, you can provide any or all of them.
 
 _Note: You should probably set these yourself rather than relying on the defaults!_
 
+<!-- TOC --><a name="amplicon-blast-defaults"></a>
+
 ##### Amplicon BLAST Defaults
 
 - `evalue`: 3e7,
@@ -151,12 +193,16 @@ _Note: You should probably set these yourself rather than relying on the default
 
 _Note: You should probably set these yourself rather than relying on the defaults!_
 
+<!-- TOC --><a name="plausible-amplicons-options"></a>
+
 #### Plausible Amplicons Options
 
 - `minimum_length`: valid amplicons must be at least this long
 - `maximum_length`: valid amplicons must be no more than this long
 - `maximum_mismatches`: valid amplicons must have no more than this many mismatches the BLAST search
 - `ambiguous_run_limit`: valid amplicons must no more than than this many ambiguous bases in a row
+
+<!-- TOC --><a name="defaults"></a>
 
 ##### Defaults
 
@@ -166,6 +212,8 @@ _Note: You should probably set these yourself rather than relying on the default
 - `ambiguous_run_limit`: 5
 
 _Again, you should set these to whatever makes sense for your amplicon!_
+
+<!-- TOC --><a name="example"></a>
 
 #### Example
 
@@ -242,6 +290,8 @@ plausible_amplicons:
   ambiguous_run_limit: 5
 ```
 
+<!-- TOC --><a name="run-the-rcruxmini-cli"></a>
+
 ### Run the rCRUXMini CLI
 
 Now, it's finally time to run rCRUXMini!
@@ -264,6 +314,8 @@ time Rscript --vanilla \
 /home/ryan/cool_project/rcrux_config.yml \
 /opt/rCRUXMini
 ```
+
+<!-- TOC --><a name="rcruxmini-output-files"></a>
 
 ## rCRUXMini Output Files
 
