@@ -40,6 +40,48 @@ cargo install --path . --root /usr/local --force
 
 Alternatively, you can run `cargo build --release`, which will install the scripts to `<path/to/rCRUXMini/repository>/scripts/target/build/release`.
 
+### Create Taxonomy DB
+
+First, you will need to download the NCBI taxonomy taxdump and accession2taxid files. You can find them here:
+
+- https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/
+  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz
+  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz.md5
+- https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/
+  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz
+  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz.md5
+
+That FTP site has nice README files as well that can help you out.
+
+Once you grab the required files, and put them somewhere convenient, then you will need to run a bit of R code to set up the DB in such a way that the taxonomizr package can read it. Something like this should do it:
+
+```R
+#!/usr/bin/env Rscript
+library(taxonomizr)
+
+# Get command line arguments
+args <- commandArgs(trailingOnly = TRUE)
+
+# Check if all required arguments are provided
+if (length(args) != 4) {
+  stop(
+    "Usage: make_taxonomizr_db.R <names.dmp> <nodes.dmp> <accession2taxid> <output.db>",
+    call. = FALSE
+  )
+}
+
+names_file <- args[1]
+nodes_file <- args[2]
+accession_file <- args[3]
+sql_file <- args[4]
+
+read.names.sql(nameFile = names_file, sqlFile = sql_file)
+read.nodes.sql(nodeFile = nodes_file, sqlFile = sql_file)
+read.accession2taxid(taxaFiles = accession_file, sqlFile = sql_file)
+```
+
+_Note: The so-called `output.db` from this little R script will be what you need to provide to the `taxonomy_database` option in the config file._
+
 ### Config Files
 
 #### Required Top-Level Options
@@ -199,48 +241,6 @@ plausible_amplicons:
   maximum_mismatches: 4
   ambiguous_run_limit: 5
 ```
-
-### Create Taxonomy DB
-
-First, you will need to download the NCBI taxonomy taxdump and accession2taxid files. You can find them here:
-
-- https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/
-  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz
-  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz.md5
-- https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/
-  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz
-  - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz.md5
-
-That FTP site has nice README files as well that can help you out.
-
-Once you grab the required files, and put them somewhere convenient, then you will need to run a bit of R code to set up the DB in such a way that the taxonomizr package can read it. Something like this should do it:
-
-```R
-#!/usr/bin/env Rscript
-library(taxonomizr)
-
-# Get command line arguments
-args <- commandArgs(trailingOnly = TRUE)
-
-# Check if all required arguments are provided
-if (length(args) != 4) {
-  stop(
-    "Usage: make_taxonomizr_db.R <names.dmp> <nodes.dmp> <accession2taxid> <output.db>",
-    call. = FALSE
-  )
-}
-
-names_file <- args[1]
-nodes_file <- args[2]
-accession_file <- args[3]
-sql_file <- args[4]
-
-read.names.sql(nameFile = names_file, sqlFile = sql_file)
-read.nodes.sql(nodeFile = nodes_file, sqlFile = sql_file)
-read.accession2taxid(taxaFiles = accession_file, sqlFile = sql_file)
-```
-
-_Note: The so-called `output.db` from this little R script will be what you need to provide to the `taxonomy_database` option in the config file._
 
 ### Run the rCRUXMini CLI
 
