@@ -38,6 +38,7 @@ parse_primer_blast2 <- function(
   # TODO: the command_result info is not actually printed to the screen in the
   # abort_rcrux_mini_error
   if (is.na(command_result$status) || command_result$status != 0) {
+    cat(command_result$stderr)
     abort_rcrux_mini_error(
       "There was some error when running the parse primer blast script.",
       processx_object = command_result

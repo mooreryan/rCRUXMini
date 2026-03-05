@@ -308,6 +308,8 @@ struct BlastHit {
     // We aren't doing anything with bitscore in the script, so just treat it as
     // a string and don't worry about f64 Eq and Hash for now.
     bitscore: String,
+    // Same thing for evalue.
+    evalue: String,
 }
 
 impl BlastHit {
@@ -361,8 +363,8 @@ impl PrimerHit {
     fn from_fields(fields: &[&str]) -> Self {
         assert_eq!(
             fields.len(),
-            8,
-            "Expected 8 fields in BLAST output, got {}",
+            9,
+            "Expected 9 fields in BLAST output, got {}",
             fields.len()
         );
 
@@ -377,6 +379,7 @@ impl PrimerHit {
             send: fields[5].parse().expect("failed to parse send"),
             staxids: fields[6].to_string(),
             bitscore: fields[7].to_string(),
+            evalue: fields[8].to_string(),
         };
 
         if blast_hit.qseqid.starts_with("forward") {

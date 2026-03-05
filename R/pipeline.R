@@ -92,7 +92,7 @@ pipeline <- function(config) {
     db_paths = blast_db_paths,
     output_directory = primer_blast_output_directory,
     slurp = FALSE,
-    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids bitscore",
+    outfmt_specifiers = "qseqid sgi saccver mismatch sstart send staxids bitscore evalue",
     extra_blast_arguments = blast_config_to_cli_args(config$primer_blast),
     use_long_names_in_parsed_result = FALSE
   )
