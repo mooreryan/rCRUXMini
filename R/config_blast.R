@@ -173,7 +173,6 @@ blast_config_to_cli_args <- function(blast_config) {
   modifyList(defaults, params)
 }
 
-# TODO: update amplicon blast defaults.
 # Currently using the same defaults as primer blast as a placeholder.
 .apply_amplicon_blast_defaults <- function(params = NULL) {
   checkmate::assert_list(
